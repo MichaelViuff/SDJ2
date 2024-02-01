@@ -557,5 +557,3 @@ console.log(deepEqual(obj, { here: { is: "an" }, object: 2 }))
 </blockquote>
 
 ##
-
-<sub><sup><em>Exercise 2-6 & 8-10 are created by Marijn Haverbeke, [Eloquent JavaScript](https://eloquentjavascript.net/). Licensed under [CC BY-NC 3.0](https://creativecommons.org/licenses/by-nc/3.0/)</em><sup><sub>
