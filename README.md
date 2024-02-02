@@ -1,6 +1,6 @@
 This repository contains resources for the [Software Development with UML and Java 2](https://en.via.dk/tmh-courses/software-development-with-uml-and-java-2) course at VIA University College, Horsens, Denmark.
 
-|  <div style="width:400px">Topics</div> |Preparations| Presentations|Exercises & Assignments |
+|Topics |Preparations| Presentations|Exercises & Assignments |
 | --- | :---: | :---: | :---: |
 | 01 Threads 1 |Read:<br> [Introduction to Multithreading in Java](https://www.studytonight.com/java/multithreading-in-java.php)<br> [Concurrency](https://docs.oracle.com/javase/tutorial/essential/concurrency) (Stop at "Synchronization")<br>[Programming With Threads](https://github.com/MichaelViuff/SDJ2/blob/main/01%20Threads%201/Programming%20With%20Threads.pdf) (Page 1-6)| [Slides](https://viaucdk-my.sharepoint.com/:p:/g/personal/mivi_viauc_dk/EUPhZHnZtKFPtK1rgh67P5QBfWuswwFvOGto1oh9hnUjVg?e=xwfWed) | [Exercises](https://github.com/MichaelViuff/SDJ2/blob/main/01%20Threads%201/README.md)|
 | 02 Threads 2 |Read:<br>[Concurrency](https://docs.oracle.com/javase/tutorial/essential/concurrency) (Stop at "Liveness")<br>[Programming With Threads](https://github.com/MichaelViuff/SDJ2/blob/main/01%20Threads%201/Programming%20With%20Threads.pdf) (Page 7-19) | [Slides](https://docs.google.com/presentation/d/120lyQV8o8p3Ndbv6Fmr3NF17uf609U2DLg2YBU5hcC0/edit?usp=sharing) | [Exercises](https://github.com/KasperKnop/WEB2/blob/main/02%20Functional%20Programming/README.md)|
