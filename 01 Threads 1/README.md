@@ -338,6 +338,23 @@ Program the bear and the poking man example from the presentation. The UML could
 
 ![Bear and Poking Man UML Class Diagram](https://github.com/MichaelViuff/SDJ2/blob/main/01%20Threads%201/Images/Billede1.png)
 
-Notice that the PokingMan class takes a Thread, not a Bear, as an argument.
+Notice that the `PokingMan` class takes a `Thread`, not a `Bear`, as input for the constructor.
 
 The bear goes to sleep. If it wakes by itself, print out it is well-rested. If another source wakes it, print out it is angry.
+
+<blockquote>
+<details>
+<summary>Display hints...</summary>
+<p>Start by making the <code>Bear</code> class. The <code>run()</code> method must sleep for an amount of time </p>
+<details>
+<summary>Display solution...</summary>
+
+```java
+
+```
+
+</details>
+</details>
+
+</blockquote>
+
