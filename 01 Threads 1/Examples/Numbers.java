@@ -1,10 +1,14 @@
 public class Numbers implements Runnable
 {
-  @Override public void run()
-  {
-    for (int i = 0; i < 2000; i++)
+
+    @Override public void run()
     {
-      System.out.println(i);
+        while(true)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                System.out.println(i);
+            }
+        }
     }
-  }
 }
