@@ -7,7 +7,7 @@ public class Letters implements Runnable
       {
         for (int i = 0; i < 10; i++)
         {
-          System.out.println(i);
+          System.out.println((char)i+97);
         }
       }
   }
