@@ -538,7 +538,7 @@ For the rabbit, you will need a reference to the thread for the turtle. The <cod
 To test if the rabbit is sufficiently ahead, make an if-statement similiar to this: 
 
 ```java
-if(distance + AHEAD_DISTANCE > turtle.getDistance() && distance+50 < 1000)
+if(distance > turtle.getDistance() + AHEAD_DISTANCE)
 ```
 
 To generate a random number of milliseconds for the rabbit to sleep, use this:
@@ -575,7 +575,7 @@ public class Rabbit implements Runnable{
         {
             try
             {
-                if(distance + AHEAD_DISTANCE > turtle.getDistance() && distance + AHEAD_DISTANCE < 1000)
+                if(distance > turtle.getDistance() + AHEAD_DISTANCE)
                 {
                     int sleepTime = random.nextInt(500) + 500; // This will give you a number between 500 and 999
                     System.out.println("Rabbit noticed that it was ahead and has gone to sleep for " + sleepTime + " milliseconds");
@@ -605,6 +605,7 @@ public class Turtle implements Runnable
             try
             {
                 Thread.sleep(10);
+                System.out.println("Turtle has moved" + distance + " meters");
             }
             catch (InterruptedException e)
             {
