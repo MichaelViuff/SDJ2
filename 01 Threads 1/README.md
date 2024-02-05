@@ -575,7 +575,7 @@ public class Rabbit implements Runnable{
         {
             try
             {
-                if(distance + AHEAD_DISTANCE > turtle.getDistance() && distance+50 < 1000)
+                if(distance + AHEAD_DISTANCE > turtle.getDistance() && distance + AHEAD_DISTANCE < 1000)
                 {
                     int sleepTime = random.nextInt(500) + 500; // This will give you a number between 500 and 999
                     System.out.println("Rabbit noticed that it was ahead and has gone to sleep for " + sleepTime + " milliseconds");
