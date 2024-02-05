@@ -651,13 +651,13 @@ Below is a UML of the classes needed. Please note the UML diagram may not be com
 
 Create a class, call it <code>Counter</code>, with a single attribute of type <code>int</code>. Call it "count". It should be initialized to 0 in the constructor.
 
-Create a method called <code>update()</code> which increments "count" by 1.
+Create a method called <code>incrementCount()</code> which increments "count" by 1.
 
 Create a getter for the "count" attribute.
 
 Create a <code>Runnable</code> class. Call it <code>CountIncrementer</code>. It takes a reference to your class <code>Counter</code> in the constructor. 
 
-In the <code>run()</code> method of <code>CountIncrementer</code>, call the <code>update()</code> method 1.000.000 times, in a for-loop. After the for-loop print out the value of "count".
+In the <code>run()</code> method of <code>CountIncrementer</code>, call the <code>incrementCount()</code> method 1.000.000 times, in a for-loop. After the for-loop print out the value of "count".
 
 Now create a <code>Test</code> class with a main method. Instantiate the <code>Counter</code> class, instantiate one thread with <code>CountIncrementer</code>, and start the thread, something like:
 
