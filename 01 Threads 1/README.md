@@ -345,11 +345,56 @@ The bear goes to sleep. If it wakes by itself, print out it is well-rested. If a
 <blockquote>
 <details>
 <summary>Display hints...</summary>
-<p>Start by making the <code>Bear</code> class. The <code>run()</code> method must sleep for an amount of time </p>
+<p>Start by making the <code>Bear</code> class. The <code>run()</code> method must sleep for an amount of time, and when finished with sleeping, show that it is well-rested (print out "I am a well-rested bear" or similiar). If it isn't allowed to finish waiting (i.e. an <code>InterruptedException</code>code> is thrown</code>), show that it is angry (print out "I am an angry bear!" or similiar).
+
+The <code>PokingMan </code></p> constructor must get the <code>Bear</code> thread as an argument. The <code>run()</code> method should sleep for a specified amount of time, and then wake up (interrupt) the <code>Bear</code> thread.
+
+Use different timers for the sleep of both threads and see what happens.
 <details>
 <summary>Display solution...</summary>
 
 ```java
+public class Bear implements Runnable
+{
+  @Override public void run()
+  {
+    try
+    {
+      Thread.sleep(3000);
+      System.out.println("I am a well-rested bear");
+    }
+    catch (InterruptedException e)
+    {
+      System.out.println("I am an angry bear!");
+    }
+  }
+}
+
+public class PokingMan implements Runnable
+{
+
+  private Thread bearToPoke;
+  private int timeToSleep;
+
+  public PokingMan(Thread bearToPoke, int timeToSleep)
+  {
+    this.bearToPoke = bearToPoke;
+    this.timeToSleep = timeToSleep;
+  }
+
+  @Override public void run()
+  {
+    try
+    {
+      Thread.sleep(timeToSleep);
+      bearToPoke.interrupt();
+    }
+    catch (InterruptedException e)
+    {
+      e.printStackTrace();
+    }
+  }
+}
 
 ```
 
