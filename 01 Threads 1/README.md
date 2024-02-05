@@ -336,7 +336,7 @@ public class Test
 ## 1.6 Waiting
 Program the bear and the poking man example from the presentation. The UML could look like this:
 
-![Bear and Poking Man UML Class Diagram](https://github.com/MichaelViuff/SDJ2/blob/main/01%20Threads%201/Images/Billede1.png)
+![Bear and Poking Man UML Class Diagram](https://github.com/MichaelViuff/SDJ2/blob/main/01%20Threads%201/Images/BearPokingManUML.png)
 
 Notice that the `PokingMan` class takes a `Thread`, not a `Bear`, as input for the constructor.
 
@@ -347,9 +347,9 @@ The bear goes to sleep. If it wakes by itself, print out it is well-rested. If a
 <summary>Display hints...</summary>
 <p>Start by making the <code>Bear</code> class. The <code>run()</code> method must sleep for an amount of time, and when finished with sleeping, show that it is well-rested (print out "I am a well-rested bear" or similiar). If it isn't allowed to finish waiting (i.e. an <code>InterruptedException</code>code> is thrown</code>), show that it is angry (print out "I am an angry bear!" or similiar).
 
-The <code>PokingMan </code></p> constructor must get the <code>Bear</code> thread as an argument. The <code>run()</code> method should sleep for a specified amount of time, and then wake up (interrupt) the <code>Bear</code> thread.
+The <code>PokingMan </code></p> constructor must get the <code>Bear</code> thread as an argument. The <code>run()</code> method should sleep an amount of time, and then wake up (interrupt) the <code>Bear</code> thread.
 
-Use different timers for the sleep of both threads and see what happens.
+Use different timers for the sleep of both threads and see what happens.</p>
 <details>
 <summary>Display solution...</summary>
 
@@ -374,12 +374,10 @@ public class PokingMan implements Runnable
 {
 
   private Thread bearToPoke;
-  private int timeToSleep;
 
-  public PokingMan(Thread bearToPoke, int timeToSleep)
+  public PokingMan(Thread bearToPoke)
   {
     this.bearToPoke = bearToPoke;
-    this.timeToSleep = timeToSleep;
   }
 
 
@@ -387,7 +385,7 @@ public class PokingMan implements Runnable
   {
     try
     {
-      Thread.sleep(timeToSleep);
+      Thread.sleep(2000); //Change this value to allow the bear to finish resting before getting poked.
       bearToPoke.interrupt();
     }
     catch (InterruptedException e)
@@ -404,11 +402,141 @@ public class PokingMan implements Runnable
 
 </blockquote>
 
-## 1.7 Updating a shared resource
+## 1.7 A sleuth of bears
+
+We will expand on the previous exercise, by adding more bears for our man to poke!
+
+This time you have 5 bears (or some other arbitrary number), and when one bear is woken up unexpectedly, it roars loudly, waking up all other bears sleeping in the same cave!
+
+<blockquote>
+<details>
+<summary>Display hints...</summary>
+<p>In order for one bear to wake all other bears, it must have a reference to their threads. This can be done in many ways, but a simple way for now is to have a class <code>Cave</code> that contains a list of bear threads. Create a <code>wakeAllBears</code> method in that class, that interrupts all sleeping threads and removes them from the list.
+
+When a bear is awoken by being poked, let it call the <code>WakeAllBears</code> method.
+
+Try letting the <code>PokingMan</code> wake up different bears and confirm that everyone wakes up!
+
+</p>
+<details>
+<summary>Display solution...</summary>
+
+```java
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Cave {
+
+    private List<Thread> sleepingBears;
+
+    public Cave()
+    {
+        sleepingBears = new ArrayList<>();
+    }
+
+    public void addBear(Thread bear)
+    {
+        sleepingBears.add(bear);
+    }
+
+    public void wakeAllBears()
+    {
+        for (Thread bear : sleepingBears)
+        {
+            bear.interrupt();
+        }
+        sleepingBears.clear();
+    }
+}
+
+
+public class Bear implements Runnable
+{
+
+  private Cave cave;
+
+  public Bear(Cave cave)
+  {
+    this.cave = cave;
+  }
+
+  @Override public void run()
+  {
+    try
+    {
+      Thread.sleep(3000);
+      System.out.println("I am a well-rested bear");
+    }
+    catch (InterruptedException e)
+    {
+      System.out.println("I am an angry bear!");
+      cave.wakeAllBears();
+    }
+  }
+}
+
+public class PokingMan implements Runnable
+{
+
+  private Thread bearToPoke;
+  private int timeToSleep;
+
+  public PokingMan(Thread bearToPoke, int timeToSleep)
+  {
+    this.bearToPoke = bearToPoke;
+    this.timeToSleep = timeToSleep;
+  }
+
+  @Override public void run()
+  {
+    try
+    {
+      Thread.sleep(timeToSleep);
+      bearToPoke.interrupt();
+    }
+    catch (InterruptedException e)
+    {
+      e.printStackTrace();
+    }
+  }
+}
+
+
+
+```
+
+</details>
+</details>
+
+</blockquote>
+
+
+
+## 1.9 Updating a shared resource
 
 The result of this exercise may cause some confusion. It is an appetizer for next session, where we will look at the problem, which arises in this exercise.
 
 Below is a UML of the classes needed. Please note the UML diagram may not be complete, and you're welcome to add to it as is needed.
 
+![CounterIncrementer UML Class Diagram](https://github.com/MichaelViuff/SDJ2/blob/main/01%20Threads%201/Images/CounterIncrementerUML.png)
 
+Create a class, call it Counter, with a single private field variable of type int. You can call the int field “count”. It should be initialized to 0 in the constructor of Counter.
+Create a method, which when called will increment the int with 1, i.e. “count++;”.
+Create a method to get the count variable, i.e. “return count;”
+Create a Runnable class (a class implementing the Runnable interface), you can e.g. call it CountIncrementer, which takes a reference to your class with the counter (an argument for the constructor of CountIncrementer). In your main method, you should have something like:
+
+CounterIncrementer ci = new CounterIncrementer(counter);
+
+In the run() method of CounterIncrementer, you call the update method 1.000.000 times, in a for-loop, so that the ‘count’ variable in Counter is incremented. When the for-loop is done, i.e. after and outside of the for-loop, get the count variable, and print it out.
+Now create a Start class with a main method. Instantiate the Counter class, instantiate one instance of CountIncrementer, and start the Thread, something like:
+
+Counter c = new Counter();
+Thread t = new Thread(new CountIncrementer(c) ) ;
+
+Verify that the number printed out is 1.000.000.
+Change the code in your main method so that two CounterIncrementer threads are created and started.
+Two threads will now both increment the count variable 1.000.000 times. We would expect the printed result to be 2.000.000. Is that always so? Or does the number sometimes differ from 2.000.000?
+
+This exercise is to peek your curiosity. We’ll discuss this next time. It has something to do with Time Slicing, and multiple threads interfering with each other.
 
