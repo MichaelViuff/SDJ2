@@ -512,11 +512,11 @@ public class PokingMan implements Runnable
 
 </blockquote>
 
-## 1.8 Updating a shared resource
+## 1.8 The rabbit and the turtle
 In this exercise, you’re going to simulate the famous race between the rabbit and the turtle.
 You’re going to need two <code>Runnable</code> classes: <code>Turtle</code> and <code>Rabbit</code>. And a class to start the two threads. The <code>Rabbit</code> should know about the <code>Turtle</code> (reference through constructor of <code>Rabbit</code>).
 
-The goal for each thread is to count to e.g. 1000 (i.e. run 1000 meters), 
+The goal for each thread is to count to 1000 (i.e. run 1000 meters), 
 
 The turtle will move at a slow, but steady pace, e.g. increment 1 every 10 milliseconds (use <code>sleep()</code>).
 
@@ -641,9 +641,6 @@ public class Test
 </details>
 </blockquote>
 
-
-
-
 ## 1.9 Updating a shared resource
 
 The result of this exercise may cause some confusion. It is an appetizer for next session, where we will look at the problem, which arises in this exercise.
@@ -652,22 +649,39 @@ Below is a UML of the classes needed. Please note the UML diagram may not be com
 
 ![CounterIncrementer UML Class Diagram](https://github.com/MichaelViuff/SDJ2/blob/main/01%20Threads%201/Images/CounterIncrementerUML.png)
 
-Create a class, call it Counter, with a single private field variable of type int. You can call the int field “count”. It should be initialized to 0 in the constructor of Counter.
-Create a method, which when called will increment the int with 1, i.e. “count++;”.
-Create a method to get the count variable, i.e. “return count;”
-Create a Runnable class (a class implementing the Runnable interface), you can e.g. call it CountIncrementer, which takes a reference to your class with the counter (an argument for the constructor of CountIncrementer). In your main method, you should have something like:
+Create a class, call it <code>Counter</code>, with a single attribute of type <code>int</code>. Call it "count". It should be initialized to 0 in the constructor.
 
-CounterIncrementer ci = new CounterIncrementer(counter);
+Create a method called <code>update()</code> which increments "count" by 1.
 
-In the run() method of CounterIncrementer, you call the update method 1.000.000 times, in a for-loop, so that the ‘count’ variable in Counter is incremented. When the for-loop is done, i.e. after and outside of the for-loop, get the count variable, and print it out.
-Now create a Start class with a main method. Instantiate the Counter class, instantiate one instance of CountIncrementer, and start the Thread, something like:
+Create a getter for the "count" attribute.
 
-Counter c = new Counter();
-Thread t = new Thread(new CountIncrementer(c) ) ;
+Create a <code>Runnable</code> class. Call it <code>CountIncrementer</code>. It takes a reference to your class <code>Counter</code> in the constructor. 
+
+In the <code>run()</code> method of <code>CountIncrementer</code>, call the <code>update()</code> method 1.000.000 times, in a for-loop. After the for-loop print out the value of "count".
+
+Now create a <code>Test</code> class with a main method. Instantiate the <code>Counter</code> class, instantiate one thread with <code>CountIncrementer</code>, and start the thread, something like:
+
+```java
+Counter counter = new Counter();
+CounterIncrementer counterIncrementer = new CounterIncrementer(counter);
+Thread counterThread = new Thread(counterIncrementer);
+counterThread.start();
+```
 
 Verify that the number printed out is 1.000.000.
+
 Change the code in your main method so that two CounterIncrementer threads are created and started.
-Two threads will now both increment the count variable 1.000.000 times. We would expect the printed result to be 2.000.000. Is that always so? Or does the number sometimes differ from 2.000.000?
 
-This exercise is to peek your curiosity. We’ll discuss this next time. It has something to do with Time Slicing, and multiple threads interfering with each other.
+```java
+Counter counter = new Counter();
+CounterIncrementer counterIncrementer1 = new CounterIncrementer(counter);
+CounterIncrementer counterIncrementer2 = new CounterIncrementer(counter);
+Thread counterThread1 = new Thread(counterIncrementer1);
+Thread counterThread2 = new Thread(counterIncrementer2);
+counterThread1.start();
+counterThread2.start();
+```
 
+Two threads will now both increment the count variable 1.000.000 times. We would expect the printed result to be 2.000.000. Is that always so? Does the number sometimes differ from 2.000.000?
+
+This exercise is to peek your curiosity. We’ll discuss this in the next session. It has something to do with time slicing, and multiple threads interfering with each other.
