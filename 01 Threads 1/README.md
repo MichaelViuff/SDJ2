@@ -413,7 +413,7 @@ This time you have 5 bears (or some other arbitrary number), and when one bear i
 <summary>Display hints...</summary>
 <p>In order for one bear to wake all other bears, it must have a reference to their threads. This can be done in many ways, but a simple way for now is to have a class <code>Cave</code> that contains a list of bear threads. Create a <code>wakeAllBears</code> method in that class, that interrupts all sleeping threads and removes them from the list.
 
-When a bear is awoken by being poked, let it call the <code>WakeAllBears</code> method.
+When a bear is awoken by being poked, let it call the <code>wakeAllBears</code> method.
 
 Try letting the <code>PokingMan</code> wake up different bears and confirm that everyone wakes up!
 
@@ -426,7 +426,8 @@ Try letting the <code>PokingMan</code> wake up different bears and confirm that 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cave {
+public class Cave
+{
 
     private List<Thread> sleepingBears;
 
@@ -511,6 +512,27 @@ public class PokingMan implements Runnable
 
 </blockquote>
 
+## 1.8 Updating a shared resource
+In this exercise, you’re going to simulate the famous race between the rabbit and the turtle.
+You’re going to need two Runnable classes: Turtle and Rabbit. And a class to start the two threads. The Rabbit should know about the Turtle (reference through constructor of Rabbit).
+
+The goal for each thread is to count to e.g. 1000 (i.e. run 1000 meters)
+
+One suggestion: You can have a class to contain these two ints (one for turtle, one for rabbit), as well as methods to increment, and a check for when a counter reaches 1000, then print out the winner.
+
+Other suggestion: Have the Turtle and Rabbit print out, when they reach the finish line.
+The Turtle will move at a slow, but steady pace, e.g. increment 1 every 10 milliseconds (use sleep() to control it).
+
+The Rabbit will sprint ahead, but when it comes e.g. 50 paces ahead of the Turtle, it will lay down and sleep. At Random intervals:
+
+Random r = new Random();
+int i = r.nextInt(1000); // this will give you a random number between 0 and 999
+
+The Rabbit will wake up and check on the status of the Turtle. If the Turtle is still behind, the Rabbit will sleep again for a random length, then wake up and check on the Turtle again, and so on. If the Rabbit wakes up, and realizes it’s behind the Turtle, it will sprint ahead again, until e.g. 50 paces, then sleep.
+
+You can change around the numbers as you wish, to see different behavior. Maybe the Turtle moves slower, or the Rabbit runs further or less ahead, or sleeps in a different way, e.g.:
+
+int i = r.nextInt(500) + 500; // will give you a number between 500 and 999
 
 
 ## 1.9 Updating a shared resource
