@@ -524,6 +524,8 @@ The rabbit will sprint ahead, but when is sufficiently ahead of the turtle (50 m
 When it finishes sleeping, the rabbit will wake up and check on the status of the turtle. If the turtle is still behind, the rabbit will sleep again for a random amount of time, then wake up and check on the turtle again, and so on. 
 If the rabbit wakes up, and realizes it’s behind the rurtle, it will sprint until it is ahead again, then sleep again.
 
+You can change around the numbers, to see different behavior. Maybe the turtle moves slower, or the rabbit wants to be further ahead before sleeping, or sleeps for a different amount of time.
+
 <blockquote>
 <details>
 <summary>Display hints...</summary>
@@ -533,112 +535,112 @@ Also give the turtle a method that tells how far it is (returns distance).
 
 For the rabbit, you will need a reference to the thread for the turtle. The <code>run()</code> method for the rabbit should also perform a loop to increment a distance counter by 1 in each iteration, but only if the rabbit is not sufficiently ahead. 
 
-To test if the rabbit is sufficiently ahead, make a condition that 
+To test if the rabbit is sufficiently ahead, make an if-statement similiar to this: 
+
 ```java
 if(distance + AHEAD_DISTANCE > turtle.getDistance() && distance+50 < 1000)
 ```
+
+To generate a random number of milliseconds for the rabbit to sleep, use this:
+
+```java
+Random random = new Random();
+int sleepTime = random.nextInt(500) + 500; // This will give you a number between 500 and 999
+```
+
 </p>
 <details>
 <summary>Display solution...</summary>
 
 ```java
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
-public class Cave
-{
+public class Rabbit implements Runnable{
 
-    private List<Thread> sleepingBears;
+    private Turtle turtle;
+    private static final int AHEAD_DISTANCE = 50;
 
-    public Cave()
+    public Rabbit(Turtle turtle)
     {
-        sleepingBears = new ArrayList<>();
+        this.turtle = turtle;
     }
 
-    public void addBear(Thread bear)
+    @Override
+    public void run()
     {
-        sleepingBears.add(bear);
-    }
+        Random random = new Random();
 
-    public void wakeAllBears()
-    {
-        for (Thread bear : sleepingBears)
+        for (int distance = 0; distance < 1000; distance++)
         {
-            bear.interrupt();
+            try
+            {
+                if(distance + AHEAD_DISTANCE > turtle.getDistance() && distance+50 < 1000)
+                {
+                    int sleepTime = random.nextInt(500) + 500; // This will give you a number between 500 and 999
+                    System.out.println("Rabbit noticed that it was ahead and has gone to sleep for " + sleepTime + " milliseconds");
+                    Thread.sleep(sleepTime);
+                }
+                System.out.println("Rabbit has moved " + distance + " meters");
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
         }
-        sleepingBears.clear();
+        System.out.println("Rabbit has finished!");
     }
 }
 
 
-public class Bear implements Runnable
+public class Turtle implements Runnable
 {
 
-  private Cave cave;
+    private int distance;
 
-  public Bear(Cave cave)
-  {
-    this.cave = cave;
-  }
+    public void run()
+    {
+        for (distance = 0; distance < 1000; distance++)
+        {
+            try
+            {
+                Thread.sleep(10);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Turtle has finished!");
+    }
 
-  @Override public void run()
-  {
-    try
+    public int getDistance()
     {
-      Thread.sleep(3000);
-      System.out.println("I am a well-rested bear");
+        return distance;
     }
-    catch (InterruptedException e)
-    {
-      System.out.println("I am an angry bear!");
-      cave.wakeAllBears();
-    }
-  }
+
 }
 
-public class PokingMan implements Runnable
+
+public class Test
 {
+    public static void main(String[] args) {
+        Turtle turtle = new Turtle();
+        Rabbit rabbit = new Rabbit(turtle);
 
-  private Thread bearToPoke;
-  private int timeToSleep;
+        Thread turtleThread = new Thread(turtle);
+        Thread rabbitThread = new Thread(rabbit);
 
-  public PokingMan(Thread bearToPoke, int timeToSleep)
-  {
-    this.bearToPoke = bearToPoke;
-    this.timeToSleep = timeToSleep;
-  }
-
-  @Override public void run()
-  {
-    try
-    {
-      Thread.sleep(timeToSleep);
-      bearToPoke.interrupt();
+        turtleThread.start();
+        rabbitThread.start();
     }
-    catch (InterruptedException e)
-    {
-      e.printStackTrace();
-    }
-  }
 }
-
-
-
 ```
-
 </details>
 </details>
-
 </blockquote>
 
-Other suggestion: Have the Turtle and Rabbit print out, when they reach the finish line.
 
-
-
-You can change around the numbers as you wish, to see different behavior. Maybe the Turtle moves slower, or the Rabbit runs further or less ahead, or sleeps in a different way, e.g.:
-
-int i = r.nextInt(500) + 500; // will give you a number between 500 and 999
 
 
 ## 1.9 Updating a shared resource
