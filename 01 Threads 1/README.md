@@ -659,7 +659,7 @@ Create a <code>Runnable</code> class. Call it <code>CountIncrementer</code>. It 
 
 In the <code>run()</code> method of <code>CountIncrementer</code>, call the <code>incrementCount()</code> method 1.000.000 times, in a for-loop. After the for-loop print out the value of "count".
 
-Now create a <code>Test</code> class with a main method. Instantiate the <code>Counter</code> class, instantiate one thread with <code>CountIncrementer</code>, and start the thread, something like:
+Now create a <code>Start</code> class with a main method. Instantiate the <code>Counter</code> class, instantiate one thread with <code>CountIncrementer</code>, and start the thread, something like:
 
 ```java
 Counter counter = new Counter();
