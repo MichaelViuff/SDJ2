@@ -514,21 +514,127 @@ public class PokingMan implements Runnable
 
 ## 1.8 Updating a shared resource
 In this exercise, you’re going to simulate the famous race between the rabbit and the turtle.
-You’re going to need two Runnable classes: Turtle and Rabbit. And a class to start the two threads. The Rabbit should know about the Turtle (reference through constructor of Rabbit).
+You’re going to need two <code>Runnable</code> classes: <code>Turtle</code> and <code>Rabbit</code>. And a class to start the two threads. The <code>Rabbit</code> should know about the <code>Turtle</code> (reference through constructor of <code>Rabbit</code>).
 
-The goal for each thread is to count to e.g. 1000 (i.e. run 1000 meters)
+The goal for each thread is to count to e.g. 1000 (i.e. run 1000 meters), 
 
-One suggestion: You can have a class to contain these two ints (one for turtle, one for rabbit), as well as methods to increment, and a check for when a counter reaches 1000, then print out the winner.
+The turtle will move at a slow, but steady pace, e.g. increment 1 every 10 milliseconds (use <code>sleep()</code>).
+
+The rabbit will sprint ahead, but when is sufficiently ahead of the turtle (50 meters for instance), it will lay down and sleep for a random amount of time.
+When it finishes sleeping, the rabbit will wake up and check on the status of the turtle. If the turtle is still behind, the rabbit will sleep again for a random amount of time, then wake up and check on the turtle again, and so on. 
+If the rabbit wakes up, and realizes it’s behind the rurtle, it will sprint until it is ahead again, then sleep again.
+
+<blockquote>
+<details>
+<summary>Display hints...</summary>
+<p>
+The turtle is straightforward, implement <code>Runnable</code> and have the <code>run()</code> method perform a loop to increment a distance counter by 1 every 10 milliseconds. If the loop completes, show that the turtle has reached the goal (print out "Turtle has reached goal" or similiar).
+Also give the turtle a method that tells how far it is (returns distance).
+
+For the rabbit, you will need a reference to the thread for the turtle. The <code>run()</code> method for the rabbit should also perform a loop to increment a distance counter by 1 in each iteration, but only if the rabbit is not sufficiently ahead. 
+
+To test if the rabbit is sufficiently ahead, make a condition that 
+```java
+if(distance + AHEAD_DISTANCE > turtle.getDistance() && distance+50 < 1000)
+```
+</p>
+<details>
+<summary>Display solution...</summary>
+
+```java
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Cave
+{
+
+    private List<Thread> sleepingBears;
+
+    public Cave()
+    {
+        sleepingBears = new ArrayList<>();
+    }
+
+    public void addBear(Thread bear)
+    {
+        sleepingBears.add(bear);
+    }
+
+    public void wakeAllBears()
+    {
+        for (Thread bear : sleepingBears)
+        {
+            bear.interrupt();
+        }
+        sleepingBears.clear();
+    }
+}
+
+
+public class Bear implements Runnable
+{
+
+  private Cave cave;
+
+  public Bear(Cave cave)
+  {
+    this.cave = cave;
+  }
+
+  @Override public void run()
+  {
+    try
+    {
+      Thread.sleep(3000);
+      System.out.println("I am a well-rested bear");
+    }
+    catch (InterruptedException e)
+    {
+      System.out.println("I am an angry bear!");
+      cave.wakeAllBears();
+    }
+  }
+}
+
+public class PokingMan implements Runnable
+{
+
+  private Thread bearToPoke;
+  private int timeToSleep;
+
+  public PokingMan(Thread bearToPoke, int timeToSleep)
+  {
+    this.bearToPoke = bearToPoke;
+    this.timeToSleep = timeToSleep;
+  }
+
+  @Override public void run()
+  {
+    try
+    {
+      Thread.sleep(timeToSleep);
+      bearToPoke.interrupt();
+    }
+    catch (InterruptedException e)
+    {
+      e.printStackTrace();
+    }
+  }
+}
+
+
+
+```
+
+</details>
+</details>
+
+</blockquote>
 
 Other suggestion: Have the Turtle and Rabbit print out, when they reach the finish line.
-The Turtle will move at a slow, but steady pace, e.g. increment 1 every 10 milliseconds (use sleep() to control it).
 
-The Rabbit will sprint ahead, but when it comes e.g. 50 paces ahead of the Turtle, it will lay down and sleep. At Random intervals:
 
-Random r = new Random();
-int i = r.nextInt(1000); // this will give you a random number between 0 and 999
-
-The Rabbit will wake up and check on the status of the Turtle. If the Turtle is still behind, the Rabbit will sleep again for a random length, then wake up and check on the Turtle again, and so on. If the Rabbit wakes up, and realizes it’s behind the Turtle, it will sprint ahead again, until e.g. 50 paces, then sleep.
 
 You can change around the numbers as you wish, to see different behavior. Maybe the Turtle moves slower, or the Rabbit runs further or less ahead, or sleeps in a different way, e.g.:
 
