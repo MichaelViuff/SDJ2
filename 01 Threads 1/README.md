@@ -382,6 +382,7 @@ public class PokingMan implements Runnable
     this.timeToSleep = timeToSleep;
   }
 
+
   @Override public void run()
   {
     try
@@ -402,4 +403,12 @@ public class PokingMan implements Runnable
 </details>
 
 </blockquote>
+
+## 1.7 Updating a shared resource
+
+The result of this exercise may cause some confusion. It is an appetizer for next session, where we will look at the problem, which arises in this exercise.
+
+Below is a UML of the classes needed. Please note the UML diagram may not be complete, and you're welcome to add to it as is needed.
+
+
 
