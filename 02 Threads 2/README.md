@@ -161,3 +161,34 @@ public class DoubleCounter
 
 ### 2.1.3 `try` lock
 
+Change the first counter example, so this time it looks like the example on slide 30, with `try` lock, and you use the `tryLock()` method. Initially, just do it like the slide, so whenever the lock could not be acquired, it's printed out.
+
+You should see that once again, we don’t reach 2,000,000, because not all the time can the lock be acquired. You should also see a bunch of print outs.
+
+- Try to fix it, so if the lock cannot be obtained, you wait 1 ms and try again.
+- How do you wait 1 ms?
+- What if you cannot acquire the lock the second time? What about the third time?
+- How to do something multiple times?
+
+
+## 2.2 Synchronized list
+
+
+**2.2 Synchronized list**
+Create a class, ListContainer. It has a private field of type List<Integer>, instantiate it as ArrayList<Integer>.
+
+Create a method, add(int i), which adds the integer to the List.
+
+Create a method to get the length of the List.
+
+Ignore synchronization for now.
+
+Create a Runnable class, which has a reference to the ListContainer. It should insert the numbers from 0 to 100000 into the ListContainer. Then print out the count.
+
+In a main method, create 2 threads to run two instances of your Runnable class.
+
+Do you get the printed count you expect?
+
+Implement synchronization.
+
+
