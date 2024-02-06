@@ -96,10 +96,10 @@ Create a couple of threads to update the two counters. Verify the output is as e
 
   We can use the <code>ReentrantLock</code> class, or any other <code>Object</code> for that matter, to define the two locks.
 
-  ´´´java
+```java
   private Lock lockA = new ReentrantLock();
   private Lock lockB = new ReentrantLock();
-  ´´´
+```
 
   Synchronize the body of the increment methods for A and B using these locks.
 </p>
