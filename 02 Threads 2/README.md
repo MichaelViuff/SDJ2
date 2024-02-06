@@ -338,7 +338,7 @@ Do you get the printed count you expect? Probably not. Fix it using synchronizat
 
 </blockquote>
 
-## 2.3 Synchronized list
+## 2.3 Simulating the temperature in a room
 
 The purpose for this exercise is to simulate a thermometer (transducer) measuring indoor temperatures. The following method may be used to simulate the temperature in a room (with or without a heater):
 
@@ -397,8 +397,96 @@ Run the application and observe that the temperature slowly drops from 15 toward
 
 Change the second argument calling method `temperature` (in the `run` method) to `p=2` (i.e., a heater turned on to power position 2) and observe that the temperature now increases from 15.
 
+## 2.4	Incrementer/Decrementer
 
+Implement the UML class diagram below:
 
+![Incrementer/Decrementer UML Class Diagram](https://github.com/MichaelViuff/SDJ2/blob/main/02%20Threads%202/Images/IncrementerDecrementerUML.png)
+
+### Monitor Class: `Counter`
+
+Make sure you implement the class `Counter` as a Monitor class (i.e. it has private attributes and all methods are synchronized).
+
+Give it the following characteristics:
+
+- A constructor setting `value` to 0 and `min` and `max` to the values of the two arguments.
+- A method `increment()` incrementing the value by 1. If the value >= `max`, then the calling thread must wait, so here you need the guarded block approach. Remember to do the `notifyAll()` call too.
+- A method `decrement()` decrementing the value by 1 (and let the calling thread wait if `value` <= `min`).
+- A method `getValue()` returning the value.
+
+### `Runnable` Classes: `CounterIncrementer` and `CounterDecrementer`
+
+The `CounterIncrementer` and `CounterDecrementer` are the `Runnable` classes that will increment and decrement the value respectively.
+
+Give them the following characteristics:
+
+ - The classes `CounterIncrementer` and `CounterDecrementer` must implement the`Runnable` interface.
+ - In their `run` method, create a loop that runs a number of times equal to the value of the `updates` attribute.
+ - In the loops, call the `Counter` method `increment()` or `increment()` accordingly.
+ - After the loop, print out the value of the counter.
+
+### Main Class
+
+Implement a class with a `main` method in which you:
+
+- Create a `Counter` object with a `max` value of 100, and pass it to two `CounterIncrementer` objects and two `CounterDecrementer` objects (all with the second argument set to 200, i.e. 200 number of updates).
+- Create 4 threads with each of the 4 `Runnable` objects and start the 4 threads.
+
+Insert a few print-statements in class `Counter` to see when it is being updated (and by which thread), e.g., insert something similar to the following when `value` is updated and when a thread is blocked:
+
+```java
+System.out.println(value + ": " + Thread.currentThread().getName());
+```
+
+You can give a `Thread` object a name with the `setName()` method.
+
+Run the program a few times and inspect the output.
+
+Now create a thread that prints out the result when the above threads are finished. You’re going to need the join() method.
+
+## 2.5	Computer simulation
+
+Implement the UML class diagram below:
+
+![Incrementer/Decrementer UML Class Diagram](https://github.com/MichaelViuff/SDJ2/blob/main/02%20Threads%202/Images/ComputerUML.png)
+
+### Runnable Class: `Program`
+
+Implement the two `Runnable` classes: `Program` and `Mailbox` to be used in the class `Computer` to simulate a computer with independent notifications from programs and mailbox.
+
+In the `Runnable` class `Program` (in the `run` method), the action is printed approximately `count` number of times in the `RUNTIME` length.
+
+Example: `program1` shown in the `main` method below prints “Windows wants to update,” then sleeps for approximately `RUNTIME/30` milliseconds (could be a random number in a range you specify), print and sleep again, and so forth, a total of 30 times.
+
+```java
+public class RunComputer {
+    public static void main(String[] args) {        
+        Thread mailbox = new Thread(new Mailbox(20));        
+        Thread program1 = new Thread(new Program("Windows", "update", 30));        
+        Thread program2 = new Thread(new Program("AVG", "update virus database", 5));        
+        Thread program3 = new Thread(new Program("FBackup", "perform a scheduled backup", 3));        
+        Thread program4 = new Thread(new Program("Skype", "notify you about a person logging in", 17));       
+        System.out.println("---->Turning on the computer");        
+        program1.start();        
+        program2.start();        
+        program3.start();        
+        program4.start();        
+        mailbox.start();    
+    }
+}
+
+Runnable Class: Mailbox
+In the Runnable class Mailbox (in the run method), the string “New mail in your mailbox...” is printed approximately 20 times during the RUNTIME.
+
+// First part of the output
+---->Turning on the computer
+Windows wants to update
+New mail in your mailbox...
+Skype wants to notify you about a person logging in
+Windows wants to update
+Windows wants to update
+New mail in your mailbox...
+Skype wants to notify you about a person logging in
 
 
 
