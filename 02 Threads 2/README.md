@@ -84,7 +84,7 @@ Try both with synchronizing the method and using the synchronized block approach
 
 ### 2.1.2 Two counts
 
-Modify the solution to exercise 2.1 The `Count` class should now have two attributes for count - A and B (similar to the example shown in the presentation).
+Modify the solution to exercise 2.1.1 The `Count` class should now have two attributes for count - A and B (similar to the example shown in the presentation).
 
 Use Lock objects to synchronize the critical code.
 
@@ -159,13 +159,54 @@ public class DoubleCounter
 
 </blockquote>
 
-### 2.1.3 `try` lock
+### 2.1.3 try lock
 
-Change the first counter example, so this time it looks like the example on slide 30, with `try` lock, and you use the `tryLock()` method. Initially, just do it like the slide, so whenever the lock could not be acquired, it's printed out.
+Modify your solution from the previous exercise, with `try` lock, and the `tryLock()` method. You can use the example from the presentation:
 
-You should see that once again, we don’t reach 2,000,000, because not all the time can the lock be acquired. You should also see a bunch of print outs.
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-- Try to fix it, so if the lock cannot be obtained, you wait 1 ms and try again.
+public class TryLockCounter
+{
+  private int count;
+  private Lock lock = new ReentrantLock();
+
+  public void incrementCount()
+  {
+    if(lock.tryLock())
+    {
+      count++;
+      lock.unlock();
+    }
+    else
+    {
+      System.out.println("Lock was in use");
+    }
+  }
+
+  public synchronized int getCount()
+  {
+    return count;
+  }
+}
+```
+
+You should see that once again, we don’t reach 2.000.000. You should also see a bunch of "Lock was in use". Why?
+
+<blockquote>
+<details>
+<summary>Explanation</summary>
+  <p>
+    Whenever a thread is assigned time on the cpu, but the lock is in use, it will spend time doing nothing (printing out "Lock was in use").
+  </p>
+</details>
+</blockquote>
+
+Tp to fix it, we could wait if the lock is use before trying again. Let us wait 1 ms for now.
+
+
+
 - How do you wait 1 ms?
 - What if you cannot acquire the lock the second time? What about the third time?
 - How to do something multiple times?
