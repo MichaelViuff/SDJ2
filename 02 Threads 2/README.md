@@ -375,23 +375,28 @@ The purpose for this exercise is to simulate a thermometer (transducer) measurin
     return t;
   }
 ```
+We will use the method in a class `Thermometer` as shown in the UML diagram:
 
-Implement a Runnable class Thermometer exactly as shown in the class diagram - with the following notes:
-•	Copy/paste method temperature as shown and change the visibility to private
-•	Instance variables id representing the name of the thermometer (e.g. “t1”), and t representing the current temperature. 
-•	A constructor initialising both instance variables
-•	A run method (from interface Runnable) with an infinite loop, in which you
-–	Update temperature t calling method temperature. Use the last measured temperature t and p=0, d=1, t0=0 and s=6 (i.e. distance to a heater is 1, heater power is 0, i.e. turned off, outdoor temperature is 0 and number of seconds between each measurement is 6).
-–	Print out the temperature t (and the id)
-–	Sleep for 6 seconds (6000 milliseconds)
 
-Implement another class with a main method, in which you
-•	Create a Thermometer object. Use “t1” for id and 15 for the initial temperature 
-•	Create a thread with the Thermometer as argument, and start the thread
+![Thermometer UML Class Diagram](https://github.com/MichaelViuff/SDJ2/blob/main/02%20Threads%202/Images/ThermometerUML.png)
 
-Run the application and observe that the temperature slowly drops from 15 towards 0 (over time the indoor temperature drops to the outdoor temperature when there is no heater). 
+Implement a `Runnable` class `Thermometer` exactly as shown in the class diagram - with the following notes:
+- Copy/paste method `temperature` as shown and change the visibility to private.
+- Instance variables `id` representing the name of the thermometer (e.g., "t1"), and `t` representing the current temperature.
+- A constructor initializing both attributes.
+- A `run` method (from interface `Runnable`) with an infinite loop, in which you:
+  - Update temperature `t` calling method `temperature`. Use the last measured temperature `t` and `p=0`, `d=1`, `t0=0`, and `s=6` (i.e., distance to a heater is 1, heater power is 0, i.e., turned off, outdoor temperature is 0, and the number of seconds between each measurement is 6).
+  - Print out the temperature `t` (and the `id`).
+  - Sleep for 6 seconds (6000 milliseconds).
 
-Extra: Change the second argument calling method temperature (in the run method) to p=2 (i.e. a heater turned on to power position 2) and observe that the temperature now increases from 15
+Implement another class with a `main` method, in which you
+- Create a `Thermometer` object. Use "t1" for `id` and 15 for the initial temperature.
+- Create a thread with the `Thermometer` as an argument, and start the thread.
+
+Run the application and observe that the temperature slowly drops from 15 towards 0 (over time, the indoor temperature drops to the outdoor temperature when there is no heater).
+
+Extra: Change the second argument calling method `temperature` (in the `run` method) to `p=2` (i.e., a heater turned on to power position 2) and observe that the temperature now increases from 15.
+
 
 
 
