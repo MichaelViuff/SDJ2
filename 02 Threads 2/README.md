@@ -22,7 +22,6 @@ Use synchronization to fix this, so the code will always produce 2.000.000 as th
 ```java
 public class Counter
 {
-
   private int count;
 
   public synchronized void incrementCount()
@@ -34,12 +33,10 @@ public class Counter
   {
     return count;
   }
-
 }
 
 public class CounterIncrementer implements Runnable
 {
-
   private Counter counter;
 
   public CounterIncrementer(Counter counter)
@@ -55,7 +52,6 @@ public class CounterIncrementer implements Runnable
     }
     System.out.println(counter.getCount());
   }
-
 }
 
 public class Start
@@ -84,52 +80,74 @@ Run it a couple of times, to be sure you weren't just lucky.
 
 Try both with synchronizing the method and using the synchronized block approach.
 
-## 1.2 `run()` instead of `start()`
+## 2.2 Two counts
 
-Create two classes, which implement the `Runnable` interface. One should print out “hi” 1000 times. The other should print out “hello” 1000 times. Start two threads using these classes from a main method, and check the output. Do this a few times. You should see, that sometimes “hi” and “hello” are printed alternatingly, similar to the previous exercise.
+Modify the solution to exercise 2.1 The `Count` class should now have two attributes for count - A and B (similar to the example shown in the presentation).
+
+Use Lock objects to synchronize the critical code.
+
+Create a couple of threads to update the two counters. Verify the output is as expected.
 
 <blockquote>
 <details>
 <summary>Display hints...</summary>
-<p>Printing out "hi" and "hello" 1000 times should be trivial (use any type of loop). To create a class that implements <code>Runnable</code> simply ensure that you put your logic for printing 1000 times into the <code>.run()</code> method of that class.</p>
+<p>
+  Instead of using the intrinsic lock of the object, we should define our own locks, so the two counts can be updated without blocking each other.
+
+  We can use the <code>ReentrantLock</code> class, or any other <code>Object</code> for that matter, to define the two locks.
+
+  ´´´java
+  private Lock lockA = new ReentrantLock();
+  private Lock lockB = new ReentrantLock();
+  ´´´
+
+  Synchronize the body of the increment methods for A and B using these locks.
+</p>
 <details>
 <summary>Display solution...</summary>
 
 ```java
-public class HiPrinter implements Runnable
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class DoubleCounter
 {
-  @Override
-  public void run()
+  private int countA;
+  private int countB;
+
+  private Lock lockA = new ReentrantLock();
+  private Lock lockB = new ReentrantLock();
+
+  public void incrementCountA()
   {
-    for(int i = 0; i < 1000; i++)
+    synchronized (lockA)
     {
-      System.out.println("hi");
+      countA++;
     }
   }
-}
 
-public class HelloPrinter implements Runnable
-{
-  @Override
-  public void run()
+  public void incrementCountB()
   {
-    for(int i = 0; i < 1000; i++)
+    synchronized (lockB)
     {
-      System.out.println("hello");
+      countB++;
     }
   }
-}
 
-public class Test
-{
-  public static void main(String[] args)
+  public int getCountA()
   {
-    Runnable hiPrinter = new HiPrinter();
-    Runnable helloPrinter = new HelloPrinter();
-    Thread thread1 = new Thread(hiPrinter);
-    Thread thread2 = new Thread(helloPrinter);
-    thread1.start();
-    thread2.start();
+    synchronized (lockA)
+    {
+      return  countA;
+    }
+  }
+
+  public int getCountB()
+  {
+    synchronized (lockB)
+    {
+      return  countB;
+    }  
   }
 }
 ```
