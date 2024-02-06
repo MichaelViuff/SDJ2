@@ -1,6 +1,8 @@
 # 02 Exercises: Threads 2
 
-## 2.1 Updating a shared resource, revisited
+## 2.1 Counter exercises
+
+### 2.1.1 Updating a shared resource, revisited
 
 Implement exercise 1.9 from last time if you haven't already. 
 
@@ -80,7 +82,7 @@ Run it a couple of times, to be sure you weren't just lucky.
 
 Try both with synchronizing the method and using the synchronized block approach.
 
-## 2.2 Two counts
+### 2.1.2 Two counts
 
 Modify the solution to exercise 2.1 The `Count` class should now have two attributes for count - A and B (similar to the example shown in the presentation).
 
@@ -156,3 +158,6 @@ public class DoubleCounter
 </details>
 
 </blockquote>
+
+### 2.1.3 `try` lock
+
