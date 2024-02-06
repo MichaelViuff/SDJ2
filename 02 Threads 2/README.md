@@ -395,7 +395,8 @@ Implement another class with a `main` method, in which you
 
 Run the application and observe that the temperature slowly drops from 15 towards 0 (over time, the indoor temperature drops to the outdoor temperature when there is no heater).
 
-Extra: Change the second argument calling method `temperature` (in the `run` method) to `p=2` (i.e., a heater turned on to power position 2) and observe that the temperature now increases from 15.
+Change the second argument calling method `temperature` (in the `run` method) to `p=2` (i.e., a heater turned on to power position 2) and observe that the temperature now increases from 15.
+
 
 
 
