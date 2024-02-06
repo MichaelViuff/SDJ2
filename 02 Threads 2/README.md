@@ -198,38 +198,145 @@ You should see that once again, we don’t reach 2.000.000. You should also see 
 <details>
 <summary>Explanation</summary>
   <p>
-    Whenever a thread is assigned time on the cpu, but the lock is in use, it will spend time doing nothing (printing out "Lock was in use").
+    Whenever a thread is assigned time on the CPU, but the lock is in use, it will spend time doing nothing (printing out "Lock was in use").
   </p>
 </details>
 </blockquote>
 
-Tp to fix it, we could wait if the lock is use before trying again. Let us wait 1 ms for now.
+We could wait if the lock is use, and then try again. Let us wait 1 ms for now.
 
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
+public class TryLockCounter
+{
+  private int count;
+  private Lock lock = new ReentrantLock();
 
-- How do you wait 1 ms?
-- What if you cannot acquire the lock the second time? What about the third time?
-- How to do something multiple times?
+  public void incrementCount()
+  {
+    if(lock.tryLock())
+    {
+      count++;
+      lock.unlock();
+    }
+    else
+    {
+      try
+      {
+        Thread.sleep(1);
+        if(lock.tryLock())
+        {
+          count++;
+          lock.unlock();
+        }
+      }
+      catch(InterruptedException e)
+      {
+        throw new RuntimeException(e);
+      } 
+      System.out.println("Lock was in use");
+    }
+  }
+
+  public synchronized int getCount()
+  {
+    return count;
+  }
+}
+```
+
+Did that fix it? What happens if you change the wait time to 10 ms?
+
+You might start seeing the correct values, but the underlying issue still persists (try changing the count to 10.000.000 to see that it is still in fact a problem)
+
+We need to keep trying until we actually get the lock.
+
+Change your solution, so it doesn't only attempt to get the lock once, but instead keeps trying untill it succeeds.
+
+<blockquote>
+<details>
+<summary>Display hints...</summary>
+<p>
+  <code>lock.tryLock()</code> returns a boolean value. We can construct a while loop that runs as long as that value is false and keeps trying to acquire the lock.
+</p>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class TryLockCounter
+{
+  private int count;
+  private Lock lock = new ReentrantLock();
+
+  public void incrementCount()
+  {
+    while(!lock.tryLock())
+    {
+      try
+      {
+        System.out.println("Lock was in use, going to sleep");
+        Thread.sleep(1);
+      }
+      catch (InterruptedException e)
+      {
+        throw new RuntimeException(e);
+      }
+    }
+      count++;
+      lock.unlock();
+  }
+
+  public synchronized int getCount()
+  {
+    return count;
+  }
+}
+```
+
+</details>
+</details>
+
+</blockquote>
 
 
 ## 2.2 Synchronized list
 
-
 **2.2 Synchronized list**
-Create a class, ListContainer. It has a private field of type List<Integer>, instantiate it as ArrayList<Integer>.
+Create a class, `ListContainer`. Give it an attribute of type `List<Integer>`. Instantiate it as `ArrayList<Integer>` in the constructor.
 
-Create a method, add(int i), which adds the integer to the List.
+Create a method, `add(int i)`, which adds the integer to the list.
 
-Create a method to get the length of the List.
+Create a method that returns the length of the list.
 
 Ignore synchronization for now.
 
-Create a Runnable class, which has a reference to the ListContainer. It should insert the numbers from 0 to 100000 into the ListContainer. Then print out the count.
+Create a `Runnable` class, which has a reference to the `ListContainer`. In the `run()` method it should insert the numbers from 0 to 100.000 into the `ListContainer`. Then print out the length of the list.
 
-In a main method, create 2 threads to run two instances of your Runnable class.
+In a `main` method, create 2 threads to run two instances of your `Runnable` class, referencing the same `ListContainer`.
 
-Do you get the printed count you expect?
+Do you get the printed count you expect? Probably not. Fix it using synchronization.
 
-Implement synchronization.
+<blockquote>
+<details>
+<summary>Display hints...</summary>
+<p>
+
+</p>
+<details>
+<summary>Display solution...</summary>
+
+```java
+
+```
+
+</details>
+</details>
+
+</blockquote>
 
 
