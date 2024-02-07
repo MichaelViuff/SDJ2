@@ -1,8 +1,93 @@
 # 02 Exercises: Threads 2
 
-## 2.1 Counter exercises
+## 2.1 Synchronized list
 
-### 2.1.1 Updating a shared resource, revisited
+Create a class, `ListContainer`. Give it an attribute of type `List<Integer>`. Instantiate it as `ArrayList<Integer>` in the constructor.
+
+Create a method, `add(int i)`, which adds the integer to the list.
+
+Create a method that returns the length of the list.
+
+Ignore synchronization for now.
+
+Create a `Runnable` class, which has a reference to the `ListContainer`. In the `run()` method it should insert the numbers from 0 to 100.000 into the `ListContainer`. Then print out the length of the list.
+
+In a `main` method, create 2 threads to run two instances of your `Runnable` class, referencing the same `ListContainer`.
+
+Do you get the printed count you expect? Probably not. Fix it using synchronization.
+
+<blockquote>
+<details>
+<summary>Display hints...</summary>
+<p>
+  The implementation of the <code>ArrayList<Integer></code> uses an array with indexing, and time slicing is causing issues with the indexes. To solve this, we need to ensure that only one thread can attempt to add something at a time (using a lock on the <code>add(int i)</code> method
+</p>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListContainer
+{
+    private List<Integer> list = new ArrayList<Integer>();
+
+    public synchronized void add(int i)
+    {
+        list.add(i);
+    }
+
+    public int getLength()
+    {
+        return list.size();
+    }
+}
+
+public class Inserter implements Runnable
+{
+    private ListContainer listContainer;
+    
+    public Inserter(ListContainer listContainer)
+    {
+        this.listContainer = listContainer;
+    }
+
+    @Override
+    public void run()
+    {
+        for (int i = 0; i < 100000; i++)
+        {
+            listContainer.add(i);
+        }
+        System.out.println(listContainer.getLength());
+    }
+}
+
+public class Test
+{
+    public static void main(String[] args)
+    {
+        //create 2 threads to run two instances of your Runnable class, referencing the same ListContainer.
+        ListContainer listContainer = new ListContainer();
+        Inserter inserter1 = new Inserter(listContainer);
+        Inserter inserter2 = new Inserter(listContainer);
+
+        Thread inserterThread1 = new Thread(inserter1);
+        Thread inserterThread2 = new Thread(inserter2);
+        inserterThread1.start();
+        inserterThread2.start();
+    }
+}
+```
+</details>
+</details>
+</blockquote>
+
+
+## 2.2 Counter exercises
+
+### 2.2.1 Updating a shared resource, revisited
 
 Implement exercise 1.9 from last time if you haven't already. 
 
@@ -82,9 +167,9 @@ Run it a couple of times, to be sure you weren't just lucky.
 
 Try both with synchronizing the method and using the synchronized block approach.
 
-### 2.1.2 Two counts
+### 2.2.2 Two counts
 
-Modify the solution to exercise 2.1.1 The `Count` class should now have two attributes for count - A and B (similar to the example shown in the presentation).
+Modify the solution to exercise 2.2.1 The `Count` class should now have two attributes for count - A and B (similar to the example shown in the presentation).
 
 Use Lock objects to synchronize the critical code.
 
@@ -160,9 +245,9 @@ public class DoubleCounter
 
 </blockquote>
 
-### 2.1.3 try lock
+### 2.2.3 try lock
 
-Modify your solution from the previous exercise, with `try` lock, and the `tryLock()` method. You can use the example from the presentation:
+Modify your solution to exercise 2.2.2, with `try` lock, and the `tryLock()` method. You can use the example from the presentation:
 
 ```java
 import java.util.concurrent.locks.Lock;
@@ -298,157 +383,11 @@ public class TryLockCounter
   }
 }
 ```
-
-</details>
-</details>
-
-</blockquote>
-
-
-## 2.2 Synchronized list
-
-Create a class, `ListContainer`. Give it an attribute of type `List<Integer>`. Instantiate it as `ArrayList<Integer>` in the constructor.
-
-Create a method, `add(int i)`, which adds the integer to the list.
-
-Create a method that returns the length of the list.
-
-Ignore synchronization for now.
-
-Create a `Runnable` class, which has a reference to the `ListContainer`. In the `run()` method it should insert the numbers from 0 to 100.000 into the `ListContainer`. Then print out the length of the list.
-
-In a `main` method, create 2 threads to run two instances of your `Runnable` class, referencing the same `ListContainer`.
-
-Do you get the printed count you expect? Probably not. Fix it using synchronization.
-
-<blockquote>
-<details>
-<summary>Display hints...</summary>
-<p>
-  The implementation of the <code>ArrayList<Integer></code> uses an array with indexing, and time slicing is causing issues with the indexes. To solve this, we need to ensure that only one thread can attempt to add something at a time (using a lock on the <code>add(int i)</code> method
-</p>
-<details>
-<summary>Display solution...</summary>
-
-```java
-import java.util.ArrayList;
-import java.util.List;
-
-public class ListContainer
-{
-    private List<Integer> list = new ArrayList<Integer>();
-
-    public synchronized void add(int i)
-    {
-        list.add(i);
-    }
-
-    public int getLength()
-    {
-        return list.size();
-    }
-}
-
-public class Inserter implements Runnable
-{
-    private ListContainer listContainer;
-    
-    public Inserter(ListContainer listContainer)
-    {
-        this.listContainer = listContainer;
-    }
-
-    @Override
-    public void run()
-    {
-        for (int i = 0; i < 100000; i++)
-        {
-            listContainer.add(i);
-        }
-        System.out.println(listContainer.getLength());
-    }
-}
-
-public class Test
-{
-    public static void main(String[] args)
-    {
-        //create 2 threads to run two instances of your Runnable class, referencing the same ListContainer.
-        ListContainer listContainer = new ListContainer();
-        Inserter inserter1 = new Inserter(listContainer);
-        Inserter inserter2 = new Inserter(listContainer);
-
-        Thread inserterThread1 = new Thread(inserter1);
-        Thread inserterThread2 = new Thread(inserter2);
-        inserterThread1.start();
-        inserterThread2.start();
-    }
-}
-```
 </details>
 </details>
 </blockquote>
 
-## 2.3 Simulating the temperature in a room
-
-The purpose for this exercise is to simulate a thermometer (transducer) measuring indoor temperatures. The following method may be used to simulate the temperature in a room (with or without a heater):
-
-```java
-/**
-   * Calculating the temperature measured in one of two locations.
-   * This includes a term from a heater (depending on location and
-   * heaters power), and a term from an outdoor heat loss.
-   * Values are only valid in the outdoor temperature range [-20; 20]
-   * and when s, the number of seconds between each measurements are
-   * between 4 and 8 seconds.
-   *
-   * @param t  the last measured temperature
-   * @param p  the heaters power {0, 1, 2 or 3} where 0 is turned off,
-   *    1 is low, 2 is medium and 3 is high
-   * @param d  the distance between heater and measurements {1 or 7}
-   *    where 1 is close to the heater and 7 is in the opposite corner
-   * @param t0 the outdoor temperature (valid in the range [-20; 20])
-   * @param s the number of seconds since last measurement [4; 8]
-   * @return the temperature
-   */
-  public double temperature(double t, int p, int d, double t0, int s)
-  {
-    double tMax = Math.min(11 * p + 10, 11 * p + 10 + t0);
-    tMax = Math.max(Math.max(t, tMax), t0);
-    double heaterTerm = 0;
-    if (p > 0)
-    {
-      double den = Math.max((tMax * (20 - 5 * p) * (d + 5)), 0.1);
-      heaterTerm = 30 * s * Math.abs(tMax - t) / den;
-    }
-    double outdoorTerm = (t - t0) * s / 250.0;
-    t = Math.min(Math.max(t - outdoorTerm + heaterTerm, t0), tMax);
-    return t;
-  }
-```
-We will use the method in a class `Thermometer` as shown in the UML diagram:
-
-
-![Thermometer UML Class Diagram](https://github.com/MichaelViuff/SDJ2/blob/main/02%20Threads%202/Images/ThermometerUML.png)
-
-Implement a `Runnable` class `Thermometer` exactly as shown in the class diagram - with the following notes:
-- Copy/paste method `temperature` as shown and change the visibility to private.
-- Instance variables `id` representing the name of the thermometer (e.g., "t1"), and `t` representing the current temperature.
-- A constructor initializing both attributes.
-- A `run` method (from interface `Runnable`) with an infinite loop, in which you:
-  - Update temperature `t` calling method `temperature`. Use the last measured temperature `t` and `p=0`, `d=1`, `t0=0`, and `s=6` (i.e., distance to a heater is 1, heater power is 0, i.e., turned off, outdoor temperature is 0, and the number of seconds between each measurement is 6).
-  - Print out the temperature `t` (and the `id`).
-  - Sleep for 6 seconds (6000 milliseconds).
-
-Implement another class with a `main` method, in which you
-- Create a `Thermometer` object. Use "t1" for `id` and 15 for the initial temperature.
-- Create a thread with the `Thermometer` as an argument, and start the thread.
-
-Run the application and observe that the temperature slowly drops from 15 towards 0 (over time, the indoor temperature drops to the outdoor temperature when there is no heater).
-
-Change the second argument calling method `temperature` (in the `run` method) to `p=2` (i.e., a heater turned on to power position 2) and observe that the temperature now increases from 15.
-
-## 2.4	Incrementer/Decrementer
+## 2.3	Incrementer/Decrementer
 
 Implement the UML class diagram below:
 
@@ -776,48 +715,3 @@ public class Computer
 ```
 </details>
 </blockquote>
-
-
-## 2.5	Bar
-
-This exercise is a bit outside of the scope of this session. And you will see it again later on, when we talk about producers and consumers. But if you're feeling adventurous, you can give it a try.
-
-You’re going to simulate serving beers to customers at a bar.
-
- - Create a `Beer` class. It doesn’t need any data or methods, you can leave it completely empty. Or put in a little information about what type of beer, alcohol percentage, name, brand, year, type, etc, if you wish.
-
- - Create a `Bar` class. It should have an `ArrayList<Beer>` to hold beers. It should also have an integer `max` to indicate how many beers can be on the bar at a time. It could be e.g. 20.
-
-    - Create a method `placeBeer(Beer beer)`. If the size of the `ArrayList` is at `max`, then call `wait()` (remember the guarded block approach here). Otherwise add a `Beer` to the list, and `notifyAll()` waiting threads.
-
-    - Create a method `takeBeer()`, which removes a beer from the `ArrayList`, if there are any beers left. Otherwise wait.
-
- - Create a `Bartender` class, which periodically (e.g. every other second) will attempt to place a new beer on the bar.
-
- - Create a `Customer` class, which periodically will attempt to take a beer from the bar.
-
-   - Add names/tags to the Bartender/Customer classes, and add print outs to the methods, so you can follow what's going on.
-
- - Create and start a couple of bartender and a customer threads, and run your program from a main method.
-
-Inspect the output. Does it look correct?
-
-<blockquote>
-<details>
-<summary>Explanation</summary>
-  <p>
-    In this example there are no shared resources, and as such, nothing to synchronize.
-  </p>
-</details>
-</blockquote>
-
-Now, add functionality, so that the bar can close.
-
-- After e.g. 20 or 30 seconds, close the bar. This means the bartenders "go home", and stop adding beers. And the customers also "go home", and stop taking beers. Print out relevant information, so you can see what's happening.
-
-- I suggest the bar has a boolean, `isOpen`, which the other threads can react to.
-
-
-
-
-
