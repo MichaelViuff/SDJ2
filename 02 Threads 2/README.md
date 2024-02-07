@@ -180,7 +180,8 @@ Create a couple of threads to update the two counters. Verify the output is as e
 <summary>Display hints...</summary>
   <p>
     Instead of using the intrinsic lock of the object, we should define our own locks, so the two counts can be updated without blocking each other.
-
+  </p>
+  <p>
     We can use the <code>ReentrantLock</code> class, or any other <code>Object</code> for that matter, to define the two locks.
   </p>
 
