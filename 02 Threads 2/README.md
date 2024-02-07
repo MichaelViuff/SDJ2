@@ -651,7 +651,7 @@ In the `Runnable` class `Program` (in the `run` method), the action is printed a
 Example: `program1` shown in the `main` method below prints “Windows wants to update,” then sleeps for approximately `RUNTIME/30` milliseconds (could be a random number in a range you specify), print and sleep again, and so forth, a total of 30 times.
 
 ```java
-public class RunComputer {
+public class Computer {
     public static void main(String[] args) {        
         Thread mailbox = new Thread(new Mailbox(20));        
         Thread program1 = new Thread(new Program("Windows", "update", 30));        
@@ -679,6 +679,103 @@ Windows wants to update
 New mail in your mailbox...
 Skype wants to notify you about a person logging in
 ```
+
+Do we need synchronization anywhere? Why/why not?
+
+<blockquote>
+<details>
+<summary>Explanation</summary>
+  <p>
+    In this example there are no shared resources, and as such, nothing to synchronize.
+  </p>
+</details>
+</blockquote>
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+public class Program implements Runnable
+{
+    private String program;
+    private String action;
+    private int count;
+    private static final long RUNTIME = 100000;
+
+    public Program(String program, String action, int count)
+    {
+        this.program = program;
+        this.action = action;
+        this.count = count;
+    }
+
+    @Override
+    public void run()
+    {
+        for (int i = 0; i < count; i++)
+        {
+            System.out.println(program + " wants to " + action);
+            try
+            {
+                Thread.sleep(RUNTIME / count);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+public class MailBox implements Runnable
+{
+    private int count;
+    private static final long RUNTIME = 100000;
+
+    public MailBox(int count)
+    {
+        this.count = count;
+    }
+
+
+    @Override
+    public void run()
+    {
+        for (int i = 0; i < count; i++)
+        {
+            System.out.println("New mail in your mailbox...");
+            try
+            {
+                Thread.sleep(RUNTIME / count);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+public class Computer
+{
+    public static void main(String[] args)
+    {
+        Thread mailBox = new Thread(new MailBox(20));
+        Thread program1 = new Thread(new Program("Windows", "update", 30));
+        Thread program2 = new Thread(new Program("AVG", "update virus database", 5));
+        Thread program3 = new Thread(new Program("FBackup", "perform a scheduled backup", 3));
+        Thread program4 = new Thread(new Program("Skype", "notify you about a person logging in", 17));
+        System.out.println("---->Turning on the computer");
+        program1.start();
+        program2.start();
+        program3.start();
+        program4.start();
+    }
+}
+```
+</details>
+</blockquote>
 
 
 ## 2.5	Bar
