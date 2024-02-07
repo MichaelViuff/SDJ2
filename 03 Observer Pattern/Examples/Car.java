@@ -18,7 +18,7 @@ public class Car implements PropertyChangeListener
     String color = evt.getNewValue().toString();
     if(color.equals("GREEN"))
       move();
-    if(color.equals("YELLOW"))
+    if(color.equals("YELLOW") || color.equals("RED"))
       stop();
   }
 
