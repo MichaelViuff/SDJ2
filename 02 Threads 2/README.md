@@ -497,14 +497,17 @@ Run the program a few times and inspect the output. Does the value ever go above
 <details>
 <summary>Explanation</summary>
   <p>
-    If you used an <code>if-statement</code> instead of a loop when checking to see if a thread should be set to wait, you will see this issue. This is because the thread checks the condition, and if the condition is true (i.e. it is not allowed to update value) it is set to wait. But, when it awakes, it doesn't check again, and instead just continues execution, updating the value regardless of the condition. 
+    If you used an <code>if-statement</code> instead of a loop when checking to see if a thread should be set to wait, you will see this issue. This is because the thread checks the condition, and if the condition is true (i.e. it is not allowed to update value) it is set to wait. But, when it awakes, it doesn't check again, and instead just continues execution, updating the value regardless of the condition.
+  </p>
 
+  <p>
     To fix this, use a loop so that the thread checks again when it wakes up.
   </p>
 </details>
 </blockquote>
 
 <blockquote>
+<details>
 <summary>Display solution...</summary>
 
 ```java
@@ -632,7 +635,6 @@ public class Test
     }
 }
 ```
-</details>
 </details>
 </blockquote>
 
