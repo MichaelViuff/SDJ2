@@ -490,3 +490,41 @@ Skype wants to notify you about a person logging in
 
 
 
+## 2.5	Bar
+
+This exercise is a bit outside of the scope of this session. And you will see it again later on, when we talk about producers and consumers. But if you're feeling adventurous, you can give it a try.
+
+### Simulating a Bar
+
+You’re going to simulate serving beers to customers at a bar.
+
+1. Create a `Beer` class. It doesn’t need any data or methods, you can leave it completely empty, if you wish. Or put in a little information about what type of beer, alcohol percentage, name, brand, year, type, etc.
+
+2. Create a `Bar` class. It should have an `ArrayList<Beer>` to hold beers. It should also have an integer to indicate how many beers can be on the bar at a time. It could be e.g. 20.
+
+    - Create a method `placeBeer(Beer beer)`. If the size of the `ArrayList` is 20 or more, then call `wait()` (remember the guarded block approach here). Otherwise add a `Beer` to the list, and `notifyAll()` waiting threads.
+
+    - Create a method `takeBeer()`, which removes a beer from the `ArrayList`, if there are any beers left. Otherwise wait.
+
+3. Create a `Bartender` class, which periodically (e.g. every other second) will attempt to place a new beer on the bar.
+
+4. Create a `Customer` class, which periodically will attempt to take a beer from the bar.
+
+    - Add names/tags to the Bartender/Customer classes, and add print outs to the methods, so you can follow what's going on.
+
+5. Create and start a couple of bartender and a customer threads, and run your program from a main method.
+
+Inspect the output. Does it look correct?
+
+### Adding Bar Closure Functionality
+
+Now, you're going to add functionality, so that the Bar can close.
+
+- After e.g. 20 or 30 seconds, close the Bar. This means the Bartenders "go home", and stop adding Beers. And the customers also "go home", and stop taking Beers. Print out relevant information, so you can see what's happening.
+
+- I suggest the Bar has a boolean, `isOpen`, which the other threads can react to.
+
+
+
+
+
