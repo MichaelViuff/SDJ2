@@ -93,10 +93,11 @@ Create a couple of threads to update the two counters. Verify the output is as e
 <blockquote>
 <details>
 <summary>Display hints...</summary>
-<p>
-  Instead of using the intrinsic lock of the object, we should define our own locks, so the two counts can be updated without blocking each other.
+  <p>
+    Instead of using the intrinsic lock of the object, we should define our own locks, so the two counts can be updated without blocking each other.
 
-  We can use the <code>ReentrantLock</code> class, or any other <code>Object</code> for that matter, to define the two locks.
+    We can use the <code>ReentrantLock</code> class, or any other <code>Object</code> for that matter, to define the two locks.
+  </p>
 
 ```java
   private Lock lockA = new ReentrantLock();
@@ -490,9 +491,150 @@ System.out.println(value + ": " + Thread.currentThread().getName());
 
 You can give a `Thread` object a name with the `setName()` method.
 
-Run the program a few times and inspect the output.
+Run the program a few times and inspect the output. Does the value ever go above or below the limits?
 
-Now create a thread that prints out the result when the above threads are finished. You’re going to need the join() method.
+<blockquote>
+<details>
+<summary>Explanation</summary>
+  <p>
+    If you used an <code>if-statement</code> instead of a loop when checking to see if a thread should be set to wait, you will see this issue. This is because the thread checks the condition, and if the condition is true (i.e. it is not allowed to update value) it is set to wait. But, when it awakes, it doesn't check again, and instead just continues execution, updating the value regardless of the condition. 
+
+    To fix this, use a loop so that the thread checks again when it wakes up.
+  </p>
+</details>
+</blockquote>
+
+<blockquote>
+<summary>Display solution...</summary>
+
+```java
+public class Counter
+{
+    private long value;
+    private long max;
+    private long min;
+
+    public Counter(long min, long max)
+    {
+        value = 0;
+        this.min = min;
+        this.max = max;
+    }
+
+    public synchronized void increment()
+    {
+        while(value >= max)
+        {
+            try
+            {
+                wait();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        value++;
+        System.out.println(value + ": " + Thread.currentThread().getName());
+        notifyAll();
+    }
+
+    public synchronized void decrement()
+    {
+        while(value <= min)
+        {
+            try
+            {
+                wait();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        value--;
+        System.out.println(value + ": " + Thread.currentThread().getName());
+        notifyAll();
+    }
+
+    public synchronized long getValue()
+    {
+        return value;
+    }
+}
+
+public class CounterIncrementer implements Runnable
+{
+    private int updates;
+    private Counter counter;
+
+    public CounterIncrementer(Counter counter, int updates)
+    {
+        this.updates = updates;
+        this.counter = counter;
+    }
+
+    @Override
+    public void run()
+    {
+        for (int i = 0; i < updates; i++)
+        {
+            counter.increment();
+        }
+        System.out.println(Thread.currentThread().getName() + " har finished, count is: " + counter.getValue());
+    }
+}
+
+    private Counter counter;
+
+    public CounterDecrementer(Counter counter, int updates)
+    {
+        this.updates = updates;
+        this.counter = counter;
+    }
+
+    @Override
+    public void run()
+    {
+        for (int i = 0; i < updates; i++)
+        {
+            counter.decrement();
+        }
+        System.out.println(Thread.currentThread().getName() + " har finished, count is: " + counter.getValue());
+    }
+}
+
+public class Test
+{
+    public static void main(String[] args)
+    {
+        Counter counter = new Counter(0, 100);
+        
+        CounterIncrementer counterIncrementer1 = new CounterIncrementer(counter, 400);
+        CounterIncrementer counterIncrementer2 = new CounterIncrementer(counter, 400);
+        CounterDecrementer counterDecrementer1 = new CounterDecrementer(counter, 400);
+        CounterDecrementer counterDecrementer2 = new CounterDecrementer(counter, 400);
+
+        Thread counterIncrementerThread1 = new Thread(counterIncrementer1);
+        Thread counterIncrementerThread2 = new Thread(counterIncrementer2);
+        Thread counterDecrementerThread1 = new Thread(counterDecrementer1);
+        Thread counterDecrementerThread2 = new Thread(counterDecrementer2);
+
+        counterIncrementerThread1.setName("Incrementer 1");
+        counterIncrementerThread2.setName("Incrementer 2");
+        counterDecrementerThread1.setName("Decrementer 1");
+        counterDecrementerThread2.setName("Decrementer 2");
+
+        counterIncrementerThread1.start();
+        counterIncrementerThread2.start();
+        counterDecrementerThread1.start();
+        counterDecrementerThread2.start();
+    }
+}
+```
+</details>
+</details>
+</blockquote>
 
 ## 2.5	Computer simulation
 
