@@ -324,18 +324,68 @@ Do you get the printed count you expect? Probably not. Fix it using synchronizat
 <details>
 <summary>Display hints...</summary>
 <p>
-
+  The implementation of the <code>ArrayList<Integer></code> uses an array with indexing, and time slicing is causing issues with the indexes. To solve this, we need to ensure that only one thread can attempt to add something at a time (using a lock on the <code>add(int i)</code> method
 </p>
 <details>
 <summary>Display solution...</summary>
 
 ```java
+import java.util.ArrayList;
+import java.util.List;
 
+public class ListContainer
+{
+    private List<Integer> list = new ArrayList<Integer>();
+
+    public synchronized void add(int i)
+    {
+        list.add(i);
+    }
+
+    public int getLength()
+    {
+        return list.size();
+    }
+}
+
+public class Inserter implements Runnable
+{
+    private ListContainer listContainer;
+    
+    public Inserter(ListContainer listContainer)
+    {
+        this.listContainer = listContainer;
+    }
+
+    @Override
+    public void run()
+    {
+        for (int i = 0; i < 100000; i++)
+        {
+            listContainer.add(i);
+        }
+        System.out.println(listContainer.getLength());
+    }
+}
+
+public class Test
+{
+    public static void main(String[] args)
+    {
+        //create 2 threads to run two instances of your Runnable class, referencing the same ListContainer.
+        ListContainer listContainer = new ListContainer();
+        Inserter inserter1 = new Inserter(listContainer);
+        Inserter inserter2 = new Inserter(listContainer);
+
+        Thread inserterThread1 = new Thread(inserter1);
+        Thread inserterThread2 = new Thread(inserter2);
+        inserterThread1.start();
+        inserterThread2.start();
+    }
+}
 ```
-
 </details>
 </details>
-
 </blockquote>
 
 ## 2.3 Simulating the temperature in a room
