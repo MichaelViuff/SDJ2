@@ -644,8 +644,6 @@ Implement the UML class diagram below:
 
 ![Incrementer/Decrementer UML Class Diagram](https://github.com/MichaelViuff/SDJ2/blob/main/02%20Threads%202/Images/ComputerUML.png)
 
-### Runnable Class: `Program`
-
 Implement the two `Runnable` classes: `Program` and `Mailbox` to be used in the class `Computer` to simulate a computer with independent notifications from programs and mailbox.
 
 In the `Runnable` class `Program` (in the `run` method), the action is printed approximately `count` number of times in the `RUNTIME` length.
@@ -668,10 +666,9 @@ public class RunComputer {
         mailbox.start();    
     }
 }
+```
 
-Runnable Class: Mailbox
-In the Runnable class Mailbox (in the run method), the string “New mail in your mailbox...” is printed approximately 20 times during the RUNTIME.
-
+```
 // First part of the output
 ---->Turning on the computer
 Windows wants to update
