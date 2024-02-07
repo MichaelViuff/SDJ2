@@ -7,8 +7,8 @@ public class Test
     Car car1 = new Car(1, trafficLight);
     Car car2 = new Car(2, trafficLight);
     
-    trafficLight.addPropertyChangeListener(car1, "Lightchanged");
-    trafficLight.addPropertyChangeListener(car2, "Lightchanged");
+    trafficLight.addPropertyChangeListener("Lightchanged", car1);
+    trafficLight.addPropertyChangeListener("Lightchanged", car2);
 
     trafficLight.setColor("GREEN");
     trafficLight.setColor("YELLOW");
