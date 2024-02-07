@@ -476,7 +476,7 @@ Give them the following characteristics:
  - In the loops, call the `Counter` method `increment()` or `increment()` accordingly.
  - After the loop, print out the value of the counter.
 
-### Main Class
+### Main method
 
 Implement a class with a `main` method in which you:
 
