@@ -6,7 +6,7 @@ For this exercise, we will implement everything without using the Observer patte
 
 Create the Traffic light example that was shown in the presentation, with the classes [`Car`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/Car.java), [`TrafficLight`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/TrafficLight.java) and [`Main`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/Main.java). 
 
-Run the example and verify that the 3 cars react to the traffic light changing.
+Run the example and verify that the `Car` reacts to the traffic light changing.
 
 Implement a new class `Taxi`: 
  - It ignores yellow lights, stops when red, and drives when green.
