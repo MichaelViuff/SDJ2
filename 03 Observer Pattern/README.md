@@ -1,8 +1,8 @@
-# 01 Exercises: Observer Pattern
+# 03 Exercises: Observer Pattern
 
 ## 3.1 Traffic light
 
-Download the Traffic light example that was shown in the presentation, with subject/listeners implemented. 
+Run the Traffic light example that was shown in the presentation, with the classes [`Car`}(https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/Car.java), `TrafficLight` and `Main`. 
 
 Run the example and verify that the 3 cars react to the traffic light changing.
 
@@ -20,10 +20,14 @@ Implement a new class `Pedestrian`. When the cars are waiting for red light, he 
  - When the light turns red he crosses the road.
  - When the light turns from red to yellow, he gets ready to cross.
 
+## 3.2 Traffic light
+
 <blockquote>
 <details>
 <summary>Explanation</summary>
-  <p>The time scheduler assigns time to a single thread for an amount of time. We have no control over this, and the amount of time might vary for each execution of the program. As such, sometimes we might see many numbers in a row before letter, or vice versa. And other times only a few numbers before letters are printed, or vice versa.</p>
+  <p>
+   
+  </p>
 </details>
 </blockquote>
 
