@@ -22,13 +22,13 @@ Implement a new class `Pedestrian`. When the cars are waiting for red light, he 
 
 ## 3.2 Traffic light
 
-Modify your solution from 3.1 to use the `PropertyChangeSupport`, `PropertyChangeListener` and optionally use the [`PropertyChangeSubject`]() interface.
+Modify your solution from 3.1 to use the `PropertyChangeSupport`, `PropertyChangeListener` and optionally use the [`PropertyChangeSubject`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/PropertyChangeSubject.java) interface.
 
 ## 3.3 Traffic light
 
 You’re going to simulate a Doctor’s waiting room, initially it looks something like this:
 
-![WaitingRoomUMLClassDiagram]()
+![WaitingRoomUMLClassDiagram](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Images/WaitingRoomUML.png)
 
 The PropertyChangeListener interface is the one from Java. The PropertyChangeSubject is the one from the slides.
 In the main class, create the WaitingRoom and run it in a separate thread. In the run method, it should increment a counter from 0, fire an event, and then sleep for e.g. 1 second. This is to simulate that each patient takes a ticket number when entering the waiting room. Occasionally the doctor is ready for the next patient, so the patients are informed by the ticket system in the waiting room, and the patient with the correct ticket number enters the doctor’s office.
@@ -119,7 +119,7 @@ This is for the adventurous ones, it assumes some knowledge about JavaFX.
 You’re going to implement the example from the slides about visualizing data in different ways.
 In JavaFX there are several components to show data, you’ll have to investigate how to use them. In the SceneBuilder they’re found under the ‘charts’ section.
 
-![SceneBuilderChartsScreenshot]()
+![SceneBuilderChartsScreenshot](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Images/SceneBuilderChartsScreenshot.png)
  
 The uploaded class DataModel has a method, which will calculate three values: red, green, yellow. The sum will always be 100. The numbers will be recalculated whenever the recalculateData method is called.
 Modify the DataModel class so that is becomes a Subject: Implement the interface, create a field variable of type PropertyChangeSupport, and fire events from the recalculateData method.
