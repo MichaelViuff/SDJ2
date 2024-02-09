@@ -2,7 +2,7 @@
 
 ## 3.1 Traffic light
 
-Run the Traffic light example that was shown in the presentation, with the classes [`Car`}(https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/Car.java), `TrafficLight` and `Main`. 
+Run the Traffic light example that was shown in the presentation, with the classes [`Car`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/Car.java), `TrafficLight` and `Main`. 
 
 Run the example and verify that the 3 cars react to the traffic light changing.
 
