@@ -1,43 +1,42 @@
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrafficLight implements PropertyChangeSubject
+public class TrafficLight
 {
+    private List<Car> cars;
+    private String[] lights = {"GREEN", "YELLOW", "RED", "YELLOW"};
+    private int count = 2;
+    private String currentLight;
 
-  private String lightColor;
-  private PropertyChangeSupport propertyChangeSupport;
+    public TrafficLight()
+    {
+        currentLight = lights[2];
+        cars = new ArrayList<>();
+    }
 
-  public TrafficLight()
-  {
-    propertyChangeSupport = new PropertyChangeSupport(this);
-  }
+    public void addCar(Car car)
+    {
+        cars.add(car);
+        car.setLight(currentLight);
+    }
 
-  public void setColor(String color)
-  {
-    String oldColor = lightColor;
-    lightColor = color;
-    propertyChangeSupport.firePropertyChange("Lightchanged", oldColor, color);
-  }
+    public void start() throws InterruptedException
+    {
+        while(true)
+        {
+            Thread.sleep(2000);
+            count = (count + 1) % 4;
+            currentLight = lights[count];
+            System.out.println("\nLight is " + currentLight);
+            lightChanged();
+        }
+    }
 
-  @Override public void addPropertyChangeListener(PropertyChangeListener listener)
-  {
-    propertyChangeSupport.addPropertyChangeListener(listener);
-  }
-
-  @Override public void addPropertyChangeListener(String name, PropertyChangeListener listener)
-  {
-    propertyChangeSupport.addPropertyChangeListener(name, listener);
-  }
-
-  @Override public void removePropertyChangeListener(PropertyChangeListener listener)
-  {
-    propertyChangeSupport.removePropertyChangeListener(listener);
-  }
-
-  @Override public void removePropertyChangeListener(String name, PropertyChangeListener listener)
-  {
-    propertyChangeSupport.removePropertyChangeListener(name, listener);
-  }
+    private void lightChanged()
+    {
+        for (Car car : cars)
+        {
+            car.setLight(currentLight);
+        }
+    }
 }
