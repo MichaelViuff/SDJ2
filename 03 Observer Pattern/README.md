@@ -27,9 +27,10 @@ Implement a new class `Taxi`:
 </blockquote>
 
 Implement a new class `SleepyDriver`: 
- - If the light is red, and changes to yellow, it doesn’t do anything
+ - If the light is red, and changes to yellow, it doesn’t do anything.
  - When the light changes to green, it start its engine and drives.
- - If the light is green, and changes to yellow, it slows down
+ - If the light is green, and changes to yellow, it slows down.
+ - It stops for red light.
 
 <blockquote>
 <details>
@@ -47,7 +48,7 @@ Implement a new class `SleepyDriver`:
 </blockquote>
 
 Implement a new class `Pedestrian`. When the cars are waiting for red light, he can cross the road:
- - When the light turns green he waits (red means red for the cars, we haven't modelled a traffic light for pedestrians)
+ - When the light turns green he waits (red means red for the cars, we haven't modelled a traffic light for pedestrians).
  - When the light turns from green to yellow, he runs fast across the road.
  - When the light turns red he crosses the road.
  - When the light turns from red to yellow, he gets ready to cross.
