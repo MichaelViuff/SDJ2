@@ -15,12 +15,46 @@ Implement a new class `Taxi`:
 <details>
 <summary>Display hints...</summary>
 <p>
-  
+  You can duplicate most of the code from the `Car` class. You will need to make changes in the `setLight()` method, so that the `Taxi` acts like instructed. You will also need to make a few changes in the `TrafficLight` and `Main` class.
 </p>
 <details>
 <summary>Display solution...</summary>
 
 ```java
+public class Taxi
+{
+    private String previousLight;
+    private int id;
+
+    public Taxi(int id)
+    {
+        this.id = id;
+    }
+
+    public void setLight(String currentLight)
+    {
+        if("GREEN".equals(currentLight))
+        {
+            System.out.println("Taxi " + id + " drives");
+        }
+        else if("YELLOW".equals(currentLight))
+        {
+            if("RED".equals(previousLight))
+            {
+                System.out.println("Taxi " + id + " turns engine on");
+            }
+            else
+            {
+                System.out.println("Taxi " + id + " drives");
+            }
+        }
+        else if("RED".equals(currentLight))
+        {
+            System.out.println("Taxi " + id + " stops");
+        }
+        previousLight = currentLight;
+    }
+}
 ```
 </details>
 </details>
@@ -36,12 +70,47 @@ Implement a new class `SleepyDriver`:
 <details>
 <summary>Display hints...</summary>
 <p>
-  
+  Just like with the previous class, you can reuse everything from `Car` and modify the behaviour as necessary. You will also need to make a few changes in the `TrafficLight` and `Main` class.
 </p>
 <details>
 <summary>Display solution...</summary>
 
 ```java
+public class SleepyDriver
+{
+    private String previousLight;
+    private int id;
+
+    public SleepyDriver(int id)
+    {
+        this.id = id;
+    }
+
+    public void setLight(String currentLight)
+    {
+        if("GREEN".equals(currentLight))
+        {
+            System.out.println("SleepyDriver " + id + " turns engine on");
+            System.out.println("SleepyDriver " + id + " drives");
+        }
+        else if("YELLOW".equals(currentLight))
+        {
+            if("RED".equals(previousLight))
+            {
+                //Do nothing
+            }
+            else
+            {
+                System.out.println("SleepyDriver " + id + " slows down");
+            }
+        }
+        else if("RED".equals(currentLight))
+        {
+            System.out.println("SleepyDriver " + id + " stops");
+        }
+        previousLight = currentLight;
+    }
+}
 ```
 </details>
 </details>
@@ -57,18 +126,158 @@ Implement a new class `Pedestrian`. When the cars are waiting for red light, he 
 <details>
 <summary>Display hints...</summary>
 <p>
-  
+  Once again, reuse everything from `Car` and make necessary changes. Your `TrafficLight` and `Main` classes will have been updated quite a lot by now, so their implementation is also shown in the solution below.
 </p>
 <details>
 <summary>Display solution...</summary>
 
 ```java
+public class Pedestrian
+{
+    private int id;
+    private String previousLight;
+
+    public Pedestrian(int id)
+    {
+        this.id = id;
+    }
+
+    public void setLight(String currentLight)
+    {
+        if("GREEN".equals(currentLight))
+        {
+            System.out.println("Pedestrian " + id + " waits");
+        }
+        else if("YELLOW".equals(currentLight))
+        {
+            if("RED".equals(previousLight))
+            {
+                System.out.println("Pedestrian " + id + " gets ready to cross the road");
+            }
+            else
+            {
+                System.out.println("Pedestrian " + id + " walks fast accross the road");
+            }
+        }
+        else if("RED".equals(currentLight))
+        {
+            System.out.println("Pedestrian " + id + " walks accross the road");
+        }
+        previousLight = currentLight;
+    }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TrafficLight
+{
+    List<Car> cars;
+    List<Taxi> taxis;
+    List<SleepyDriver> sleepyDrivers;
+    List<Pedestrian> pedestrians;
+
+    private String[] lights = {"GREEN", "YELLOW", "RED", "YELLOW"};
+    private int count = 2;
+    private String currentLight;
+
+    public TrafficLight()
+    {
+        currentLight = lights[2];
+        cars = new ArrayList<>();
+        taxis = new ArrayList<>();
+        sleepyDrivers = new ArrayList<>();
+        pedestrians = new ArrayList<>();
+    }
+
+    public void addCar(Car car)
+    {
+        cars.add(car);
+        car.setLight(currentLight);
+    }
+
+    public void addTaxi(Taxi taxi)
+    {
+        taxis.add(taxi);
+        taxi.setLight(currentLight);
+    }
+
+    public void addSleepyDriver(SleepyDriver sleepyDriver)
+    {
+        sleepyDrivers.add(sleepyDriver);
+        sleepyDriver.setLight(currentLight);
+    }
+
+    public void addPedestrian(Pedestrian pedestrian)
+    {
+        pedestrians.add(pedestrian);
+        pedestrian.setLight(currentLight);
+    }
+
+    public void start() throws InterruptedException
+    {
+        while(true)
+        {
+            Thread.sleep(2000);
+            count = (count + 1) % 4;
+            currentLight = lights[count];
+            System.out.println("\nLight is " + currentLight);
+            lightChanged();
+        }
+    }
+
+    private void lightChanged()
+    {
+        for (Car car : cars)
+        {
+            car.setLight(currentLight);
+        }
+        for (Taxi taxi : taxis)
+        {
+            taxi.setLight(currentLight);
+        }
+        for (SleepyDriver sleepyDriver : sleepyDrivers)
+        {
+            sleepyDriver.setLight(currentLight);
+        }
+        for (Pedestrian pedestrian : pedestrians)
+        {
+            pedestrian.setLight(currentLight);
+        }
+    }
+}
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        TrafficLight trafficLight = new TrafficLight();
+        Car car1 = new Car(1);
+        Taxi taxi1 = new Taxi(1);
+        SleepyDriver sleepyDriver1 = new SleepyDriver(1);
+        Pedestrian pedestrian1 = new Pedestrian(1);
+
+        trafficLight.addCar(car1);
+        trafficLight.addTaxi(taxi1);
+        trafficLight.addSleepyDriver(sleepyDriver1);
+        trafficLight.addPedestrian(pedestrian1);
+
+        try
+        {
+            trafficLight.start();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
+}
 ```
 </details>
 </details>
 </blockquote>
 
-## 3.2 Traffic light
+## 3.2 Traffic light using the Observer pattern
 
 Modify your solution from 3.1 to use the `PropertyChangeSupport`, `PropertyChangeListener` and optionally use the [`PropertyChangeSubject`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/PropertyChangeSubject.java) interface.
 
@@ -76,18 +285,264 @@ Modify your solution from 3.1 to use the `PropertyChangeSupport`, `PropertyChang
 <details>
 <summary>Display hints...</summary>
 <p>
-  
+  Start by reworking the `TrafficLight` class. Turn it into a subject using the Observer pattern. Listeners should attach themselves as `PropertyChangeListener`, and be stored in a `PropertyChangeSupport`. To do so, combine and modify the `add()` methods. It should also notify all listeners whenever the light changes, in the `lightChanged()` method, calling `firePropertyChange()` on the `PropertyChangeSupport`. 
 </p>
+
+ <p>
+  Everyone looking at the light should be turned into listeners using the Observer pattern. To get notifications about light changes, they need to attach themselves to the subject, the `TrafficLight` class. The method to attach takes a `PropertyChangeListener` as argument, so they need to implement that interface. That interface has a single method `propertyChange(PropertyChangeEvent evt)` which they need to implement. Have that method call the `setLight()` method with the value received.
+</p>
+
 <details>
 <summary>Display solution...</summary>
 
 ```java
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+public class TrafficLight
+{
+    private PropertyChangeSupport support;
+    private String[] lights = {"GREEN", "YELLOW", "RED", "YELLOW"};
+    private int count = 2;
+    private String currentLight;
+
+    public TrafficLight()
+    {
+        currentLight = lights[2];
+        support = new PropertyChangeSupport(this);
+    }
+
+    public void start() throws InterruptedException
+    {
+        while(true)
+        {
+            Thread.sleep(2000);
+            count = (count + 1) % 4;
+            currentLight = lights[count];
+            System.out.println("\nLight is " + currentLight);
+            lightChanged();
+        }
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+        support.addPropertyChangeListener(listener);
+    }
+
+    private void lightChanged()
+    {
+        support.firePropertyChange("LightChanged", null, currentLight);
+    }
+}
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class Car implements PropertyChangeListener
+{
+    private String previousLight;
+    private int id;
+
+    public Car(int id)
+    {
+        this.id = id;
+    }
+
+    public void setLight(String currentLight)
+    {
+        if("GREEN".equals(currentLight))
+        {
+            System.out.println("Car " + id + " drives");
+        }
+        else if("YELLOW".equals(currentLight))
+        {
+            if("RED".equals(previousLight))
+            {
+                System.out.println("Car " + id + " turns engine on");
+            }
+            else
+            {
+                System.out.println("Car " + id + " slows down");
+            }
+        }
+        else if("RED".equals(currentLight))
+        {
+            System.out.println("Car " + id + " stops");
+        }
+        previousLight = currentLight;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        setLight((String) evt.getNewValue());
+    }
+}
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class Taxi implements PropertyChangeListener
+{
+    private String previousLight;
+    private int id;
+
+    public Taxi(int id)
+    {
+        this.id = id;
+    }
+
+    public void setLight(String currentLight)
+    {
+        if("GREEN".equals(currentLight))
+        {
+            System.out.println("Taxi " + id + " drives");
+        }
+        else if("YELLOW".equals(currentLight))
+        {
+            if("RED".equals(previousLight))
+            {
+                System.out.println("Taxi " + id + " turns engine on");
+            }
+            else
+            {
+                System.out.println("Taxi " + id + " drives");
+            }
+        }
+        else if("RED".equals(currentLight))
+        {
+            System.out.println("Taxi " + id + " stops");
+        }
+        previousLight = currentLight;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        setLight((String) evt.getNewValue());
+    }
+}
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class SleepyDriver implements PropertyChangeListener
+{
+    private String previousLight;
+    private int id;
+
+    public SleepyDriver(int id)
+    {
+        this.id = id;
+    }
+
+    public void setLight(String currentLight)
+    {
+        if("GREEN".equals(currentLight))
+        {
+            System.out.println("SleepyDriver " + id + " turns engine on");
+            System.out.println("SleepyDriver " + id + " drives");
+        }
+        else if("YELLOW".equals(currentLight))
+        {
+            if("RED".equals(previousLight))
+            {
+                //Do nothing
+            }
+            else
+            {
+                System.out.println("SleepyDriver " + id + " slows down");
+            }
+        }
+        else if("RED".equals(currentLight))
+        {
+            System.out.println("SleepyDriver " + id + " stops");
+        }
+        previousLight = currentLight;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        setLight((String) evt.getNewValue());
+    }
+}
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class Pedestrian implements PropertyChangeListener
+{
+    private int id;
+    private String previousLight;
+
+    public Pedestrian(int id)
+    {
+        this.id = id;
+    }
+
+    public void setLight(String currentLight)
+    {
+        if("GREEN".equals(currentLight))
+        {
+            System.out.println("Pedestrian " + id + " waits");
+        }
+        else if("YELLOW".equals(currentLight))
+        {
+            if("RED".equals(previousLight))
+            {
+                System.out.println("Pedestrian " + id + " gets ready to cross the road");
+            }
+            else
+            {
+                System.out.println("Pedestrian " + id + " walks fast accross the road");
+            }
+        }
+        else if("RED".equals(currentLight))
+        {
+            System.out.println("Pedestrian " + id + " walks accross the road");
+        }
+        previousLight = currentLight;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        setLight((String) evt.getNewValue());
+    }
+}
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        TrafficLight trafficLight = new TrafficLight();
+        Car car1 = new Car(1);
+        Taxi taxi1 = new Taxi(1);
+        SleepyDriver sleepyDriver1 = new SleepyDriver(1);
+        Pedestrian pedestrian1 = new Pedestrian(1);
+
+        trafficLight.addPropertyChangeListener(car1);
+        trafficLight.addPropertyChangeListener(taxi1);
+        trafficLight.addPropertyChangeListener(sleepyDriver1);
+        trafficLight.addPropertyChangeListener(pedestrian1);
+
+        try
+        {
+            trafficLight.start();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
+}
 ```
 </details>
 </details>
 </blockquote>
 
-## 3.3 Traffic light
+## 3.3 Waiting room
 
 Implement the UML class diagram shown below:
 
