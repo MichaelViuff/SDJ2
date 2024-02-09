@@ -48,7 +48,7 @@ Implement a new class `SleepyDriver`:
 </blockquote>
 
 Implement a new class `Pedestrian`. When the cars are waiting for red light, he can cross the road:
- - When the light turns green he waits (red means red for the cars, we haven't modelled a traffic light for pedestrians).
+ - When the light turns green he waits (green here means green for the cars, we haven't modelled a traffic light for pedestrians).
  - When the light turns from green to yellow, he runs fast across the road.
  - When the light turns red he crosses the road.
  - When the light turns from red to yellow, he gets ready to cross.
