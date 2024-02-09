@@ -542,194 +542,7 @@ public class Main
 </details>
 </blockquote>
 
-## 3.3 Waiting room
-
-Implement the UML class diagram shown below:
-
-![WaitingRoomUMLClassDiagram](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Images/WaitingRoomUML.png)
-
-In the `Main` class, create a `WaitingRoom` thread and start it. In the `run()` method, it should increment a counter from 0, fire an event, and then sleep for 1 second. This is to simulate that each patient takes a ticket number when entering the waiting room. When the doctor is ready for the next patient, the patients are informed by the ticket system in the waiting room, and the patient with the correct ticket number enters the doctor’s office.
-
-In the `Main` class, create a bunch of patients, give them each a ticket number, and add them as listeners to the waiting room. 
-
-Upon notification the patient must look up, check the current number, and if it’s their number, go to the doctor’s office. Otherwise they go back to looking at their phone.
-
-Simulate this with print outs. So, running the program could produce an output like this:
-
-```
-Patient 0 enters waiting room
-Patient 1 enters waiting room
-Diing!
-Patient 0 looks up
-Patient 0 goes to the doctor's room
-Patient 1 looks up
-Patient 1 goes back to looking at phone
-Patient 2 enters waiting room
-Diing!
-Patient 1 looks up
-Patient 1 goes to the doctor's room
-Patient 2 looks up
-Patient 2 goes back to looking at phone
-Patient 3 enters waiting room
-Patient 4 enters waiting room
-Diing!
-Patient 2 looks up
-Patient 2 goes to the doctor's room
-Patient 3 looks up
-```
-
-When a patient enters the doctor’s office, remove them as listeners. They are no longer interested in the ticket numbers.
-
-<blockquote>
-<details>
-<summary>Display hints...</summary>
-<p>
-  
-</p>
-<details>
-<summary>Display solution...</summary>
-
-```java
-```
-</details>
-</details>
-</blockquote>
-
-## 3.4 Soccer match
-
-The target of this exercise is to implement a soccer match, and a number of other classes observing this soccer match.
-
-Download the [`SoccerMatch`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/SoccerMatch.java) class and add it to your project.
-
-Create a class with a main method. Create an instance of `SoccerMatch` and call the `startMatch()` method.
-
-Verify that two things are printed out, with 9 seconds in between: 
-
-"Match starting" and "Match ended".
-
-### 3.4.1
-
-Change the `SoccerMatch` class so that it becomes a subject:
-
- - Implement the [`PropertyChangeSubject`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/PropertyChangeSubject.java) or create your own.
- -	The `SoccerMatch` must have an attribute of type `PropertyChangeSupport`, similar to the `TrafficLight` example.
- -	Find the four TODOs - implement them so you fire events, using the `PropertyChangeSupport`. Give meaningful names for the events, like “DreamTeamScore”, “OldBoysRoughTackle”.
-
-<blockquote>
-<details>
-<summary>Display hints...</summary>
-<p>
-  
-</p>
-<details>
-<summary>Display solution...</summary>
-
-```java
-```
-</details>
-</details>
-</blockquote>
-
-### 3.4.2
-
-Create two fan classes: `DreamTeamFan` and `OldBoysFan`. 
-
- - When the team they’re rooting for has scored, print out something like “Dream team fans: YEEEAAH!”
- - When the opposite team scores, print out something like "Old boys fans: BOOOOOOOH!"
- - In the main method, create an instance of each, and add them as listeners to the `SoccerMatch`.
- 
-<blockquote>
-<details>
-<summary>Display hints...</summary>
-<p>
-  
-</p>
-<details>
-<summary>Display solution...</summary>
-
-```java
-```
-</details>
-</details>
-</blockquote>
-
-### 3.4.3
-
-Create a class `Referee`. He should react to rough tackles - print out something like “Referee gives Old Boys a yellow card for a rough tackle”. 
-
-<blockquote>
-<details>
-<summary>Display hints...</summary>
-<p>
-  
-</p>
-<details>
-<summary>Display solution...</summary>
-
-```java
-```
-</details>
-</details>
-</blockquote>
-
-### 3.4.4
-
-Create a class `AngryCoach`. When his team scores, he should cheer. When the other team makes a rough tackle, he should yell at the judge.
-
-<blockquote>
-<details>
-<summary>Display hints...</summary>
-<p>
-  
-</p>
-<details>
-<summary>Display solution...</summary>
-
-```java
-```
-</details>
-</details>
-</blockquote>
-
-### 3.4.5
-
-Create a class `ScoreBoard`. It should print out the current score, every time it changes.
-
-<blockquote>
-<details>
-<summary>Display hints...</summary>
-<p>
-  
-</p>
-<details>
-<summary>Display solution...</summary>
-
-```java
-```
-</details>
-</details>
-</blockquote>
-
-### 3.4.6
-
-Create a `Medic` class. They should react to rough tackles. 
-
-<blockquote>
-<details>
-<summary>Display hints...</summary>
-<p>
-  
-</p>
-<details>
-<summary>Display solution...</summary>
-
-```java
-```
-</details>
-</details>
-</blockquote>
-
-## 3.5 Bird watching
+## 3.3 Bird watching
 
 Write a small program to represent the bird watcher example from the presentations-
 
@@ -750,14 +563,481 @@ Test everything in a main method where you create several birds and watchers.
 <details>
 <summary>Display hints...</summary>
 <p>
-  
+  Start by creating the <code>Bird</code> class as a subject. Should probably create it as a <code>Runnable</code> so it can do different things at different times.
 </p>
+<p>
+  The <code>BirdWatcher</code> and <code>BlindBirdWatcher</code> classes are listeners, and should react to the events fired by the <code>Bird</code> class. When attaching them as listeners, do it with lambda expressions instead of implementing the <code>PropertyChangeListener</code> interface.
+</p>
+ 
 <details>
 <summary>Display solution...</summary>
 
 ```java
 ```
 </details>
+</details>
+</blockquote>
+
+## 3.4 Waiting room
+
+Implement the UML class diagram shown below:
+
+![WaitingRoomUMLClassDiagram](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Images/WaitingRoomUML.png)
+
+
+The `run()` method of the `WaitingRoom` start a counter at 0 (to simulate ticket number for the patients), run indefinitely while it increments the counter by 1, fire an event each time it does, and then sleep for 1 second. 
+
+While waiting the patients in waiting room will receive a notification each time the ticket number increases.
+
+Upon notification the patient must look up, check the current number, and if it’s their number, go to the doctor’s office. Otherwise they go back to looking at their phone.
+
+When a patient enters the doctor’s office, they are no longer interested in the ticket numbers and should stop receiving notifications.
+
+Simulate this with print outs. So, running the program could produce an output like this (shown here with only 2 patients for clarity):
+
+```
+Patient 0 enters the waiting room
+Patient 1 enters the waiting room
+Diing!
+Patient 0 looks up
+Patient 0 goes to the doctor's room
+Patient 1 looks up
+Patient 1 goes back to looking at phone
+Diing!
+Patient 1 looks up
+Patient 1 goes to the doctor's room
+Diing!
+Diing!
+Diing!
+Diing!
+```
+
+
+<blockquote>
+<details>
+<summary>Display hints...</summary>
+<p>
+  Start with the <code>WaitingRoom</code> since it will act as the subject. The <code>run()</code> method can be implemented with a <code>while(true)</code> loop where you increment the ticket number and sleep for 1 second with <code>Thread.sleep(1000)</code>
+</p>
+<p>
+  The <code>Patient</code> class can either be implemented as a <code>PropertyChangeListener</code> or it could use anonymous classes (using lambda expressions or other syntactic sugary goodness if desired). If you use lambda expressions you might find it difficult to detach the listener again. This can be fixed by storing your <code>PropertyChangeListener</code> reference.
+</p>
+ <p>
+  In the UML class diagram, the listener, <code>Patient</code>, has an association to the subject, <code>WaitingRoom</code>. Feel free to set this attribute in the constructor, or create a setter in <code>Patient</code>. Alternatively, ignore the association and link the listener and subject manually in the main method.
+</p>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+public class WaitingRoom implements PropertyChangeSubject, Runnable
+{
+    private PropertyChangeSupport support;
+
+    public WaitingRoom()
+    {
+        support = new PropertyChangeSupport(this);
+    }
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+        support.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void addPropertyChangeListener(String name, PropertyChangeListener listener)
+    {
+        support.addPropertyChangeListener(name, listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener)
+    {
+        support.removePropertyChangeListener(listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(String name, PropertyChangeListener listener)
+    {
+        support.removePropertyChangeListener(name, listener);
+    }
+
+    @Override
+    public void run()
+    {
+        int i = 0;
+        while(true)
+        {
+            try
+            {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }System.out.println("Diing!");
+            support.firePropertyChange("NextPatient", null, i);
+            i++;
+
+        }
+    }
+}
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class Patient
+{
+    private int ticketNumber;
+    private WaitingRoom waitingRoom;
+    private PropertyChangeListener listenForNextPatient;
+
+    public Patient(int ticketNumber, WaitingRoom waitingRoom)
+    {
+        this.ticketNumber = ticketNumber;
+        this.waitingRoom = waitingRoom;
+        listenForNextPatient = this::reactToDing; // This could also be written as 'evt -> reactToNextPatient(evt)'
+        waitingRoom.addPropertyChangeListener(listenForNextPatient);
+        System.out.println("Patient " + ticketNumber + " enters the waiting room");
+    }
+
+    private void reactToDing(PropertyChangeEvent evt)
+    {
+        System.out.println("Patient " + ticketNumber + " looks up");
+        if(ticketNumber == (int) evt.getNewValue())
+        {
+            System.out.println("Patient " + ticketNumber + " goes to the doctor's room");
+            waitingRoom.removePropertyChangeListener(listenForNextPatient); // This is a method reference
+        }
+        else
+        {
+            System.out.println("Patient " + ticketNumber + " goes back to looking at phone");
+        }
+    }
+}
+
+public class Main
+{
+    public static void main(String[] args) throws InterruptedException
+    {
+        WaitingRoom waitingRoom = new WaitingRoom();
+        Thread waitingRoomThread = new Thread(waitingRoom);
+        waitingRoomThread.start();
+
+        Patient patient0 = new Patient(0, waitingRoom);
+        Patient patient1 = new Patient(1, waitingRoom);
+        Patient patient2 = new Patient(2, waitingRoom);
+        Patient patient3 = new Patient(3, waitingRoom);
+        Patient patient4 = new Patient(4, waitingRoom);
+    }
+}
+```
+</details>
+</details>
+</blockquote>
+
+## 3.5 Soccer match
+
+The target of this exercise is to implement a soccer match, and a number of other classes observing this soccer match.
+
+Download the [`SoccerMatch`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/SoccerMatch.java) class and add it to your project.
+
+Create a class with a main method. Create an instance of `SoccerMatch` and call the `startMatch()` method.
+
+Verify that two things are printed out, with 9 seconds in between: 
+
+"Match starting" and "Match ended".
+
+### 3.5.1
+
+Change the `SoccerMatch` class so that it becomes a subject:
+
+ - Implement the [`PropertyChangeSubject`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/PropertyChangeSubject.java) or create your own.
+ -	The `SoccerMatch` must have an attribute of type `PropertyChangeSupport`, similar to the `TrafficLight` example.
+ -	Find the four TODOs - implement them so you fire events, using the `PropertyChangeSupport`. Give meaningful names for the events, like “Goal” and “RoughTackle”.
+
+<blockquote>
+<details>
+
+<details>
+<summary>Display solution...</summary>
+
+```java
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.Random;
+
+public class SoccerMatch implements PropertyChangeSubject
+{
+
+    private String team0 = "Dream Team";
+    private String team1 = "Old Boys";
+
+    private PropertyChangeSupport support;
+
+    public SoccerMatch()
+    {
+        support = new PropertyChangeSupport(this);
+    }
+
+    public void startMatch()
+    {
+        System.out.println("Match starting \n\n");
+        Random random = new Random();
+        for (int i = 0; i < 90; i++)
+        {
+
+            int rand = random.nextInt(100);
+            int whichTeam = random.nextInt(2);
+
+            if (rand < 8)
+            {
+                // score goal
+                scoreGoal(whichTeam);
+            }
+            else if (rand < 12)
+            {
+                // penalty
+                roughTackle(whichTeam);
+            }
+
+            try
+            {
+                Thread.sleep(100);
+            }
+            catch (InterruptedException e)
+            {
+                break;
+            }
+        }
+
+        System.out.println("\n\nMatch ended");
+    }
+
+    private void roughTackle(int whichTeam)
+    {
+        if (whichTeam == 0)
+        {
+            support.firePropertyChange("RoughTackle", null, team0);
+        }
+        else
+        {
+            support.firePropertyChange("RoughTackle", null, team1);
+        }
+    }
+
+    private void scoreGoal(int whichTeam)
+    {
+        if (whichTeam == 0)
+        {
+            support.firePropertyChange("Goal", null, team0);
+        }
+        else
+        {
+            support.firePropertyChange("Goal", null, team1);
+        }
+    }
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+        support.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void addPropertyChangeListener(String name, PropertyChangeListener listener)
+    {
+        support.addPropertyChangeListener(name, listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener)
+    {
+        support.removePropertyChangeListener(listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(String name, PropertyChangeListener listener)
+    {
+        support.removePropertyChangeListener(name, listener);
+    }
+}
+
+```
+</details>
+</blockquote>
+
+### 3.5.2
+
+Create two fan classes: `DreamTeamFans` and `OldBoysFans`. 
+
+ - When the team they’re rooting for has scored, print out something like “Dream team fans: YEEEAAH!”
+ - When the opposite team scores, print out something like "Old boys fans: BOOOOOOOH!"
+ - In the main method, create an instance of each, and add them as listeners to the `SoccerMatch`.
+ 
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import java.beans.PropertyChangeEvent;
+
+public class DreamTeamFans
+{
+    public DreamTeamFans(SoccerMatch soccerMatch)
+    {
+        soccerMatch.addPropertyChangeListener("Goal", this::teamScored);
+    }
+
+    private void teamScored(PropertyChangeEvent evt)
+    {
+        if(("Dream Team").equals(evt.getNewValue()))
+        {
+            System.out.println("Dream team fans: YEEEAAH!");
+        }
+        else
+        {
+            System.out.println("Dream team fans: BOOOOOOOH!");
+        }
+    }
+}
+
+import java.beans.PropertyChangeEvent;
+
+public class OldBoysFans
+{
+    public OldBoysFans(SoccerMatch soccerMatch)
+    {
+        soccerMatch.addPropertyChangeListener("Goal", this::teamScored);
+    }
+
+    private void teamScored(PropertyChangeEvent evt)
+    {
+        if("Old Boys".equals(evt.getNewValue()))
+        {
+            System.out.println("Old Boys fans: YEEEAAH!");
+        }
+        else
+        {
+            System.out.println("Old Boys fans: BOOOOOOOH!");
+        }
+    }
+}
+```
+</details>
+</blockquote>
+
+### 3.5.3
+
+Create a class `Referee`. He should react to rough tackles - print out something like “Referee gives Old Boys a yellow card for a rough tackle”. 
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import java.beans.PropertyChangeEvent;
+
+public class Referee
+{
+    public Referee(SoccerMatch soccerMatch)
+    {
+        soccerMatch.addPropertyChangeListener("RoughTackle", this::roughTackle);
+    }
+
+    private void roughTackle(PropertyChangeEvent evt)
+    {
+        String team = (String) evt.getNewValue();
+        System.out.println("Referee gives " + team + " a yellow card for a rough tackle");
+    }
+}
+```
+</details>
+</blockquote>
+
+### 3.5.4
+
+Create a class `AngryCoach`. When his team scores, he should cheer. When the other team makes a rough tackle, he should yell at the referee.
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import java.beans.PropertyChangeEvent;
+
+public class AngryCoach
+{
+    private String team;
+
+    public AngryCoach(String team, SoccerMatch soccerMatch)
+    {
+        this.team = team;
+        soccerMatch.addPropertyChangeListener("RoughTackle", this::roughTackle);
+        soccerMatch.addPropertyChangeListener("Goal", this::teamScored);
+    }
+
+    private void roughTackle(PropertyChangeEvent evt)
+    {
+        String teamThatRoughTackled = (String) evt.getNewValue();
+        if(!team.equals(teamThatRoughTackled))
+        {
+            System.out.println("Angry "+team+" coach: " + teamThatRoughTackled + " player, you are out of the game! Referee, send him off!");
+        }
+    }
+
+    private void teamScored(PropertyChangeEvent evt)
+    {
+        if (team.equals(evt.getNewValue()))
+        {
+            System.out.println("Angry "+team+" coach: " + this.team + " scored! Good job guys!");
+        }
+    }
+}
+```
+</details>
+</blockquote>
+
+### 3.5.5
+
+Create a class `ScoreBoard`. It should print out the current score, every time it changes.
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import java.beans.PropertyChangeEvent;
+
+public class ScoreBoard
+{
+
+    private int teamDreamTeamScore = 0;
+    private int teamOldBoysScore = 0;
+
+    public ScoreBoard(SoccerMatch soccerMatch)
+    {
+        soccerMatch.addPropertyChangeListener("Goal", this::teamScored);
+    }
+
+    private void teamScored(PropertyChangeEvent evt)
+    {
+        String teamThatScored = (String) evt.getNewValue();
+        if("Dream Team".equals(teamThatScored))
+        {
+            teamDreamTeamScore++;
+        }
+        else
+        {
+            teamOldBoysScore++;
+        }
+        System.out.println("Score: Dream Team: " + teamDreamTeamScore + " - Old Boys: " + teamOldBoysScore);
+    }
+}
+```
 </details>
 </blockquote>
 
