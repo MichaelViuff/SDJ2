@@ -86,7 +86,7 @@ Modify your solution from 3.1 to use the `PropertyChangeSupport`, `PropertyChang
 
 ## 3.3 Traffic light
 
-You’re going to simulate a doctor’s waiting room, initially it looks something like this:
+Implement the UML class diagram shown below:
 
 ![WaitingRoomUMLClassDiagram](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Images/WaitingRoomUML.png)
 
