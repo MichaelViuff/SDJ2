@@ -143,7 +143,7 @@ The target of this exercise is to implement a soccer match, and a number of othe
 
 Download the [`SoccerMatch`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/SoccerMatch.java) class and add it to your project.
 
-Create a different class, with a main method. Create an instance of `SoccerMatch` and call the `startMatch()` method.
+Create a class with a main method. Create an instance of `SoccerMatch` and call the `startMatch()` method.
 
 Verify that two things are printed out, with 9 seconds in between: 
 
@@ -174,7 +174,7 @@ Change the `SoccerMatch` class so that it becomes a subject:
 
 ### 3.4.2
 
-Implement two fan classes: `DreamTeamFan` and `OldBoysFan`. These should be listeners. 
+Create two fan classes: `DreamTeamFan` and `OldBoysFan`. 
 
  - When the team they’re rooting for has scored, print out something like “Dream team fans: YEEEAAH!”
  - When the opposite team scores, print out something like "Old boys fans: BOOOOOOOH!"
@@ -197,7 +197,7 @@ Implement two fan classes: `DreamTeamFan` and `OldBoysFan`. These should be list
 
 ### 3.4.3
 
-Implement a `Referee` class a listener. He should react to rough tackles - print out something like “Referee gives Old Boys a yellow card for a rough tackle”. 
+Create a class `Referee`. He should react to rough tackles - print out something like “Referee gives Old Boys a yellow card for a rough tackle”. 
 
 <blockquote>
 <details>
