@@ -761,8 +761,6 @@ Change the `SoccerMatch` class so that it becomes a subject:
 
 <blockquote>
 <details>
-
-<details>
 <summary>Display solution...</summary>
 
 ```java
