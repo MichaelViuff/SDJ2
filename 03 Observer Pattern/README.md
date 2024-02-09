@@ -180,8 +180,6 @@ Implement two fan classes: `DreamTeamFan` and `OldBoysFan`. These should be list
  - When the opposite team scores, print out something like "Old boys fans: BOOOOOOOH!"
  - In the main method, create an instance of each, and add them as listeners to the `SoccerMatch`.
  
-Run the example and verify everything is working as expected.
-
 <blockquote>
 <details>
 <summary>Display hints...</summary>
