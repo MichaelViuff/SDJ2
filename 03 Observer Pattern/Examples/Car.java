@@ -1,39 +1,34 @@
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-public class Car implements PropertyChangeListener
+public class Car
 {
+    private String previousLight;
+    private int id;
 
-  private int id;
-  private PropertyChangeSubject subject;
+    public Car(int id)
+    {
+        this.id = id;
+    }
 
-  public Car(int id, TrafficLight trafficLight)
-  {
-    this.id = id;
-    this.subject = trafficLight;
-  }
-
-  private void reactToChange(PropertyChangeEvent evt)
-  {
-    String color = evt.getNewValue().toString();
-    if(color.equals("GREEN"))
-      move();
-    if(color.equals("YELLOW") || color.equals("RED"))
-      stop();
-  }
-
-  private void stop()
-  {
-    System.out.println("STOPPING" + id);
-  }
-
-  public void move()
-  {
-    System.out.println("VROOM VROOM!" + id);
-  }
-
-  @Override public void propertyChange(PropertyChangeEvent evt)
-  {
-    reactToChange(evt);
-  }
+    public void setLight(String currentLight)
+    {
+        if("GREEN".equals(currentLight))
+        {
+            System.out.println("Car " + id + " drives");
+        }
+        else if("YELLOW".equals(currentLight))
+        {
+            if("RED".equals(previousLight))
+            {
+                System.out.println("Car " + id + " turns engine on");
+            }
+            else
+            {
+                System.out.println("Car " + id + " slows down");
+            }
+        }
+        else if("RED".equals(currentLight))
+        {
+            System.out.println("Car " + id + " stops");
+        }
+        previousLight = currentLight;
+    }
 }
