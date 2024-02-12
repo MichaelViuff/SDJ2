@@ -1195,21 +1195,20 @@ public class ScoreBoard
 
 You’re going to implement the example from the presentation about visualizing data in different ways.
 
-In JavaFX there are several different components that can be used to show data. You will have to investigate how to use them on your own. In SceneBuilder they can be found under the "charts" section.
+In JavaFX there are several different components that can be used to show data. You will have to investigate how to use them on your own. In SceneBuilder they can be found under the "Charts" section.
 
 ![SceneBuilderChartsScreenshot](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Images/SceneBuilderChartsScreenshot.png)
  
-The uploaded class [`DataModel`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/DataModel.java) has a method, which will calculate three values: red, green, yellow. The sum will always be 100. The numbers will be recalculated whenever the recalculateData method is called.
+The uploaded class [`DataModel`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/DataModel.java) will calculate three values: red, green, yellow. The sum will always be 100. The numbers will be recalculated every second.
 
-Modify the `DataModel` class so that is becomes a subject: 
-
- - Implement the interface, create a field variable of type `PropertyChangeSupport`, and fire events from the `recalculateData()` method.
- - Instantiate the `DataModel` in a main method. Create a `while(true)` loop, and have it call the `recalculateData()` method, then sleep for for a short while.
- - Run the example, and verify the printed output is as expected.
+Start by creating a `Main` class and create a new `Thread` for the `DataModel` and `start()` it. Verify that it prints a new set of values to the console every second.
 
 ### 3.7.1	
 
-Create multiple listener classes. Each class should listen for changes in the `DataModel`. Each class should present the data in a different way - experiment with the different chart components.
+You may have notified that the `DataModel` class fires an event called "DataChange". This is the event we want to subscribe to in our representation classes.
+
+Our visualizitation will subscribe to this event, and whenever the data changes, update how it is being displayed.
+
 
 
 
