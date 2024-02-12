@@ -1,28 +1,73 @@
-package datavisualization;
-
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Random;
 
-public class DataModel {
+public class DataModel implements PropertyChangeSubject, Runnable
+{
+  private int red, green, yellow;
 
-    private int red, green, yellow;
+  private Random random = new Random();
 
-    private Random random = new Random();
+  private PropertyChangeSupport propertyChangeSupport;
 
-    public DataModel() {
+  public DataModel()
+  {
+    propertyChangeSupport = new PropertyChangeSupport(this);
+  }
+
+  @Override public void addPropertyChangeListener(
+      PropertyChangeListener listener)
+  {
+    propertyChangeSupport.addPropertyChangeListener(listener);
+  }
+
+  @Override public void addPropertyChangeListener(String name, PropertyChangeListener listener)
+  {
+    propertyChangeSupport.addPropertyChangeListener(name, listener);
+  }
+
+  @Override public void removePropertyChangeListener(PropertyChangeListener listener)
+  {
+    propertyChangeSupport.removePropertyChangeListener(listener);
+  }
+
+  @Override public void removePropertyChangeListener(String name, PropertyChangeListener listener)
+  {
+    propertyChangeSupport.removePropertyChangeListener(name, listener);
+  }
+
+  @Override public void run()
+  {
+    while (true)
+    {
+      recalculateData();
+      try
+      {
+        Thread.sleep(1000);
+      }
+      catch (InterruptedException e)
+      {
+        e.printStackTrace();
+      }
     }
+  }
 
-    public void recalculateData() {
-        int first = random.nextInt(100)+1;
-        int second = random.nextInt(100)+1;
-        int bottom = Math.min(first, second);
-        int top = Math.max(first, second);
+  private void recalculateData()
+  {
+    int first = random.nextInt(100) + 1;
+    int second = random.nextInt(100) + 1;
+    int bottom = Math.min(first, second);
+    int top = Math.max(first, second);
 
-        red = bottom;
-        green = top - bottom;
-        yellow = 100 - top;
-        System.out.println("red: " + red);
-        System.out.println("green: " + green);
-        System.out.println("yellow: " + yellow);
-        System.out.println("Sum: " + (red + green + yellow));
-    }
+    red = bottom;
+    green = top - bottom;
+    yellow = 100 - top;
+
+    System.out.println("red: " + red);
+    System.out.println("green: " + green);
+    System.out.println("yellow: " + yellow);
+    System.out.println("Sum: " + (red + green + yellow));
+
+    propertyChangeSupport.firePropertyChange("DataChange", null, new int[] {red, green, yellow});
+  }
 }
