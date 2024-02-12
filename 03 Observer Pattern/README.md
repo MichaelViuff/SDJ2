@@ -15,7 +15,7 @@ Implement a new class `Taxi`:
 <details>
 <summary>Display hints...</summary>
 <p>
-  You can duplicate most of the code from the `Car` class. You will need to make changes in the `setLight()` method, so that the `Taxi` acts like instructed. You will also need to make a few changes in the `TrafficLight` and `Main` class.
+  You can duplicate most of the code from the <block>Car</block> class. You will need to make changes in the <block>setLight()</block> method, so that the <block>Taxi</block> acts like instructed. You will also need to make a few changes in the <block>TrafficLight</block> and <block>Main</block> class.
 </p>
 <details>
 <summary>Display solution...</summary>
@@ -126,7 +126,7 @@ Implement a new class `Pedestrian`. When the cars are waiting for red light, he 
 <details>
 <summary>Display hints...</summary>
 <p>
-  Once again, reuse everything from `Car` and make necessary changes. Your `TrafficLight` and `Main` classes will have been updated quite a lot by now, so their implementation is also shown in the solution below.
+  Once again, reuse everything from <block>Car</block> and make necessary changes. Your <block>TrafficLight</block> and <block>Main</block> classes will have been updated quite a lot by now, so their implementation is also shown in the solution below.
 </p>
 <details>
 <summary>Display solution...</summary>
@@ -563,7 +563,7 @@ Test everything in a main method where you create several birds and watchers.
 <details>
 <summary>Display hints...</summary>
 <p>
-  Start by creating the <code>Bird</code> class as a subject. Should probably create it as a <code>Runnable</code> so it can do different things at different times.
+  Start by creating the <code>Bird</code> class as a subject.
 </p>
 <p>
   The <code>BirdWatcher</code> and <code>BlindBirdWatcher</code> classes are listeners, and should react to the events fired by the <code>Bird</code> class. When attaching them as listeners, do it with lambda expressions instead of implementing the <code>PropertyChangeListener</code> interface.
@@ -573,6 +573,157 @@ Test everything in a main method where you create several birds and watchers.
 <summary>Display solution...</summary>
 
 ```java
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.Random;
+
+public class Bird implements PropertyChangeSubject
+{
+    private PropertyChangeSupport support;
+
+    public Bird()
+    {
+        support = new PropertyChangeSupport(this);
+    }
+
+    public void start()
+    {
+        Random random = new Random();
+        while(true)
+        {
+            random.nextInt(100);
+            if(random.nextInt(100) < 50)
+            {
+                System.out.println("Bird is flapping wings");
+                support.firePropertyChange("Flapping", null, null);
+            }
+            else
+            {
+                System.out.println("Bird is singing a song");
+                support.firePropertyChange("Singing", null, null);
+            }
+            try
+            {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+        support.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void addPropertyChangeListener(String name, PropertyChangeListener listener)
+    {
+        support.addPropertyChangeListener(name, listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener)
+    {
+        support.removePropertyChangeListener(listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(String name, PropertyChangeListener listener)
+    {
+        support.removePropertyChangeListener(name, listener);
+    }
+}
+
+import java.util.Random;
+
+public class BirdWatcher
+{
+    public BirdWatcher(Bird birdToWatch)
+    {
+        birdToWatch.addPropertyChangeListener("Flapping", evt -> reactToFlapping());
+        birdToWatch.addPropertyChangeListener("Singing", evt -> reactToSinging());
+    }
+
+    private void reactToFlapping()
+    {
+        Random random = new Random();
+        int reaction = random.nextInt(3);
+        if(reaction == 0)
+        {
+            System.out.println("Bird Watcher: Ooh!");
+        }
+        else if(reaction == 1)
+        {
+            System.out.println("Bird Watcher: So beautiful!");
+        }
+        else
+        {
+            System.out.println("Bird Watcher: Would you look at that");
+        }
+    }
+
+    private void reactToSinging()
+    {
+        Random random = new Random();
+        int reaction = random.nextInt(3);
+        if(reaction == 0)
+        {
+            System.out.println("Bird Watcher: Wow!");
+        }
+        else if(reaction == 1)
+        {
+            System.out.println("Bird Watcher: How nice");
+        }
+        else
+        {
+            System.out.println("Bird Watcher: What a lovely voice!");
+        }
+    }
+}
+
+import java.util.Random;
+
+public class BlindBirdWatcher
+{
+    public BlindBirdWatcher(Bird birdToWatch)
+    {
+        birdToWatch.addPropertyChangeListener("Singing", evt -> reactToSinging());
+    }
+
+    private void reactToSinging()
+    {
+        Random random = new Random();
+        int reaction = random.nextInt(3);
+        if(reaction == 0)
+        {
+            System.out.println("Blind Bird Watcher: Wow!");
+        }
+        else if(reaction == 1)
+        {
+            System.out.println("Blind Bird Watcher: How nice");
+        }
+        else
+        {
+            System.out.println("Blind Bird Watcher: What a lovely voice!");
+        }
+    }
+}
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        Bird bird = new Bird();
+        new BirdWatcher(bird);
+        new BlindBirdWatcher(bird);
+
+        bird.start();
+    }
+}
 ```
 </details>
 </details>
@@ -583,7 +734,6 @@ Test everything in a main method where you create several birds and watchers.
 Implement the UML class diagram shown below:
 
 ![WaitingRoomUMLClassDiagram](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Images/WaitingRoomUML.png)
-
 
 The `run()` method of the `WaitingRoom` start a counter at 0 (to simulate ticket number for the patients), run indefinitely while it increments the counter by 1, fire an event each time it does, and then sleep for 1 second. 
 
@@ -1041,50 +1191,25 @@ public class ScoreBoard
 
 ## 3.6 Data representation
 
-This is for the adventurous ones, it assumes some knowledge about JavaFX.
-You’re going to implement the example from the slides about visualizing data in different ways.
-In JavaFX there are several components to show data, you’ll have to investigate how to use them. In the SceneBuilder they’re found under the ‘charts’ section.
+<u>This exercise assumes that you are already familiar with JavaFX.</u>
+
+You’re going to implement the example from the presentation about visualizing data in different ways.
+
+In JavaFX there are several different components that can be used to show data. You will have to investigate how to use them on your own. In SceneBuilder they can be found under the "charts" section.
 
 ![SceneBuilderChartsScreenshot](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Images/SceneBuilderChartsScreenshot.png)
  
-The uploaded class DataModel has a method, which will calculate three values: red, green, yellow. The sum will always be 100. The numbers will be recalculated whenever the recalculateData method is called.
-Modify the DataModel class so that is becomes a Subject: Implement the interface, create a field variable of type PropertyChangeSupport, and fire events from the recalculateData method.
-Instantiate the DataModel, e.g. in a main method. Create a while(true) loop, which calls the recalculateData method, then sleeps for a short while.
-Run the example, and verify the printed output is as expected.
+The uploaded class [`DataModel`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/DataModel.java) has a method, which will calculate three values: red, green, yellow. The sum will always be 100. The numbers will be recalculated whenever the recalculateData method is called.
 
-<blockquote>
-<details>
-<summary>Display hints...</summary>
-<p>
-  
-</p>
-<details>
-<summary>Display solution...</summary>
+Modify the DataModel class so that is becomes a subject: 
 
-```java
-```
-</details>
-</details>
-</blockquote>
+ - Implement the interface, create a field variable of type `PropertyChangeSupport`, and fire events from the `recalculateData()` method.
+ - Instantiate the `DataModel` in a main method. Create a `while(true)` loop, and have it call the `recalculateData()` method, then sleep for for a short while.
+ - Run the example, and verify the printed output is as expected.
 
 ### 3.7.1	
 
-Create multiple Listener classes. Each class should listen for changes in the DataModel. Each class should present the data in a different way, play around with the chart components.
-
-<blockquote>
-<details>
-<summary>Display hints...</summary>
-<p>
-  
-</p>
-<details>
-<summary>Display solution...</summary>
-
-```java
-```
-</details>
-</details>
-</blockquote>
+Create multiple listener classes. Each class should listen for changes in the `DataModel`. Each class should present the data in a different way - experiment with the different chart components.
 
 
 
