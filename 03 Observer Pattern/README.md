@@ -1201,7 +1201,7 @@ In JavaFX there are several different components that can be used to show data. 
  
 The uploaded class [`DataModel`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/DataModel.java) has a method, which will calculate three values: red, green, yellow. The sum will always be 100. The numbers will be recalculated whenever the recalculateData method is called.
 
-Modify the DataModel class so that is becomes a subject: 
+Modify the `DataModel` class so that is becomes a subject: 
 
  - Implement the interface, create a field variable of type `PropertyChangeSupport`, and fire events from the `recalculateData()` method.
  - Instantiate the `DataModel` in a main method. Create a `while(true)` loop, and have it call the `recalculateData()` method, then sleep for for a short while.
