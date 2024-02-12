@@ -15,7 +15,7 @@ Implement a new class `Taxi`:
 <details>
 <summary>Display hints...</summary>
 <p>
-  You can duplicate most of the code from the <block>Car</block> class. You will need to make changes in the <block>setLight()</block> method, so that the <block>Taxi</block> acts like instructed. You will also need to make a few changes in the <block>TrafficLight</block> and <block>Main</block> class.
+  You can duplicate most of the code from the <code>Car</code> class. You will need to make changes in the <code>setLight()</code> method, so that the <code>Taxi</code> acts like instructed. You will also need to make a few changes in the <code>TrafficLight</code> and <code>Main</code> class.
 </p>
 <details>
 <summary>Display solution...</summary>
@@ -70,7 +70,7 @@ Implement a new class `SleepyDriver`:
 <details>
 <summary>Display hints...</summary>
 <p>
-  Just like with the previous class, you can reuse everything from `Car` and modify the behaviour as necessary. You will also need to make a few changes in the `TrafficLight` and `Main` class.
+  Just like with the previous class, you can reuse everything from <code>Car</code> and modify the behaviour as necessary. You will also need to make a few changes in the <code>TrafficLight</code> and <code>Main</code> class.
 </p>
 <details>
 <summary>Display solution...</summary>
@@ -126,7 +126,7 @@ Implement a new class `Pedestrian`. When the cars are waiting for red light, he 
 <details>
 <summary>Display hints...</summary>
 <p>
-  Once again, reuse everything from <block>Car</block> and make necessary changes. Your <block>TrafficLight</block> and <block>Main</block> classes will have been updated quite a lot by now, so their implementation is also shown in the solution below.
+  Once again, reuse everything from <code>Car</code> and make necessary changes. Your <code>TrafficLight</code> and <code>Main</code> classes will have been updated quite a lot by now, so their implementation is also shown in the solution below.
 </p>
 <details>
 <summary>Display solution...</summary>
@@ -285,11 +285,11 @@ Modify your solution from 3.1 to use the `PropertyChangeSupport`, `PropertyChang
 <details>
 <summary>Display hints...</summary>
 <p>
-  Start by reworking the `TrafficLight` class. Turn it into a subject using the Observer pattern. Listeners should attach themselves as `PropertyChangeListener`, and be stored in a `PropertyChangeSupport`. To do so, combine and modify the `add()` methods. It should also notify all listeners whenever the light changes, in the `lightChanged()` method, calling `firePropertyChange()` on the `PropertyChangeSupport`. 
+  Start by reworking the <code>TrafficLight</code> class. Turn it into a subject using the Observer pattern. Listeners should attach themselves as <code>PropertyChangeListener</code>, and be stored in a <code>PropertyChangeSupport</code>. To do so, combine and modify the <code>add()</code> methods. It should also notify all listeners whenever the light changes, in the <code>lightChanged()</code> method, calling <code>firePropertyChange()</code> on the <code>PropertyChangeSupport</code>. 
 </p>
 
  <p>
-  Everyone looking at the light should be turned into listeners using the Observer pattern. To get notifications about light changes, they need to attach themselves to the subject, the `TrafficLight` class. The method to attach takes a `PropertyChangeListener` as argument, so they need to implement that interface. That interface has a single method `propertyChange(PropertyChangeEvent evt)` which they need to implement. Have that method call the `setLight()` method with the value received.
+  Everyone looking at the light should be turned into listeners using the Observer pattern. To get notifications about light changes, they need to attach themselves to the subject, the <code>TrafficLight</code> class. The method to attach takes a <code>PropertyChangeListener</code> as argument, so they need to implement that interface. That interface has a single method <code>propertyChange(PropertyChangeEvent evt)</code> which they need to implement. Have that method call the <code>setLight()</code> method with the value received.
 </p>
 
 <details>
