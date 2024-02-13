@@ -17,7 +17,7 @@ Draw a State Machine Diagram for the follwoing behaviour:
 <blockquote>
 <details>
 <summary>Display solution...</summary>
- ![Phone State Machine](https://github.com/MichaelViuff/SDJ2/blob/main/04%20State%20Pattern/Images/PhoneStateMachine.PNG)
+ <img  src="https://github.com/MichaelViuff/SDJ2/blob/main/04%20State%20Pattern/Images/PhoneStateMachine.PNG" />
 </details>
 </blockquote>
 
