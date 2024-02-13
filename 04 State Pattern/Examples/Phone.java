@@ -43,6 +43,11 @@ public class Phone
         currentState.onVolumeButtonUp(this);
     }
 
+    public void volumeDownButton()
+    {
+        currentState.onVolumeButtonDown(this);
+    }
+    
     void turnVolumeUp()
     {
         currentVolume++;
