@@ -1205,7 +1205,24 @@ Start by creating a `Main` class and create a new `Thread` for the `DataModel` a
 
 ### 3.7.1	
 
-You may have notified that the `DataModel` class fires an event called "DataChange". This is the event we want to subscribe to in our representation classes.
+You may have notified that the `DataModel` class fires an event called "DataChange". This is the event we want to subscribe to in our representation classes. Select one of the chart types in JavaFX, and research on your own how they work. For now, we will just create a single `Controller` class and implement everything there.
+
+You should be able to get everything running with a total of 5 files in your workspace:
+ - `DataModel`, the one you've already downloaded
+ - `PropertyChangeSubject` the interface used by `DataModel`
+ - An appropriately named `Controller` for your JavaFX GUI
+ - A `Main` class that extends `Application` with a main method that calls `launch()` to start everything
+ - An appropriately named `.fxml` file containing your layout, using the chosen chart type.
+
+In the following section a list of the most common issues has been covered. Start by reading through this first.
+
+JavaFX runs on its own thread. If we start a new thread for the `DataModel`, our main thread persists while this thread keep running. To avoid this, we can set the `DataModel` thread as a daemon thread, so it dies when the JavaFX thread dies, like this:
+
+```java
+Thread dataThread = new Thread(model);
+dataThread.setDaemon(true);
+dataThread.start();
+```
 
 Due to the way JavaFX works, you are not able to modify JavaFX properties from another thread. To overcome this, we can defer the modification until a time that JavaFX deems suitable, by wrapping the call in a `Platform.runLater()` call, like this:
 
