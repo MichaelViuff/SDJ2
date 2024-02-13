@@ -1220,8 +1220,8 @@ You will probably also need to inject your model into your `FXMLController` clas
 
 ```java
 DataModel model = new DataModel();
-FXMLLoader fxmlLoader = new FXMLLoader([name of your class here].class.getResource("[name of your FXML file here].fxml"));
-fxmlLoader.setControllerFactory(controllerClass -> new [name of your controller class here](model));
+FXMLLoader fxmlLoader = new FXMLLoader([name-of-your-class-here].class.getResource("[name-of-your-FXML-file-here].fxml"));
+fxmlLoader.setControllerFactory(controllerClass -> new [name-of-your-controller-class-here](model));
 ```
 
 JavaFX runs on its own thread. If we start a new thread for the `DataModel`, our main thread persists while this thread keep running. To avoid this, we can set the `DataModel` thread as a daemon thread, so it dies when the JavaFX thread dies, like this:
