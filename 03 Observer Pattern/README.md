@@ -1216,6 +1216,14 @@ You should be able to get everything running with a total of 5 files in your wor
 
 In the following section a list of the most common issues has been covered. Start by reading through this first.
 
+You will probably also need to inject your model into your `FXMLController` class. There are many ways to do this, one is to use the `ControllerFactory` in JavaFX, like this:
+
+```java
+DataModel model = new DataModel();
+FXMLLoader fxmlLoader = new FXMLLoader([name of your class here].class.getResource("[name of your FXML file here].fxml"));
+fxmlLoader.setControllerFactory(controllerClass -> new [name of your controller class here](model));
+```
+
 JavaFX runs on its own thread. If we start a new thread for the `DataModel`, our main thread persists while this thread keep running. To avoid this, we can set the `DataModel` thread as a daemon thread, so it dies when the JavaFX thread dies, like this:
 
 ```java
@@ -1231,14 +1239,6 @@ Platform.runLater(() ->
 {
   //Insert the code that modifies JavaFX properties here...
 });
-```
-
-You will probably also need to inject your model into your `FXMLController` class. There are many ways to do this, one is to use the `ControllerFactory` in JavaFX, like this:
-
-```java
-DataModel model = new DataModel();
-FXMLLoader fxmlLoader = new FXMLLoader([name of your class here].class.getResource("[name of your FXML file here].fxml"));
-fxmlLoader.setControllerFactory(controllerClass -> new [name of your controller class here](model));
 ```
 
 JavaFX will initialize all your `@FXML` annotated attributes in the `initialize()` method, so make sure you don't try to use them in your constructor (they aren't initialized at that point).
