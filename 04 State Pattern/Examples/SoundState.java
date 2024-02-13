@@ -33,7 +33,7 @@ public class SoundState implements PhoneState
         }
         else
         {
-            phone.changeToSilentState();
+            phone.changeToVibrateState();
         }
     }
 }
