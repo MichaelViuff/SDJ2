@@ -1,18 +1,29 @@
 # 04 Exercises: State Pattern
 
+## 4.1 Phone example
 
-## 4.2 Phone example
+Start by downloading the incomplete Phone example, consisting of the classes [`Phone`](https://github.com/MichaelViuff/SDJ2/blob/main/04%20State%20Pattern/Examples/Phone.java), [`PhoneState`](https://github.com/MichaelViuff/SDJ2/blob/main/04%20State%20Pattern/Examples/PhoneState.java), and [`SoundState`](https://github.com/MichaelViuff/SDJ2/blob/main/04%20State%20Pattern/Examples/SoundState.java)
 
-Start by downloading the incomplete `Phone`
+The Phone example is incomplete, and needs to be finished.
+We will introduce two new states, one for when the phone is on silent, and one for when the phone is on vibrate mode.
 
-For this exercise, we will implement everything without using the Observer pattern, just to see how it quickly becomes hard to maintain.
+Draw a State Machine Diagram for the follwoing behaviour:
+ - The phone starts in SoundState
+ - When the volume button down is pressed, if the volume would reach the value 0, instead change state to the VibrateState
+ - When the phone is in VibrateState, pressing the volume up button will change the state to SoundState
+ - When the phone is in VibrateState, pressing the volume down button will change the state to SilentState
+ - When the phone is in SilentState, pressing the volume up button will change the state to VibrateState
 
-Create the Traffic light example that was shown in the presentation, with the classes [`Car`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/Car.java), [`TrafficLight`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/TrafficLight.java) and [`Main`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/Main.java). 
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+ ![Phone State Machine](https://github.com/MichaelViuff/SDJ2/blob/main/04%20State%20Pattern/Images/PhoneStateMachine.PNG)
+</details>
+</blockquote>
 
-Run the example and verify that the `Car` reacts to the traffic light changing.
-
-Implement a new class `Taxi`: 
- - It ignores yellow lights, stops when red, and drives when green.
+Implement the following classes according to the State Machine Diagram you drew:
+ - Create the missing State classes, `VibrateState` and `SilentState`, and implement their logic
+ - Test that everything works in a main method
 
 <blockquote>
 <details>
