@@ -1207,8 +1207,4 @@ Start by creating a `Main` class and create a new `Thread` for the `DataModel` a
 
 You may have notified that the `DataModel` class fires an event called "DataChange". This is the event we want to subscribe to in our representation classes.
 
-Our visualizitation will subscribe to this event, and whenever the data changes, update how it is being displayed.
-
-
-
-
+Due to the way JavaFX works, you are not able to modify JavaFX properties from another thread. 
