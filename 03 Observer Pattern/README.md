@@ -1244,3 +1244,5 @@ Platform.runLater(() ->
 JavaFX will initialize all your `@FXML` annotated attributes in the `initialize()` method, so make sure you don't try to use them in your constructor (they aren't initialized at that point).
 
 You should be able to get a small example running now. Good luck :)
+
+If you are stuck, take a look at the [Bar Chart Example](https://github.com/MichaelViuff/SDJ2/tree/main/03%20Observer%20Pattern/Examples/JavaFX%20Charts)
