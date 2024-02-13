@@ -1211,9 +1211,9 @@ Due to the way JavaFX works, you are not able to modify JavaFX properties from a
 
 ```java
 Platform.runLater(() ->
-    {
-      //Insert the code that modifies JavaFX properties here...
-    });
+{
+  //Insert the code that modifies JavaFX properties here...
+});
 ```
 
 You will probably also need to inject your model into your `FXMLController` class. There are many ways to do this, one is to use the `ControllerFactory` in JavaFX, like this:
@@ -1223,3 +1223,7 @@ DataModel model = new DataModel();
 FXMLLoader fxmlLoader = new FXMLLoader([name of your class here].class.getResource("[name of your FXML file here].fxml"));
 fxmlLoader.setControllerFactory(controllerClass -> new [name of your controller class here](model));
 ```
+
+JavaFX will initialize all your `@FXML` annotated attributes in the `initialize()` method, so make sure you don't try to use them in your constructor (they aren't initialized at that point).
+
+You should be able to get a small example running now. Good luck :)
