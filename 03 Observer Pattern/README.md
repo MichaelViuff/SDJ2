@@ -1207,4 +1207,19 @@ Start by creating a `Main` class and create a new `Thread` for the `DataModel` a
 
 You may have notified that the `DataModel` class fires an event called "DataChange". This is the event we want to subscribe to in our representation classes.
 
-Due to the way JavaFX works, you are not able to modify JavaFX properties from another thread. 
+Due to the way JavaFX works, you are not able to modify JavaFX properties from another thread. To overcome this, we can defer the modification until a time that JavaFX deems suitable, by wrapping the call in a `Platform.runLater()` call, like this:
+
+```java
+Platform.runLater(() ->
+    {
+      //Insert the code that modifies JavaFX properties here...
+    });
+```
+
+You will probably also need to inject your model into your `FXMLController` class. There are many ways to do this, one is to use the `ControllerFactory` in JavaFX, like this:
+
+```java
+DataModel model = new DataModel();
+FXMLLoader fxmlLoader = new FXMLLoader([name of your class here].class.getResource("[name of your FXML file here].fxml"));
+fxmlLoader.setControllerFactory(controllerClass -> new [name of your controller class here](model));
+```
