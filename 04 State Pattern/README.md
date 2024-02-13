@@ -27,50 +27,80 @@ Implement the following classes according to the State Machine Diagram you drew:
 
 <blockquote>
 <details>
-<summary>Display hints...</summary>
-<p>
-  You can duplicate most of the code from the <code>Car</code> class. You will need to make changes in the <code>setLight()</code> method, so that the <code>Taxi</code> acts like instructed. You will also need to make a few changes in the <code>TrafficLight</code> and <code>Main</code> class.
-</p>
-<details>
 <summary>Display solution...</summary>
 
 ```java
-public class Taxi
+public class VibrateState implements PhoneState
 {
-    private String previousLight;
-    private int id;
-
-    public Taxi(int id)
+    @Override
+    public void onReceiveMessage(String message, Phone phone)
     {
-        this.id = id;
+        phone.vibrate();
+        System.out.println(message);
     }
 
-    public void setLight(String currentLight)
+    @Override
+    public void onReceiveCall(Phone phone)
     {
-        if("GREEN".equals(currentLight))
+        phone.vibrate();
+    }
+
+    @Override
+    public void onVolumeButtonUp(Phone phone)
+    {
+        phone.changeToSoundState();
+    }
+
+    @Override
+    public void onVolumeButtonDown(Phone phone)
+    {
+        phone.changeToSilentState();
+    }
+}
+
+public class SilentState implements PhoneState
+{
+    @Override
+    public void onReceiveMessage(String message, Phone phone)
+    {
+        System.out.println(message);
+    }
+
+    @Override
+    public void onReceiveCall(Phone phone)
+    {
+        //Do nothing
+    }
+
+    @Override
+    public void onVolumeButtonUp(Phone phone)
+    {
+        phone.changeToVibrateState();
+    }
+
+    @Override
+    public void onVolumeButtonDown(Phone phone)
+    {
+        //Do nothing
+    }
+}
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        Phone phone = new Phone();
+        phone.receiveMessage("This message was delivered while phone should be in Sound State");
+        for (int i = 0; i <= 100; i++)
         {
-            System.out.println("Taxi " + id + " drives");
+            phone.volumeDownButton();
         }
-        else if("YELLOW".equals(currentLight))
-        {
-            if("RED".equals(previousLight))
-            {
-                System.out.println("Taxi " + id + " turns engine on");
-            }
-            else
-            {
-                System.out.println("Taxi " + id + " drives");
-            }
-        }
-        else if("RED".equals(currentLight))
-        {
-            System.out.println("Taxi " + id + " stops");
-        }
-        previousLight = currentLight;
+        phone.receiveMessage("This message was delivered while phone should be in Silent State");
+        phone.volumeUpButton();
+        phone.receiveMessage("This message was delivered while phone should be in Vibrate State");
     }
 }
 ```
-</details>
 </details>
 </blockquote>
 
