@@ -323,16 +323,16 @@ public class Main
 
 This exercise is about the sliding door example from the presentation.
 
-Create a UML class diagram for the sliding door, applying the State Pattern. You're going to need the four states: closed, open, closing, opening.
+Draw a UML class diagram for the sliding door, applying the State Pattern. You're going to need four states: closed, open, closing, opening, as well as the interface for the door, and a class for the door itself.
 
-<blockquote>
-<details>
-<summary>Display solution...</summary>
- <img  src="https://github.com/MichaelViuff/SDJ2/blob/main/04%20State%20Pattern/Images/PhoneStateMachine.PNG" />
-</details>
-</blockquote>
+Draw a State Machine Diagram for the sliding door with the following rules:
+ - The door starts in the closed state
+ - When the button is pushed in the closed state, the door starts to open
+ - While the door is opening, pushing the button causes the door to start closing
+ - The door takes 2 seconds to fully open or close
+ - When the door is open, it automatically starts closing after 5 seconds
 
-Implement the classes from your diagram.
+Implement the classes.
 
 In the opening and closing state, you need to simulate that it takes some time to close/open the doors. Use `Thread.sleep()` for a number of seconds.
 When the doors are closing, you can click the button to make them open again. This means that you will probably need to interrupt a sleeping thread.
@@ -340,9 +340,180 @@ When the doors are closing, you can click the button to make them open again. Th
 <blockquote>
 <details>
 <summary>Display solution...</summary>
-<p>
- 
-</p>
+```java
+ public class SlidingDoor
+{
+    private DoorState currentState;
+
+    public SlidingDoor()
+    {
+        currentState = new ClosedState();
+    }
+
+    public void pressButton()
+    {
+        currentState.onButtonPressed(this);
+    }
+
+    public void changeToClosingState()
+    {
+        currentState = new ClosingState(this);
+    }
+
+    public void changeToOpeningState()
+    {
+        currentState = new OpeningState(this);
+    }
+
+    public void changeToOpenState()
+    {
+        currentState = new OpenState(this);
+    }
+
+    public void changeToClosedState()
+    {
+        currentState = new ClosedState();
+    }
+}
+
+public interface DoorState
+{
+    void onButtonPressed(SlidingDoor door);
+}
+
+public class OpenState implements DoorState
+{
+    private final Thread closeDoorAfterSetTimeThread;
+
+    public OpenState(SlidingDoor door)
+    {
+        closeDoorAfterSetTimeThread = new Thread(() -> closeDoorAfterSetTime(door));
+        closeDoorAfterSetTimeThread.setDaemon(true);
+        closeDoorAfterSetTimeThread.start();
+        System.out.println("Door is open");
+    }
+
+    private void closeDoorAfterSetTime(SlidingDoor door)
+    {
+        try
+        {
+            Thread.sleep(5000);
+            door.changeToClosingState();
+        }
+        catch (InterruptedException e)
+        {
+            //This happens when the state is changed manually before the automatic trigger
+        }
+    }
+
+    @Override
+    public void onButtonPressed(SlidingDoor door)
+    {
+        closeDoorAfterSetTimeThread.interrupt();
+        door.changeToClosingState();
+    }
+}
+
+public class OpeningState implements DoorState
+{
+    private Thread openDoorAfterSetTimeThread;
+
+    public OpeningState(SlidingDoor door)
+    {
+        openDoorAfterSetTimeThread = new Thread(() -> openDoorAfterSetTime(door));
+        openDoorAfterSetTimeThread.setDaemon(true);
+        openDoorAfterSetTimeThread.start();
+        System.out.println("Door is opening");
+    }
+
+    private void openDoorAfterSetTime(SlidingDoor door)
+    {
+        try
+        {
+            Thread.sleep(2000);
+            door.changeToOpenState();
+        }
+        catch (InterruptedException e)
+        {
+            //This happens when the state is changed manually before the automatic trigger
+        }
+    }
+
+    @Override
+    public void onButtonPressed(SlidingDoor door)
+    {
+        openDoorAfterSetTimeThread.interrupt();
+        door.changeToClosingState();
+    }
+}
+
+public class ClosingState implements DoorState
+{
+    private Thread closeDoorAfterSetTimeThread;
+
+    public ClosingState(SlidingDoor door)
+    {
+        closeDoorAfterSetTimeThread = new Thread(() -> closeDoorAfterSetTime(door));
+        closeDoorAfterSetTimeThread.setDaemon(true);
+        closeDoorAfterSetTimeThread.start();
+        System.out.println("Door is closing");
+    }
+
+    private void closeDoorAfterSetTime(SlidingDoor door)
+    {
+        try
+        {
+            Thread.sleep(2000);
+            door.changeToClosedState();
+        }
+        catch (InterruptedException e)
+        {
+            //This happens when the state is changed manually before the automatic trigger
+        }
+    }
+
+    @Override
+    public void onButtonPressed(SlidingDoor door)
+    {
+        closeDoorAfterSetTimeThread.interrupt();
+        door.changeToOpeningState();
+    }
+}
+
+public class ClosedState implements DoorState
+{
+    public ClosedState()
+    {
+        System.out.println("Door is closed");
+    }
+
+    @Override
+    public void onButtonPressed(SlidingDoor door)
+    {
+        door.changeToOpeningState();
+    }
+}
+
+public class Main
+{
+    public static void main(String[] args) throws InterruptedException
+    {
+        SlidingDoor door = new SlidingDoor();
+        door.pressButton(); // Goes from closed to opening
+        Thread.sleep(20000); //Wait while opening finishes, and after set delay goes back to closing and then to closed
+        door.pressButton(); // Goes from closed to opening
+        Thread.sleep(1000); // Doesn't wait for opening to finish
+        door.pressButton(); // Interrupts the opening and goes to closing
+        Thread.sleep(5000); //Wait while closing finishes
+        door.pressButton(); // Goes from closed to opening
+        Thread.sleep(3000); // Waits for opening to finish
+        door.pressButton(); // Goes from open to closing
+        Thread.sleep(1000); // Doesn't wait for closing to finish
+        door.pressButton(); // Interrupts the closing and goes to opening
+        Thread.sleep(20000); //Wait while opening finishes, and after set delay goes back to closing and then to closed
+    }
+}
+```
 </details>
 </blockquote>
 
