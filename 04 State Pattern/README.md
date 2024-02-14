@@ -341,7 +341,7 @@ When the doors are closing, you can click the button to make them open again. Th
 <details>
 <summary>Display solution...</summary>
 ```java
- public class SlidingDoor
+public class SlidingDoor
 {
     private DoorState currentState;
 
