@@ -21,7 +21,7 @@ public class BarChartViewController {
     private XYChart.Data<String, Integer> redData;
     private XYChart.Data<String, Integer> greenData;
     private XYChart.Data<String, Integer> blueData;
-
+    
 
     public BarChartViewController(DataModel model)
     {
@@ -44,21 +44,21 @@ public class BarChartViewController {
 
     public void initialize()
     {
-        barChart.setTitle("Data Representation");
-        barChart.setLegendVisible(false);
         xAxis.setLabel("Colours");
         yAxis.setLabel("Value");
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
         yAxis.setUpperBound(100);
-
+        
         redData = new XYChart.Data("Red", 0);
         greenData = new XYChart.Data("Green", 0);
         blueData = new XYChart.Data("Blue", 0);
-
+        
         dataSeries = new XYChart.Series();
         dataSeries.getData().addAll(redData, greenData, blueData);
 
+        barChart.setTitle("Data Representation");
+        barChart.setLegendVisible(false);
         barChart.getData().add(dataSeries);
 
         Node node = barChart.lookup(".data0.chart-bar");
