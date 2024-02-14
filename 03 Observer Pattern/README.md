@@ -1199,7 +1199,7 @@ In JavaFX there are several different components that can be used to show data. 
 
 ![SceneBuilderChartsScreenshot](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Images/SceneBuilderChartsScreenshot.png)
  
-The uploaded class [`DataModel`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/DataModel.java) will calculate three values: red, green, yellow. The sum will always be 100. The numbers will be recalculated every second.
+The uploaded class [`DataModel`](https://github.com/MichaelViuff/SDJ2/blob/main/03%20Observer%20Pattern/Examples/DataModel.java) will calculate three values: red, green, blue. The sum will always be 100. The numbers will be recalculated every second.
 
 Start by creating a `Main` class and create a new `Thread` for the `DataModel` and `start()` it. Verify that it prints a new set of values to the console every second.
 
