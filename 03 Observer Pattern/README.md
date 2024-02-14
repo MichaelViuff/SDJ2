@@ -1203,7 +1203,7 @@ The uploaded class [`DataModel`](https://github.com/MichaelViuff/SDJ2/blob/main/
 
 Start by creating a `Main` class and create a new `Thread` for the `DataModel` and `start()` it. Verify that it prints a new set of values to the console every second.
 
-### 3.7.1	
+### Creating a data representation chart
 
 You may have notified that the `DataModel` class fires an event called "DataChange". This is the event we want to subscribe to in our representation classes. Select one of the chart types in JavaFX, and research on your own how they work. For now, we will just create a single `Controller` class and implement everything there.
 
