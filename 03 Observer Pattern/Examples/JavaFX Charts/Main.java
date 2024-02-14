@@ -2,28 +2,28 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
 
 public class Main extends Application
 {
-  public static void main(String[] args)
-  {
-    launch();
-  }
+    public static void main(String[] args)
+    {
+        launch();
+    }
 
-  @Override public void start(Stage stage) throws IOException
-  {
-    DataModel model = new DataModel();
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        DataModel model = new DataModel();
 
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BarChartView.fxml"));
-    fxmlLoader.setControllerFactory(controllerClass -> new BarChartViewController(model));
-    Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-    stage.setTitle("Data Representation");
-    stage.setScene(scene);
-    stage.show();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BarChartView.fxml"));
+        fxmlLoader.setControllerFactory(controllerClass -> new BarChartViewController(model));
 
-    Thread dataThread = new Thread(model);
-    dataThread.setDaemon(true);
-    dataThread.start();
-  }
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        primaryStage.setTitle("Data Representation");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        Thread dataModelThread = new Thread(model);
+        dataModelThread.setDaemon(true);
+        dataModelThread.start();
+    }
 }
