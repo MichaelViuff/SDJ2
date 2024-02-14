@@ -517,14 +517,3 @@ public class Main
 ```
 </details>
 </blockquote>
-
-
-<blockquote>
-<details>
-<summary>Display solution...</summary>
-```java
-
-```
-</details>
-</blockquote>
-
