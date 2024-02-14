@@ -18,6 +18,10 @@ public class BarChartViewController {
     private NumberAxis yAxis = new NumberAxis();
 
     private XYChart.Series<String, Integer> dataSeries;
+    private XYChart.Data<String, Integer> redData;
+    private XYChart.Data<String, Integer> greenData;
+    private XYChart.Data<String, Integer> blueData;
+
 
     public BarChartViewController(DataModel model)
     {
@@ -32,9 +36,9 @@ public class BarChartViewController {
             int newRed = newValues[0];
             int newGreen = newValues[1];
             int newBlue = newValues[2];
-            dataSeries.getData().get(0).setYValue(newRed);
-            dataSeries.getData().get(1).setYValue(newGreen);
-            dataSeries.getData().get(2).setYValue(newBlue);
+            redData.setYValue(newRed);
+            greenData.setYValue(newGreen);
+            blueData.setYValue(newBlue);
         });
     }
 
@@ -48,10 +52,13 @@ public class BarChartViewController {
         yAxis.setLowerBound(0);
         yAxis.setUpperBound(100);
 
+        redData = new XYChart.Data("Red", 0);
+        greenData = new XYChart.Data("Green", 0);
+        blueData = new XYChart.Data("Blue", 0);
+
         dataSeries = new XYChart.Series();
-        dataSeries.getData().add(new XYChart.Data("Red", 0));
-        dataSeries.getData().add(new XYChart.Data("Green", 0));
-        dataSeries.getData().add(new XYChart.Data("Blue", 0));
+        dataSeries.getData().addAll(redData, greenData, blueData);
+
         barChart.getData().add(dataSeries);
 
         Node node = barChart.lookup(".data0.chart-bar");
