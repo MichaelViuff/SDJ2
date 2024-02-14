@@ -141,25 +141,179 @@ Create a main method to test your radiator. Use a `Thread.sleep(20000)` or infin
 <summary>Display hints...</summary>
 <p>
 Let the states create new instances every time they change, instead of storing and reusing states in the <code>Radiator</code>.
-</p>
-<p>
+
 In the <code>Power3State</code> constructor, you must start a new thread, which will sleep 10 seconds, and then switch down to <code>Power2State</code>. 
  
 This can be done with an anonymous inner class inside <code>Power3State</code> to handle the thread. 
 You should make the thread a daemon thread, before calling the <code>start()</code> method (using <code>thread.setDaemon(true)</code>). This will make sure the thread is terminated, if the program is shut down.
 
-In the <code>urnDown()</code> method of <code>Power3State</code>, you must interrupt the thread that was started from the constructor to prevent it from automatically switching state later. Otherwise, you will run into the scenario where you turn the power down, and then the sleeping thread will later wake up and change the power again.
-</p>
-
- 
-
-  
+In the <code>turnDown()</code> method of <code>Power3State</code>, you must interrupt the thread that was started from the constructor to prevent it from automatically switching state later. Otherwise, you will run into the scenario where you turn the power down, and then the sleeping thread will later wake up and change the power again.
 </p>
 <details>
 <summary>Display solution...</summary>
 
 ```java
+public class Radiator
+{
+  private RadiatorState currentState;
 
+  public Radiator()
+  {
+    currentState = new OffState();
+  }
+
+  public void turnUp()
+  {
+    currentState.turnUp(this);
+  }
+
+  public void turnDown()
+  {
+    currentState.turnDown(this);
+  }
+
+  public int getPower()
+  {
+    return currentState.getPower();
+  }
+
+  void setPowerState(RadiatorState newState)
+  {
+    currentState = newState;
+  }
+}
+
+public interface RadiatorState
+{
+  void turnUp(Radiator radiator);
+  void turnDown(Radiator radiator);
+  int getPower();
+}
+
+public class OffState implements RadiatorState
+{
+  private final static int POWER = 0;
+
+  @Override public void turnUp(Radiator radiator)
+  {
+    radiator.setPowerState(new Power1State());
+  }
+
+  @Override public void turnDown(Radiator radiator)
+  {
+    //do nothing
+  }
+
+  @Override public int getPower()
+  {
+    return POWER;
+  }
+}
+
+public class Power1State implements RadiatorState
+{
+  private final static int POWER = 1;
+
+  @Override public void turnUp(Radiator radiator)
+  {
+    radiator.setPowerState(new Power2State());
+  }
+
+  @Override public void turnDown(Radiator radiator)
+  {
+    radiator.setPowerState(new OffState());
+  }
+
+  @Override public int getPower()
+  {
+    return POWER;
+  }
+}
+
+public class Power2State implements RadiatorState
+{
+  private final static int POWER = 2;
+
+  @Override public void turnUp(Radiator radiator)
+  {
+    radiator.setPowerState(new Power3State(radiator));
+  }
+
+  @Override public void turnDown(Radiator radiator)
+  {
+    radiator.setPowerState(new Power1State());
+  }
+
+  @Override public int getPower()
+  {
+    return POWER;
+  }
+}
+
+public class Power3State implements RadiatorState
+{
+  private final static int POWER = 3;
+  private Thread turnDownAfter10Thread;
+
+  public Power3State(Radiator radiator)
+  {
+    turnDownAfter10Thread = new Thread(() -> turnDownAfter10(radiator));
+    turnDownAfter10Thread.setDaemon(true);
+    turnDownAfter10Thread.start();
+  }
+
+  private void turnDownAfter10(Radiator radiator)
+  {
+    try
+    {
+      Thread.sleep(1000);
+      radiator.setPowerState(new Power2State());
+    }
+    catch (InterruptedException e)
+    {
+      //This happens when the state is changed manually before the automatic trigger
+    }
+  }
+
+  @Override public void turnUp(Radiator radiator)
+  {
+    //do nothing
+  }
+
+  @Override public void turnDown(Radiator radiator)
+  {
+    radiator.setPowerState(new Power2State());
+    turnDownAfter10Thread.interrupt();
+  }
+
+  @Override public int getPower()
+  {
+    return POWER;
+  }
+}
+
+public class Main
+{
+  public static void main(String[] args) throws InterruptedException
+  {
+    Radiator radiator = new Radiator();
+    System.out.println(radiator.getPower());
+    radiator.turnUp();
+    System.out.println(radiator.getPower());
+    radiator.turnUp();
+    System.out.println(radiator.getPower());
+    radiator.turnUp();
+    System.out.println(radiator.getPower());
+    radiator.turnDown();
+    System.out.println(radiator.getPower());
+    radiator.turnDown();
+    System.out.println(radiator.getPower());
+    radiator.turnDown();
+    System.out.println(radiator.getPower());
+    Thread.sleep(2000);
+    System.out.println(radiator.getPower());
+  }
+}
 ```
 </details>
 </details>
