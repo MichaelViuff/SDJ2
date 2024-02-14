@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="511.0" prefWidth="665.0" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="BarChartViewController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-   <BarChart fx:id="barChart">
-     <xAxis>
-       <CategoryAxis side="BOTTOM" fx:id="xAxis" />
-     </xAxis>
-     <yAxis>
-       <NumberAxis fx:id="yAxis" side="LEFT" />
-     </yAxis>
-   </BarChart>
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ex3_6.BarChartViewController">
+   <children>
+      <BarChart fx:id="barChart" prefHeight="555.0" prefWidth="613.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="yAxis" side="LEFT" />
+        </yAxis>
+      </BarChart>
+   </children>
 </VBox>
