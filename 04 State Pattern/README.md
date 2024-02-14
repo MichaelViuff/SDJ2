@@ -342,85 +342,6 @@ When the doors are closing, you can click the button to make them open again. Th
 <summary>Display solution...</summary>
 
 ```java
-public class VibrateState implements PhoneState
-{
-    @Override
-    public void onReceiveMessage(String message, Phone phone)
-    {
-        phone.vibrate();
-        System.out.println(message);
-    }
-
-    @Override
-    public void onReceiveCall(Phone phone)
-    {
-        phone.vibrate();
-    }
-
-    @Override
-    public void onVolumeButtonUp(Phone phone)
-    {
-        phone.changeToSoundState();
-    }
-
-    @Override
-    public void onVolumeButtonDown(Phone phone)
-    {
-        phone.changeToSilentState();
-    }
-}
-
-public class SilentState implements PhoneState
-{
-    @Override
-    public void onReceiveMessage(String message, Phone phone)
-    {
-        System.out.println(message);
-    }
-
-    @Override
-    public void onReceiveCall(Phone phone)
-    {
-        //Do nothing
-    }
-
-    @Override
-    public void onVolumeButtonUp(Phone phone)
-    {
-        phone.changeToVibrateState();
-    }
-
-    @Override
-    public void onVolumeButtonDown(Phone phone)
-    {
-        //Do nothing
-    }
-}
-
-public class Main
-{
-    public static void main(String[] args)
-    {
-        Phone phone = new Phone();
-        phone.receiveMessage("This message was delivered while phone should be in Sound State");
-        for (int i = 0; i <= 100; i++)
-        {
-            phone.volumeDownButton();
-        }
-        phone.receiveMessage("This message was delivered while phone should be in Silent State");
-        phone.volumeUpButton();
-        phone.receiveMessage("This message was delivered while phone should be in Vibrate State");
-    }
-}
-```
-</details>
-</blockquote>
-
-
-<blockquote>
-<details>
-<summary>Display solution...</summary>
-```java
 public class SlidingDoor
 {
     private DoorState currentState;
@@ -593,6 +514,16 @@ public class Main
         Thread.sleep(20000); //Wait while opening finishes, and after set delay goes back to closing and then to closed
     }
 }
+```
+</details>
+</blockquote>
+
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+```java
+
 ```
 </details>
 </blockquote>
