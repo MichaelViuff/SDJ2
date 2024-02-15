@@ -544,13 +544,13 @@ public class Main
 
 ## 3.3 Bird watching
 
-Write a small program to represent the bird watcher example from the presentations-
+Write a small program to represent the bird watcher example from the presentation.
 
 Create a `Bird` class. It must either flap its wings or sing a song. Simulate it with print outs:
 
 ```
-Peacock flashes its wings
-Peacock whistles
+Peacock flaps its wings
+Peacock sings a song
 ```
 
 Create a `BirdWatcher` class, which will react to the birds behaviour with exclamations like: “Ooh!”, “How nice”, “Would you look at that”.
