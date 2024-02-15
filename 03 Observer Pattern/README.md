@@ -1232,7 +1232,7 @@ dataThread.setDaemon(true);
 dataThread.start();
 ```
 
-Due to the way JavaFX works, you are not able to modify JavaFX properties from another thread. To overcome this, we can defer the modification until a time that JavaFX deems suitable, by wrapping the call in a `Platform.runLater()` call, like this:
+Due to the way JavaFX works, you are not able to modify JavaFX properties from another thread. To deal with this, we can defer the modification until a time that JavaFX deems suitable, by wrapping the call in a `Platform.runLater()` call, like this:
 
 ```java
 Platform.runLater(() ->
