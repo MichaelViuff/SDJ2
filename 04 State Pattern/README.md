@@ -7,7 +7,7 @@ Start by downloading the incomplete Phone example, consisting of the classes [`P
 The Phone example is incomplete, and needs to be finished.
 We will introduce two new states, one for when the phone is on silent, and one for when the phone is on vibrate mode.
 
-Draw a State Machine Diagram for the follwoing behaviour:
+Draw a State Machine Diagram for the following behaviour:
  - The phone starts in SoundState
  - When the volume button down is pressed, if the volume would reach the value 0, instead change state to the VibrateState
  - When the phone is in VibrateState, pressing the volume up button will change the state to SoundState
