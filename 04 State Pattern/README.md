@@ -17,7 +17,7 @@ Draw a State Machine Diagram for the follwoing behaviour:
 <blockquote>
 <details>
 <summary>Display solution...</summary>
- <img  src="https://github.com/MichaelViuff/SDJ2/blob/main/04%20State%20Pattern/Images/PhoneStateMachine.PNG" />
+ <img  src="https://github.com/MichaelViuff/SDJ2/blob/main/04%20State%20Pattern/Images/PhoneStatemachineDiagram.PNG" />
 </details>
 </blockquote>
 
