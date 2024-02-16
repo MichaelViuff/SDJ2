@@ -150,7 +150,7 @@ public class ViewModel
 
 In this exercise we will add a model, so the Model-View-ViewModel pattern is complete.
 
-![MVVM Diagram](/Images/MVVMh%20Diagram.png)
+![MVVM Diagram](/05%20MVVM%201/Images/MVVM%20Diagram.png)
 
 ### Model
 For now, our Model will be kept very simple. It simply prints text to the console, and can add new text to the stored text.
@@ -165,9 +165,6 @@ It doesn't know anything about the View, it simply exposes some Properties that 
 
 Create a class `ViewModel` and give it two attributes, one for the `Model` and one for a `StringProperty`.<br>
 The constructor receives the `Model` and initializes the `StringProperty`.
-
-ggggg...
-ggg
 
 <blockquote>
 <details>
