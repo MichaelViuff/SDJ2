@@ -49,6 +49,11 @@ Launch everything from a main method and see what happens when you input somethi
 </summary>
 
 ```java
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 public class Main extends Application
 {
     public static void main(String[] args)
@@ -70,7 +75,9 @@ public class Main extends Application
         primaryStage.show();
     }
 }
+```
 
+```java
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -94,7 +101,9 @@ public class View
         textFieldB.textProperty().bindBidirectional(viewModel.simpleTextPropertyProperty());
     }
 }
+```
 
+```java
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -115,7 +124,6 @@ public class ViewModel
 ```
 
 ```xml
-
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
@@ -151,7 +159,7 @@ public class ViewModel
 In this exercise we will add a model, so the Model-View-ViewModel pattern is complete.
 
 ![MVVM Diagram](/05%20MVVM%201/Images/MVVM%20Diagram.png)
-*https://www.geeksforgeeks.org/difference-between-mvc-mvp-and-mvvm-architecture-pattern-in-android/*
+
 ### Model
 For now, our Model will be kept very simple. It simply prints text to the console, and can add new text to the stored text.
 
@@ -163,16 +171,45 @@ Add a method `public void printText()` that prints the value of `text` to the co
 The ViewModel will serve as the connection between our Model and our View. It contains a reference to `Model` and calls the methods as necessary.<br>
 It doesn't know anything about the View, it simply exposes some Properties that any View can bind to.
 
-Create a class `ViewModel` and give it two attributes, one for the `Model` and one for a `StringProperty`.<br>
-The constructor receives the `Model` and initializes the `StringProperty`.
+Create a class `ViewModel` and give it three attributes, one for the `Model` and two of type `StringProperty`,  called `currentTextProperty` and `inputTextProperty`.<br>
+The constructor receives the `Model` and initializes the two `StringProperty`. <br>
+Add a method `public void update()` that calls the `addText` method on the `Model`, and uses the content of `inputTextProperty` as argument (use `inputTextProperty.get()` to get the content).<br>
+After adding the text, the `update()` method should then call the `getText()` method and store the result in `currentTextProperty` (use `currentTextProperty.set()` to set the new value).<br>
+Finally, it should call `printText()` so we can verify that the string was added to the model (by looking at the output in the console).
+
+### View
+The View is what the user will interact with. We want to allow the user to input new text that will added to the String in the Model.<br>
+To do so, we need 2 `TextField` components and a `Button` the user can press when he wants to submit new text.
+
+Start by creating the `View` class. Make `@FXML` annotations and declare two `TextField` attributes, `inputTextField` and `outputTextField`.<br>
+Create a constructor that takes a single argument, the `ViewModel` and sets it (`View` should have an attribute of type `ViewModel`).<br>
+Set up the binding between the two `TextField` and `StringProperty` in the `initialize()` method that JavaFX uses when creating the `View` instance.<br>
+Define a method that your `Button` calls when clicked. It should call the method `update()` in the `ViewModel`.
+
+### FXML file
+The `.fxml` file is a part of our View. It simply defines the containers used and their layout.<br>
+Additionally, JavaFX uses this file and searches for the `fx:controller` attribute in the root element. <br>
+It then creates an instance of this class, and injects all components with an `fx:id` attribute, searching for `@FXML` annotated attributes with the same name (ie. reflection)
+
+Create a `.fxml` file, and create a layout with two `TextField` components, and a single `Button`. <br>
+Ensure that you assign proper `fx:controller` and `fx:id` attributes.
+
+### Main
+We launch everything from a main method. Here we create the `Model` that we use when constructing the `ViewModel` that we in turn use when we construct the `View`.<br>
+
+Now start the application, and see what happens when you input text in the input field and click the button.
 
 <blockquote>
 <details>
 <summary>
 ...display solution
 </summary>
-```java
 
+```java
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class Main extends Application
 {
@@ -184,7 +221,8 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        ViewModel viewModel = new ViewModel();
+        Model model = new Model();
+        ViewModel viewModel = new ViewModel(model);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("View.fxml"));
         fxmlLoader.setControllerFactory(controllerClass -> new View(viewModel));
@@ -195,7 +233,129 @@ public class Main extends Application
         primaryStage.show();
     }
 }
+```
 
+```java
+public class Model
+{
+    private String text;
+
+    public Model()
+    {
+        text = "This is some text";
+    }
+
+    public void addText(String text)
+    {
+        this.text += text;
+    }
+
+    public String getText()
+    {
+        return text;
+    }
+
+    public void printText()
+    {
+        System.out.println(text);
+    }
+}
+```
+
+```java
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+public class ViewModel
+{
+    private Model model;
+    private StringProperty currentTextProperty, inputTextProperty;
+
+    public ViewModel(Model model)
+    {
+        this.model = model;
+        currentTextProperty = new SimpleStringProperty();
+        inputTextProperty = new SimpleStringProperty();
+        currentTextProperty.set(model.getText());
+    }
+
+    public void update()
+    {
+        model.addText(inputTextProperty.get());
+        currentTextProperty.set(model.getText());
+        model.printText();
+    }
+
+    public StringProperty currentTextProperty()
+    {
+        return currentTextProperty;
+    }
+
+    public StringProperty inputTextProperty()
+    {
+        return inputTextProperty;
+    }
+}
+```
+
+```java
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+
+public class View
+{
+    @FXML
+    TextField outputTextField;
+    @FXML
+    TextField inputTextField;
+
+    private ViewModel viewModel;
+
+    public View(ViewModel viewModel)
+    {
+        this.viewModel = viewModel;
+    }
+
+    public void initialize()
+    {
+        outputTextField.textProperty().bindBidirectional(viewModel.currentTextProperty());
+        inputTextField.textProperty().bindBidirectional(viewModel.inputTextProperty());
+    }
+
+    public void onUpdateButtonPressed()
+    {
+        viewModel.update();
+    }
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="319.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ex5_2.View">
+   <children>
+      <HBox prefHeight="36.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="106.0" text="Input" />
+            <TextField fx:id="inputTextField" />
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="10.0" prefHeight="36.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="107.0" text="Output" />
+            <TextField fx:id="outputTextField" prefHeight="25.0" prefWidth="208.0" />
+         </children>
+      </HBox>
+      <Button mnemonicParsing="false" onAction="#onUpdateButtonPressed" text="Button" />
+   </children>
+</VBox>
 ```
 
 </details>
