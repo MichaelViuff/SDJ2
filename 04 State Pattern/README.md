@@ -57,7 +57,9 @@ public class VibrateState implements PhoneState
         phone.changeToSilentState();
     }
 }
+```
 
+```java
 public class SilentState implements PhoneState
 {
     @Override
@@ -84,7 +86,9 @@ public class SilentState implements PhoneState
         //Do nothing
     }
 }
+```
 
+```java
 public class Main
 {
     public static void main(String[] args)
@@ -189,7 +193,9 @@ public interface RadiatorState
   void turnDown(Radiator radiator);
   int getPower();
 }
+```
 
+```java
 public class OffState implements RadiatorState
 {
   private final static int POWER = 0;
@@ -209,7 +215,9 @@ public class OffState implements RadiatorState
     return POWER;
   }
 }
+```
 
+```java
 public class Power1State implements RadiatorState
 {
   private final static int POWER = 1;
@@ -229,7 +237,9 @@ public class Power1State implements RadiatorState
     return POWER;
   }
 }
+```
 
+```java
 public class Power2State implements RadiatorState
 {
   private final static int POWER = 2;
@@ -249,7 +259,9 @@ public class Power2State implements RadiatorState
     return POWER;
   }
 }
+```
 
+```java
 public class Power3State implements RadiatorState
 {
   private final static int POWER = 3;
@@ -291,7 +303,9 @@ public class Power3State implements RadiatorState
     return POWER;
   }
 }
+```
 
+```java
 public class Main
 {
   public static void main(String[] args) throws InterruptedException
@@ -376,12 +390,16 @@ public class SlidingDoor
         currentState = new ClosedState();
     }
 }
+```
 
+```java
 public interface DoorState
 {
     void onButtonPressed(SlidingDoor door);
 }
+```
 
+```java
 public class OpenState implements DoorState
 {
     private final Thread closeDoorAfterSetTimeThread;
@@ -414,7 +432,9 @@ public class OpenState implements DoorState
         door.changeToClosingState();
     }
 }
+```
 
+```java
 public class OpeningState implements DoorState
 {
     private Thread openDoorAfterSetTimeThread;
@@ -447,7 +467,9 @@ public class OpeningState implements DoorState
         door.changeToClosingState();
     }
 }
+```
 
+```java
 public class ClosingState implements DoorState
 {
     private Thread closeDoorAfterSetTimeThread;
@@ -480,7 +502,9 @@ public class ClosingState implements DoorState
         door.changeToOpeningState();
     }
 }
+```
 
+```java
 public class ClosedState implements DoorState
 {
     public ClosedState()
@@ -494,7 +518,9 @@ public class ClosedState implements DoorState
         door.changeToOpeningState();
     }
 }
+```
 
+```java
 public class Main
 {
     public static void main(String[] args) throws InterruptedException

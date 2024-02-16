@@ -50,7 +50,9 @@ public class HelloPrinter implements Runnable
     }
   }
 }
+```
 
+```java
 public class Test
 {
   public static void main(String[] args)
@@ -129,7 +131,9 @@ public class Letters implements Runnable
         }
     }
 }
+```
 
+```java
 public class Numbers implements Runnable
 {
     
@@ -151,7 +155,9 @@ public class Numbers implements Runnable
         }
     }
 }
+```
 
+```java
 public class Test
 {
   public static void main(String[] args)
@@ -217,7 +223,9 @@ public class WaitPrinter implements Runnable
         }
     }
 }
+```
 
+```java
 public class Test
 {
     public static void main(String[] args)
@@ -285,7 +293,6 @@ In other words, you must start the first thread from the main method, and then i
 <summary>Display solution...</summary>
 
 ```java
-
 public class Range implements Runnable
 {
 
@@ -306,8 +313,9 @@ public class Range implements Runnable
         }
     }
 }
+```
 
-
+```java
 public class Test
 {
     public static void main(String[] args) throws InterruptedException {
@@ -325,7 +333,6 @@ public class Test
         range4.join();
     }
 }
-
 ```
 
 </details>
@@ -369,7 +376,9 @@ public class Bear implements Runnable
     }
   }
 }
+```
 
+```java
 public class PokingMan implements Runnable
 {
 
@@ -394,7 +403,6 @@ public class PokingMan implements Runnable
     }
   }
 }
-
 ```
 
 </details>
@@ -422,7 +430,6 @@ Try letting the <code>PokingMan</code> wake up different bears and confirm that 
 <summary>Display solution...</summary>
 
 ```java
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -450,8 +457,9 @@ public class Cave
         sleepingBears.clear();
     }
 }
+```
 
-
+```java
 public class Bear implements Runnable
 {
 
@@ -476,7 +484,9 @@ public class Bear implements Runnable
     }
   }
 }
+```
 
+```java
 public class PokingMan implements Runnable
 {
 
@@ -502,9 +512,6 @@ public class PokingMan implements Runnable
     }
   }
 }
-
-
-
 ```
 
 </details>
@@ -553,7 +560,6 @@ int sleepTime = random.nextInt(500) + 500; // This will give you a number betwee
 <summary>Display solution...</summary>
 
 ```java
-
 import java.util.Random;
 
 public class Rabbit implements Runnable{
@@ -591,8 +597,9 @@ public class Rabbit implements Runnable{
         System.out.println("Rabbit has finished!");
     }
 }
+```
 
-
+```java
 public class Turtle implements Runnable
 {
 
@@ -621,8 +628,9 @@ public class Turtle implements Runnable
     }
 
 }
+```
 
-
+```java
 public class Test
 {
     public static void main(String[] args) {

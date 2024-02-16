@@ -43,7 +43,9 @@ public class ListContainer
         return list.size();
     }
 }
+```
 
+```java
 public class Inserter implements Runnable
 {
     private ListContainer listContainer;
@@ -63,7 +65,9 @@ public class Inserter implements Runnable
         System.out.println(listContainer.getLength());
     }
 }
+```
 
+```java
 public class Test
 {
     public static void main(String[] args)
@@ -121,7 +125,9 @@ public class Counter
     return count;
   }
 }
+```
 
+```java
 public class CounterIncrementer implements Runnable
 {
   private Counter counter;
@@ -140,7 +146,9 @@ public class CounterIncrementer implements Runnable
     System.out.println(counter.getCount());
   }
 }
+```
 
+```java
 public class Start
 {
   public static void main(String[] args)
@@ -505,7 +513,9 @@ public class Counter
         return value;
     }
 }
+```
 
+```java
 public class CounterIncrementer implements Runnable
 {
     private int updates;
@@ -527,7 +537,11 @@ public class CounterIncrementer implements Runnable
         System.out.println(Thread.currentThread().getName() + " har finished, count is: " + counter.getValue());
     }
 }
+```
 
+```java
+public class CounterDecrementer implements Runnable
+{
     private Counter counter;
 
     public CounterDecrementer(Counter counter, int updates)
@@ -546,7 +560,9 @@ public class CounterIncrementer implements Runnable
         System.out.println(Thread.currentThread().getName() + " har finished, count is: " + counter.getValue());
     }
 }
+```
 
+```java
 public class Test
 {
     public static void main(String[] args)

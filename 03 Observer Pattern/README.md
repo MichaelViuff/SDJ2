@@ -166,7 +166,9 @@ public class Pedestrian
         previousLight = currentLight;
     }
 }
+```
 
+```java
 import java.util.ArrayList;
 import java.util.List;
 
@@ -246,7 +248,9 @@ public class TrafficLight
         }
     }
 }
+```
 
+```java
 public class Main
 {
     public static void main(String[] args)
@@ -334,7 +338,9 @@ public class TrafficLight
         support.firePropertyChange("LightChanged", null, currentLight);
     }
 }
+```
 
+```java
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -378,7 +384,9 @@ public class Car implements PropertyChangeListener
         setLight((String) evt.getNewValue());
     }
 }
+```
 
+```java
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -422,7 +430,9 @@ public class Taxi implements PropertyChangeListener
         setLight((String) evt.getNewValue());
     }
 }
+```
 
+```java
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -467,7 +477,9 @@ public class SleepyDriver implements PropertyChangeListener
         setLight((String) evt.getNewValue());
     }
 }
+```
 
+```java
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -511,7 +523,9 @@ public class Pedestrian implements PropertyChangeListener
         setLight((String) evt.getNewValue());
     }
 }
+```
 
+```java
 public class Main
 {
     public static void main(String[] args)
@@ -637,7 +651,9 @@ public class Bird implements PropertyChangeSubject
         support.removePropertyChangeListener(name, listener);
     }
 }
+```
 
+```java
 import java.util.Random;
 
 public class BirdWatcher
@@ -684,7 +700,9 @@ public class BirdWatcher
         }
     }
 }
+```
 
+```java
 import java.util.Random;
 
 public class BlindBirdWatcher
@@ -712,7 +730,9 @@ public class BlindBirdWatcher
         }
     }
 }
+```
 
+```java
 public class Main
 {
     public static void main(String[] args)
@@ -835,7 +855,9 @@ public class WaitingRoom implements PropertyChangeSubject, Runnable
         }
     }
 }
+```
 
+```java
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -868,7 +890,9 @@ public class Patient
         }
     }
 }
+```
 
+```java
 public class Main
 {
     public static void main(String[] args) throws InterruptedException
@@ -1052,7 +1076,9 @@ public class DreamTeamFans
         }
     }
 }
+```
 
+```java
 import java.beans.PropertyChangeEvent;
 
 public class OldBoysFans

@@ -360,3 +360,5 @@ public class View
 
 </details>
 </blockquote>
+
+## 5.3 Factory pattern
