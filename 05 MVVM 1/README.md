@@ -151,7 +151,7 @@ public class ViewModel
 In this exercise we will add a model, so the Model-View-ViewModel pattern is complete.
 
 ![MVVM Diagram](/05%20MVVM%201/Images/MVVM%20Diagram.png)
-
+*https://www.geeksforgeeks.org/difference-between-mvc-mvp-and-mvvm-architecture-pattern-in-android/*
 ### Model
 For now, our Model will be kept very simple. It simply prints text to the console, and can add new text to the stored text.
 
