@@ -45,7 +45,7 @@ Launch everything from a main method and see what happens when you input somethi
 <blockquote>
 <details>
 <summary>
-...display solution
+Display solution...
 </summary>
 
 ```java
@@ -202,7 +202,7 @@ Now start the application, and see what happens when you input text in the input
 <blockquote>
 <details>
 <summary>
-...display solution
+Display solution...
 </summary>
 
 ```java
