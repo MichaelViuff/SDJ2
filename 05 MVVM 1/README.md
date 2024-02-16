@@ -159,6 +159,7 @@ public class ViewModel
 In this exercise we will add a model, so the Model-View-ViewModel pattern is complete.
 
 ![MVVM Diagram](/05%20MVVM%201/Images/MVVM%20Diagram.png)
+*<small>https://learn.microsoft.com/en-us/dotnet/architecture/maui/mvvm</small>*
 
 ### Model
 For now, our Model will be kept very simple. It simply prints text to the console, and can add new text to the stored text.
