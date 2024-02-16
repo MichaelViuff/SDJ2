@@ -1,5 +1,6 @@
 # 05 Model-View-ViewModel Pattern
 
+## 5.1 Bi-directional binding
 
 In this exercise we will see how JavaFX can create bi-directional binding of Properties.
 
