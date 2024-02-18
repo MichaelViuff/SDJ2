@@ -362,7 +362,7 @@ public class View
 </details>
 </blockquote>
 
-## 5.3 Dividing responsibilities
+## 5.3 Distributing responsibilities
 
 With the Model-View-ViewModel design pattern, one challenge is to decide where everything goes.
 
@@ -409,7 +409,7 @@ ageField.setTextFormatter(new TextFormatter<Integer>(change -> {
         }));
 ```
 
-Similarly, we can limit the password to only 8 characters, by simply rejecting any input beyond that, with this snippet:
+Similarly, we can limit the user name to only 20 characters, by simply rejecting any input beyond that, with this snippet:
 
 ```java
 usernameField.setTextFormatter(new TextFormatter<String>(change -> {
