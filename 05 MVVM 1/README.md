@@ -421,11 +421,12 @@ usernameField.setTextFormatter(new TextFormatter<String>(change -> {
         }));
 ```
 
-What about the rule for passwords matching? <br>
-Or the rule that a password must be at least 8 characters?<br>
+What about the rule for passwords matching? 
+Or the rule that a password must be at least 8 characters?
 Should that be the responsibility of the View?
 
-In this course we will take the stance that enforcing these sort of rules is outside of the responsibilities of the View, and limit ourselves to only implement rules that involve the View-elements.
+It seems reasonable to make the claim, that enforcing these sort of rules is outside of the responsibilities of the View.
+Therefore, we limit ourselves to only implement rules that involve the View-elements.
 
 For now, that means that the View is responsible for providing an input field that only accepts integers, and an input field that only accepts strings with a max length of 20 characters.
 
@@ -509,10 +510,467 @@ For example, one class might be interested in the state of the model and visuall
 
 In the MVVM design pattern, we do this by creating multiple sets of View and ViewModel classes and connect them to the same Model.
 
-We will expand on our previous exercise. We left the exercise with a working MVVM setup, where we could add users to a Model. 
+We will expand on our previous exercise.
+The input validation is not important for this exercise, so if your solution has become overly complicated, just reset with the [example](/05%20MVVM%201/Examples/Input%20Validation) as your starting point.
 
-Now we want to also display these users in a list. To do so, we create a new set of View and ViewModel classes.
+We want to have another windows, where we display these users in a list. 
 
-The new View has a component of type ListView and a single Button that gets the data from the Model.
+To do so, we create a new set of View and ViewModel classes.
 
-## 5.5 Factory pattern
+To distinguish between the different View and ViewModels, we will rename our old View to `CreateUserView`.
+
+We also rename our ViewModel to `CreateUserViewModel` and our `.fxml` file to `CreateUserView.fxml` and ensure that our `fx:controller` attribute is updated.
+
+### User List ViewModel
+
+We will need a new ViewModel for our list display.
+
+Create a new ViewModel class and call it `UserListViewModel`. In the constructor it receivess the `Model` - notice how we are using the same `Model` as before, no new Model is introduced.
+
+The `UserListViewModel` should have another attribute, of type `ObservableList<User>` where we keep a collection of the users we want to display in the list.
+
+Initialize this list in the constructor, using the JavaFX utility class:
+
+```java
+private ObservableList<User> users;
+
+users = FXCollections.observableArrayList();
+```
+
+Create a getter for the list, and a `refresh()` method that we can call from the View. It should just get the newest data from the model:
+
+```java
+public void refresh()
+{
+    users.clear();
+    users.addAll(model.getUsers());
+}
+```
+
+<blockquote>
+<details>
+<summary>
+Display solution...
+</summary>
+
+```java
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+public class UserListViewModel
+{
+    private Model model;
+    private ObservableList<User> users;
+
+    public UserListViewModel(Model model)
+    {
+        this.model = model;
+        users = FXCollections.observableArrayList();
+        refresh();
+    }
+
+    public ObservableList<User> getUsers()
+    {
+        return users;
+    }
+
+    public void refresh()
+    {
+        users.clear();
+        users.addAll(model.getUsers());
+    }
+}
+```
+
+</details>
+</blockquote>
+
+### User List View
+
+We call our new View `UserListView`, and create a `.fxml` file for it with the name `UserListView.fxml`
+
+Our `UserListView` should have an attribute of type `UserListViewModel` that we receive in the constructor.
+
+The layout of the new View should have a component of type `ListView` and a single button that refreshes the data in the corresponding ViewModel.
+
+Remember to set the `fx:id` attribute of the `ListView` component, and the `onAction` attribute of the button correctly.
+
+In the `initialize()` method, set the items of the `ListView` to the `ObservableList<User>` from the `UserListViewModel`.
+
+<blockquote>
+<details>
+<summary>
+Display solution...
+</summary>
+
+```java
+import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
+
+public class UserListView
+{
+    @FXML
+    private ListView<User> userListView;
+
+    private UserListViewModel userListViewModel;
+
+    public UserListView(UserListViewModel createUserViewModel)
+    {
+        this.userListViewModel = createUserViewModel;
+    }
+
+    public void initialize()
+    {
+        userListView.setItems(userListViewModel.getUsers());
+    }
+
+    public void onRefreshButtonPressed()
+    {
+        userListViewModel.refresh();
+    }
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="221.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserListView">
+   <children>
+      <ListView fx:id="userListView" prefHeight="200.0" prefWidth="200.0" />
+      <Button mnemonicParsing="false" onAction="#onRefreshButtonPressed" text="Refresh" />
+   </children>
+</VBox>
+```
+
+</details>
+</blockquote>
+
+### Starting everything from Main
+
+Now we just need to update our main method so it can start everything.
+
+We create two ViewModels now, one for each View, and we use the `FXMLLoader` twice, to `load()` both Views from our `.fxml` files.
+
+We want two separate windows, so we also need another `Stage` for our new View.
+
+<blockquote>
+<details>
+<summary>
+Display solution...
+</summary>
+
+```java
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Main extends Application
+{
+    public static void main(String[] args)
+    {
+        launch();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception
+    {
+        Model model = new Model();
+        CreateUserViewModel createUserViewModel = new CreateUserViewModel(model);
+        UserListViewModel userListViewModel = new UserListViewModel(model);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateUserView.fxml"));
+        fxmlLoader.setControllerFactory(controllerClass -> new CreateUserView(createUserViewModel));
+
+        Scene createUserScene = new Scene(fxmlLoader.load());
+        primaryStage.setTitle("Create User");
+        primaryStage.setScene(createUserScene);
+        primaryStage.show();
+
+        fxmlLoader = new FXMLLoader(getClass().getResource("UserListView.fxml"));
+        fxmlLoader.setControllerFactory(controllerClass -> new UserListView(userListViewModel));
+
+        Scene userListScene = new Scene(fxmlLoader.load());
+        Stage secondaryStage = new Stage();
+        secondaryStage.setTitle("View Users");
+        secondaryStage.setScene(userListScene);
+        secondaryStage.show();
+    }
+}
+```
+
+</details>
+</blockquote>
+
+## 5.5 Organizing everything
+
+Everything is working, so surely we must be done by now?
+
+Look at your solution to the previous exercise. We have a total of 9 files in our directory now:
+
+ - `Main`
+ - `Model`
+ - `User`
+ - `CreateUserView`
+ - `CreateUserView.fxml`
+ - `CreateUserViewModel`
+ - `UserListView`
+ - `UserListViewModel`
+ - `UserListView.fxml`
+ 
+Maybe now would be a good time to start organizing everything a bit better...
+
+Excatly how to organize everything will be up to you - there is no one solution that will always work.
+
+We could separate our files by their components:
+
+ - **Model**
+   - `Model`
+   - `User`
+ - **View**
+   - `CreateUserView`
+   - `CreateUserView.fxml`
+   - `UserListView`
+   - `UserListView.fxml`
+ - **ViewModel**
+   - `CreateUserViewModel`
+   - `UserListViewModel`
+ - **Application**
+   - `Main`
+   
+Or we could separate them by their feature:
+
+ - **Model**
+   - `Model`
+   - `User`
+ - **Create User**
+   - `CreateUserView`
+   - `CreateUserView.fxml`
+   - `CreateUserViewModel`
+ - **User List**
+   - `UserListView`
+   - `UserListView.fxml`
+   - `UserListViewModel`
+ - **Application**
+   - `Main`
+   
+Regardless of what we choose, we will put everything into packages, to create a better separation and to maintain an overview of all the files.
+
+> [!CAUTION]
+> When moving everything into packages, make sure that you update your `fx:controller` attributes accordingly, as well as your paths when loading .fxml files with the `FXMLLoader`
+
+### Factories
+
+We notice that the `Main` class grew quite a lot when we added another window to our application. As we continue, this problem is only going to get worse, and we could potentially end up with a `Main` class that does a lot more than just start our application (which is the only thing we want it to do).
+
+To avoid this, we can use an approximation of the Factory Method Pattern (this isn't strictly the Factory Method Pattern, but it is close enough for our need).
+
+We create 3 new classes:
+
+ - `ModelFactory`
+ - `ViewModelFactory`
+ - `ViewFactory`
+
+The purpose of these classes, is to handle all the constructing of objects that right now happens in the `Main` class.
+
+We start with the `ModelFactory` - it should simply create our `Model` when needed:
+
+```java
+public class ModelFactory
+{
+    private Model model;
+
+    public Model getModel() 
+    {
+        if(model == null) 
+        {
+            model = new Model();
+        }
+        return model;
+    }
+}
+```
+
+We use lazy instantiation to delay the creating until needed (it won't matter much for this exercise, but it's good practice to do so).
+
+Now we can create the `ViewModelFactory`. This class has an attribute of type `ModelFactory` that it uses to create instances of ViewModels.
+
+For now we have two different ViewModels, `UserListViewModel` and `CreateUserViewModel`. Our `ViewModelFactory` should construct these when needed, just like how the `ModelFactory` did.
+
+When creating the ViewModels, they need a reference to the `Model` - luckily our `ViewModelFactory` can provide this, by getting it from the `ModelFactory`.
+
+```java
+public class ViewModelFactory
+{
+    private UserListViewModel userListViewModel;
+    private CreateUserViewModel createUserViewModel;
+
+    private ModelFactory modelFactory;
+
+    public ViewModelFactory(ModelFactory modelFactory)
+    {
+        this.modelFactory = modelFactory;
+    }
+
+    public UserListViewModel getUserListViewModel()
+    {
+        if(userListViewModel == null)
+        {
+            userListViewModel = new UserListViewModel(modelFactory.getModel());
+        }
+        return userListViewModel;
+    }
+
+    public CreateUserViewModel getCreateUserViewModel()
+    {
+        if(createUserViewModel == null)
+        {
+            createUserViewModel = new CreateUserViewModel(modelFactory.getModel());
+        }
+        return createUserViewModel;
+    }
+}
+```
+
+Lastly, we can create the `ViewFactory` class.
+
+The idea is the same as for the two previous factories, but this factory is going to implement all the logic that is currently happening in the `Main` class with regards to JavaFX `Scene` and `Stage` creation.
+
+We can start by creating the constructor. We know that it is going to need a `ViewModelFactory` attribute, that we receive in the constructor.
+
+```java
+private ViewModelFactory viewModelFactory;
+
+    public ViewFactory(ViewModelFactory viewModelFactory)
+    {
+        this.viewModelFactory = viewModelFactory;
+    }
+```
+
+We also know the general idea, namely that the `ViewFactory` should create Views when needed, and that we are going to need two Views, `CreateUserView` and `UserListView`.
+
+So the straightforward approach would be to just have the `ViewFactory` create them:
+
+```java
+    public UserListView getUserListView()
+    {
+        return new UserListView(viewModelFactory.getUserListViewModel());
+    }
+
+    public CreateUserView getCreateUserView()
+    {
+        return new CreateUserView(viewModelFactory.getCreateUserViewModel());
+    }
+```
+
+The problem is, that we want JavaFX to handle the creation of these classes. This is what currently happens in the `Main` class:
+
+```java
+FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateUserView.fxml"));
+fxmlLoader.setControllerFactory(controllerClass -> new CreateUserView(createUserViewModel));
+
+Scene createUserScene = new Scene(fxmlLoader.load());
+primaryStage.setTitle("Create User");
+primaryStage.setScene(createUserScene);
+primaryStage.show();
+
+fxmlLoader = new FXMLLoader(getClass().getResource("UserListView.fxml"));
+fxmlLoader.setControllerFactory(controllerClass -> new UserListView(userListViewModel));
+
+Scene userListScene = new Scene(fxmlLoader.load());
+Stage secondaryStage = new Stage();
+secondaryStage.setTitle("View Users");
+secondaryStage.setScene(userListScene);
+secondaryStage.show();
+```
+
+All we need to do is move that logic into the `ViewFactory` class, update some references, add some attributes and we are done:
+
+```java
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class ViewFactory
+{
+    private ViewModelFactory viewModelFactory;
+    private UserListView userListView;
+    private CreateUserView createUserView;
+
+    private final Stage primaryStage;
+    private FXMLLoader fxmlLoader;
+
+
+    public ViewFactory(ViewModelFactory viewModelFactory, Stage primaryStage)
+    {
+        this.viewModelFactory = viewModelFactory;
+        this.primaryStage = primaryStage;
+    }
+
+    public UserListView getUserListView() throws IOException
+    {
+        if(userListView == null)
+        {
+            fxmlLoader = new FXMLLoader(getClass().getResource("UserListView.fxml"));
+            fxmlLoader.setControllerFactory(controllerClass -> new UserListView(viewModelFactory.getUserListViewModel()));
+
+            Scene createUserScene = new Scene(fxmlLoader.load());
+            primaryStage.setTitle("View Users");
+            primaryStage.setScene(createUserScene);
+            primaryStage.show();
+            userListView = fxmlLoader.getController();
+        }
+        return userListView;
+    }
+
+    public CreateUserView getCreateUserView() throws IOException
+    {
+        if(createUserView == null)
+        {
+            fxmlLoader = new FXMLLoader(getClass().getResource("CreateUserView.fxml"));
+            fxmlLoader.setControllerFactory(controllerClass -> new CreateUserView(viewModelFactory.getCreateUserViewModel()));
+
+            Scene userListScene = new Scene(fxmlLoader.load());
+            Stage secondaryStage = new Stage();
+            secondaryStage.setTitle("Create User");
+            secondaryStage.setScene(userListScene);
+            secondaryStage.show();
+            createUserView = fxmlLoader.getController();
+        }
+        return createUserView;
+    }
+}
+```
+
+Now we can rewrite our `Main` class to simply create the Factories and then launch the Views we want:
+
+```java
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class Main extends Application
+{
+    public static void main(String[] args)
+    {
+        launch();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception
+    {
+        ModelFactory modelFactory = new ModelFactory();
+        ViewModelFactory viewModelFactory = new ViewModelFactory(modelFactory);
+        ViewFactory viewFactory = new ViewFactory(viewModelFactory, primaryStage);
+
+        viewFactory.getCreateUserView();
+        viewFactory.getUserListView();
+    }
+}
+```
+
