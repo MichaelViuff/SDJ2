@@ -1,7 +1,7 @@
 # 07 Assignment 1 - Vinyl Library
 
 ## The system
-You must design and implement a simple application for a Vinyl lending library. A Vinyl has at least a title,  artist, year, and a lending state. The Vinyl can be in different states depending on availability, reservation, borrowing or a combined borrowing and reservation. 
+You must design and implement a simple application for a Vinyl Library. A Vinyl has at least a title,  artist, year, and a lending state. The Vinyl can be in different states depending on availability, reservation, borrowing or a combined borrowing and reservation. 
 
 You can borrow a Vinyl either if it is not reserved by someone else or are already borrowed or if it is reserved by you (reserved). You cannot reserve a Vinyl if it already contains a reservation (there is no reservation list, only one person at the time can reserve the Vinyl). However, you are allowed to reserve a Vinyl if it is available (no reservation and not borrowed) or if it is borrowed and do not have another reservation.
 
@@ -25,15 +25,16 @@ A Vinyl can be removed from the library if it has no reservation and are not bor
  - You must use threads for the simulation and still be able to manually use the system (in the GUI)
 
 ## Deadline
-See Itslearning. 
+See Itslearning.
 
 ## Format
-It is ok to work in groups, but you have to hand individually - in a single zip-file with 
-1)	Class diagram 
-2)	State machine diagram
-3)	Source code for all Java classes, and 
-4)	Related resources like FXML files, and if used, external jar files
+It is ok to work in groups, but you have to hand individually. Hand in everything in a single zip-file with:
+
+1)	UML Class Diagram 
+2)	State Machine Diagram
+3)	Source code for all classes
+4)	Related resources like `.FXML` files, and if used, external `.jar` files
 
 ## Evaluation
-Your hand-in will be registered and counts for one of the exam requirements. No feedback will be given.
+Your hand-in will be registered and counts for one of the exam requirements.
 
