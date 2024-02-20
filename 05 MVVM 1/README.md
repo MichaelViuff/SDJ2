@@ -4,7 +4,7 @@
 
 In this exercise we will implement the Uppercase [example](https://github.com/MichaelViuff/SDJ2/tree/main/05%20MVVM%201/Examples/Uppercase) from the presentation.
 
-<img src="/05%20MVVM%201/Images/MVVM%20Diagram.png" width="100" height="100">
+<img src="/05%20MVVM%201/Images/MVVM%20Diagram.png" width="100">
 
 ### Model
 For now, our Model will be kept very simple. It simply takes a string, converts it to uppercase, and returns it.
