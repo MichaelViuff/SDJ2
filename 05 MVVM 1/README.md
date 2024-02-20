@@ -2,7 +2,7 @@
 
 ## 5.1 My first MVVM program
 
-In this exercise we will implement the Uppercase example from the presentation.
+In this exercise we will implement the Uppercase [example](https://github.com/MichaelViuff/SDJ2/tree/main/05%20MVVM%201/Examples/Uppercase) from the presentation.
 
 ### Model
 For now, our Model will be kept very simple. It simply takes a string, converts it to uppercase, and returns it.
