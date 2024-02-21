@@ -6,7 +6,7 @@ In the previous exercises, we implemented MVVM in JavaFX. Almost. Our ViewModel 
 
 We will use our solution to [exercise 5.5](https://github.com/MichaelViuff/SDJ2/tree/main/05%20MVVM%201#55-organizing-everything) as a starting point, and update the Model and ViewModel accordingly. Notice how we won't be changing anything at all in the View.
 
-Start by opening your solution or download this [example](/Examples/Factories) (everything is sorted into packages, so update your paths if necessary when importing it into your project).
+Start by opening your solution or download this [example](05%20MVVM%201/Examples/Factories) (everything is sorted into packages, so update your paths if necessary when importing it into your project).
 
 ### Model
 
