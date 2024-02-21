@@ -336,21 +336,9 @@ public class Main extends Application
 
 ## 6.3 Multiple views for BarChart example
 
-We have succesfully adapted our BarChart example to use the MVVM Design Pattern. If not, download the [solution](/06%20MVVM%202/Examples/BarChartMVVM).
+We have succesfully adapted our [Bar Chart Example](https://github.com/MichaelViuff/SDJ2/tree/main/03%20Observer%20Pattern/Examples/JavaFX%20Charts) to use the MVVM Design Pattern. If not, download the [solution](/06%20MVVM%202/Examples/BarChartMVVM).
 
-Create a new .fxml file that contains a view with 3 input fields and 3 buttons, or download this [Input Fields View]() and add it to your project.
-
-In the controller for your new view, add methods to start/stop the model, and have two of your buttons call these methods.
-
-Create a Main method that starts everything - have it extend `Application`, use an `FXMLLoader` to load your view into a `Scene`, create a new `Stage`, add your scene to it and show it. Remember to start the `DataModel` as well.
-
-Verify that your buttons start/stops calculations (you should be able to see the output start/stop in the console).
-
-Create a...
-
-
-
-We want to be able to start/stop the calculations, and be able to input our own values as well.
+Now we want to extend it with a new window where we can start/stop the re-calculation, and be able to input our own values as well.
 
 ### Model
 
@@ -396,6 +384,305 @@ public void run()
         {
             e.printStackTrace();
         }
+    }
+}
+```
+</details>
+</blockquote>
+
+### ViewModel
+
+We need a ViewModel that can call the start/stop methods from the View. Rather than extending the current `BarChartViewModel` we will create a new one instead.
+
+It will be very simple, consisting only of a single attribute of type `DataModel` and two public methods that can `start()` and `stop()` the `DataModel`.
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+public class InputFieldsViewModel
+{
+    private DataModel model;
+
+    public InputFieldsViewModel(DataModel model)
+    {
+        this.model = model;
+    }
+
+    public void startPressed()
+    {
+        model.start();
+    }
+
+    public void stopPressed()
+    {
+        model.stop();
+    }
+}
+```
+</details>
+</blockquote>
+
+### View
+
+Create a new `.fxml` file that contains a view with 3 input fields and 2 buttons, or download this [Input Fields View](/05%20MVVM%202/Examples/InputFieldsView.fxml) and add it to your project.
+
+Create the View class `InputFieldsView`. It should have references not only to the new `InputFieldsViewModel` but also to the previous `BarChartViewModel`. Add both to the parameters for the constructor and set them as attributes.
+
+In the `initialize()` method we will create the binding between the Properties in the `BarChartViewModel` and our 3 `TextFields`.
+
+Creating this binding is a bit tricky, since our ViewModel supplies us with `IntegerProperty` instances, and we need `StringProperty` instances for the `.bind()` method in `TextField`.
+
+Luckily, JavaFX has a helper class, `NumberStringConverter` that we can use to convert between the two. The syntax for setting up this binding looks like this:
+
+```java
+Bindings.bindBidirectional([name of our TextField].textProperty(), barChartViewModel.redProperty(), new NumberStringConverter());
+```
+
+Add methods to start/stop the model, and have your buttons call these methods.
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import javafx.beans.binding.Bindings;
+import javafx.scene.control.TextField;
+import javafx.fxml.FXML;
+import javafx.util.converter.NumberStringConverter;
+
+public class InputFieldsView
+{
+    @FXML
+    private TextField redField;
+    @FXML
+    private TextField greenField;
+    @FXML
+    private TextField blueField;
+
+    private InputFieldsViewModel inputFieldsViewModel;
+    private BarChartViewModel barChartViewModel;
+
+    public InputFieldsView(InputFieldsViewModel inputFieldsViewModel, BarChartViewModel barChartViewModel)
+    {
+        this.inputFieldsViewModel = inputFieldsViewModel;
+        this.barChartViewModel = barChartViewModel;
+    }
+
+    public void initialize()
+    {
+        Bindings.bindBidirectional(redField.textProperty(), barChartViewModel.redProperty(), new NumberStringConverter());
+        Bindings.bindBidirectional(greenField.textProperty(), barChartViewModel.greenProperty(), new NumberStringConverter());
+        Bindings.bindBidirectional(blueField.textProperty(), barChartViewModel.blueProperty(), new NumberStringConverter());
+    }
+
+    public void onButtonStartPressed()
+    {
+        inputFieldsViewModel.startPressed();
+    }
+
+    public void onButtonStopPressed()
+    {
+        inputFieldsViewModel.stopPressed();
+    }
+}
+```
+</details>
+</blockquote>
+
+### Main
+
+Our `Main` class needs to be updated a bit.
+
+We need to initialize our `InputFieldsViewModel` and `InputFieldsView`, as well as create a new window and set the scene for that window.
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Main extends Application
+{
+    public static void main(String[] args)
+    {
+        launch();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        DataModel model = new DataModel();
+        BarChartViewModel barChartViewModel = new BarChartViewModel(model);
+        InputFieldsViewModel inputFieldsViewModel = new InputFieldsViewModel(model);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BarChartView.fxml"));
+        fxmlLoader.setControllerFactory(controllerClass -> new BarChartView(barChartViewModel));
+
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        primaryStage.setTitle("Bar Chart");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        fxmlLoader = new FXMLLoader(getClass().getResource("InputFieldsView.fxml"));
+        fxmlLoader.setControllerFactory(controllerClass -> new InputFieldsView(inputFieldsViewModel, barChartViewModel));
+
+        Stage secondaryStage = new Stage();
+        Scene secondaryScene = new Scene(fxmlLoader.load(), 800, 600);
+        secondaryStage.setTitle("Input Fields");
+        secondaryStage.setScene(secondaryScene);
+        secondaryStage.show();
+
+        Thread dataModelThread = new Thread(model);
+        dataModelThread.setDaemon(true);
+        dataModelThread.start();
+    }
+}
+```
+</details>
+</blockquote>
+
+Run your program and verify that everything works.
+
+If you set the binding correctly, you should be able to stop the recalculation, enter some new values in the fields, and see the Bar Chart update immediately.
+
+### Factories
+
+The `Main` class is starting to get bloated. We need to trim it down before it gets out of hand!
+
+Use the "Factory" pattern (it really isn't, but it's close enough for us), to restructure your initialization of classes.
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+public class ModelFactory
+{
+    private DataModel model;
+    
+    public DataModel getModel()
+    {
+        if (model == null)
+        {
+            model = new DataModel();
+        }
+        return model;
+    }
+}
+```
+
+```java
+public class ViewModelFactory
+{
+    private ModelFactory modelFactory;
+    private BarChartViewModel barChartViewModel;
+    private InputFieldsViewModel inputFieldsViewModel;
+    
+    public BarChartViewModel getBarChartViewModel()
+    {
+        if (barChartViewModel == null)
+        {
+            barChartViewModel = new BarChartViewModel(modelFactory.getModel());
+        }
+        return barChartViewModel;
+    }
+    
+    public InputFieldsViewModel getInputFieldsViewModel()
+    {
+        if (inputFieldsViewModel == null)
+        {
+            inputFieldsViewModel = new InputFieldsViewModel(modelFactory.getModel());
+        }
+        return inputFieldsViewModel;
+    }
+}
+```
+
+```java
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class ViewFactory
+{
+    private ViewModelFactory viewModelFactory;
+    private BarChartView barChartView;
+    private InputFieldsView inputFieldsView;
+
+    public ViewFactory(ViewModelFactory viewModelFactory)
+    {
+        this.viewModelFactory = viewModelFactory;
+    }
+
+    public BarChartView getBarChartView() throws IOException
+    {
+        if (barChartView == null)
+        {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BarChartView.fxml"));
+            fxmlLoader.setControllerFactory(controllerClass -> new BarChartView(viewModelFactory.getBarChartViewModel()));
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+            stage.setTitle("Bar Chart");
+            stage.setScene(scene);
+            stage.show();
+
+            barChartView = fxmlLoader.getController();
+        }
+        return barChartView;
+    }
+
+    public InputFieldsView getInputFieldsView() throws IOException
+    {
+        if (inputFieldsView == null)
+        {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InputFieldsView.fxml"));
+            fxmlLoader.setControllerFactory(controllerClass -> new InputFieldsView(viewModelFactory.getInputFieldsViewModel(), viewModelFactory.getBarChartViewModel()));
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+            stage.setTitle("Input Fields");
+            stage.setScene(scene);
+            stage.show();
+
+            inputFieldsView = fxmlLoader.getController();
+        }
+        return inputFieldsView;
+    }
+
+}
+```
+
+```java
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class Main extends Application
+{
+    public static void main(String[] args)
+    {
+        launch();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        ModelFactory modelFactory = new ModelFactory();
+        ViewModelFactory viewModelFactory = new ViewModelFactory(modelFactory);
+        ViewFactory viewFactory = new ViewFactory(viewModelFactory);
+
+        viewFactory.getBarChartView();
+        viewFactory.getInputFieldsView();
+
+        Thread dataModelThread = new Thread(modelFactory.getModel());
+        dataModelThread.setDaemon(true);
+        dataModelThread.start();
     }
 }
 ```
