@@ -437,7 +437,7 @@ Creating this binding is a bit tricky, since our ViewModel supplies us with `Int
 Luckily, JavaFX has a helper class, `NumberStringConverter` that we can use to convert between the two. The syntax for setting up this binding looks like this:
 
 ```java
-Bindings.bindBidirectional([name of our TextField].textProperty(), barChartViewModel.redProperty(), new NumberStringConverter());
+Bindings.bindBidirectional([name of our TextField].textProperty(), barChartViewModel.[name of Property], new NumberStringConverter());
 ```
 
 Add methods to start/stop the model, and have your buttons call these methods.
