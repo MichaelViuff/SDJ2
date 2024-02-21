@@ -426,7 +426,7 @@ public class InputFieldsViewModel
 
 ### View
 
-Create a new `.fxml` file that contains a view with 3 input fields and 2 buttons, or download this [Input Fields View](/05%20MVVM%202/Examples/InputFieldsView.fxml) and add it to your project.
+Create a new `.fxml` file that contains a view with 3 input fields and 2 buttons, or download this [Input Fields View](/06%20MVVM%202/Examples/InputFieldsView.fxml) and add it to your project.
 
 Create the View class `InputFieldsView`. It should have references not only to the new `InputFieldsViewModel` but also to the previous `BarChartViewModel`. Add both to the parameters for the constructor and set them as attributes.
 
