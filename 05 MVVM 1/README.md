@@ -490,7 +490,7 @@ In the MVVM design pattern, we do this by creating multiple sets of View and Vie
 We will expand on our previous exercise.
 The input validation is not important for this exercise, so if your solution has become overly complicated, just reset with the [example](/05%20MVVM%201/Examples/Input%20Validation) as your starting point.
 
-We want to have another windows, where we display these users in a list. 
+We want to have another window, where we display these users in a list. 
 
 To do so, we create a new set of View and ViewModel classes.
 

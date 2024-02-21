@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="155.0" prefWidth="267.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.CreateUserView">
+   <children>
+      <HBox prefHeight="24.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="98.0" text="User name" />
+            <TextField fx:id="usernameField" />
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="10.0" prefHeight="24.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="98.0" text="Password" />
+            <TextField fx:id="passwordField" />
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="35.0" prefHeight="24.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="98.0" text="Repeat password" />
+            <TextField fx:id="passwordRepeatField" />
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="60.0" prefHeight="24.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="98.0" text="Age" />
+            <TextField fx:id="ageField" />
+         </children>
+      </HBox>
+      <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddButtonPressed" text="Submit" />
+   </children>
+</VBox>
