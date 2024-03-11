@@ -3,9 +3,9 @@
 
 ## 8.1 Uppercase Echo Server
 
-[Download](\08%20Sockets%201\Examples\Server.java) and run the Echo Server example from the presentation.
+[Download](/Examples/Server.java) and run the Echo Server example from the presentation.
 
-[Download](\08%20Sockets%201\Examples\Client.java) the Client and run it. 
+[Download](/Examples/Client.java) the Client and run it. 
 
 Look at the output from both the Server and the Client.
 
@@ -127,7 +127,7 @@ Instead, we want to establish a connection through the `Socket` and keep using t
 
 We need to modify both the Server and Client, so they can do this. To ensure the correct flow of actions on both the Server and Client, we must agree on a specific protocol.
 
-[Protocol](\GitHub\08%20Sockets%201\Images\Echo%20Server%20Protocol.png)
+[Protocol](/Images/Echo%20Server%20Protocol.png)
 
 
 In order to do so, we need to create the `ObjectInputStream` and `ObjectOutputStream` early, and reuse those.
