@@ -197,8 +197,9 @@ public class Server
                 Socket socket = welcomeSocket.accept();
                 System.out.println("Client connected");
 
-                ObjectInputStream inFromClient = new ObjectInputStream(socket.getInputStream());
                 ObjectOutputStream outToClient = new ObjectOutputStream(socket.getOutputStream());
+                outToClient.flush(); // Important to flush to send the serialization stream header
+                ObjectInputStream inFromClient = new ObjectInputStream(socket.getInputStream());
 
                 String o = (String) inFromClient.readObject();
 
@@ -239,7 +240,9 @@ public class Client
             Socket socket = new Socket("localhost", 2910);
 
             ObjectOutputStream outToServer = new ObjectOutputStream(socket.getOutputStream());
+            outToServer.flush(); // Flush to send the serialization stream header
             ObjectInputStream inFromServer = new ObjectInputStream(socket.getInputStream());
+
 
             while (true)
             {
