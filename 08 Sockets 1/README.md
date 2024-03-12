@@ -135,6 +135,40 @@ The Server currently waits with the creation of the streams until necessary. Cha
 
 Do the same in the Client, so that immediately after the connection has been accepted, both streams are created.
 
+[!CAUTION]
+When creating `ObjectInputStream` and `ObjectOutputStream` the order actually matters.
+
+As seen in the [Java API](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectInputStream.html#ObjectInputStream%28java.io.InputStream%29), the constructor for `ObjectInputStream` "...will block until the corresponding ObjectOutputStream has written and flushed the header".
+
+Here's the correct order for initializing these streams:
+
+**Server-Side**
+First, create `ObjectOutputStream`:
+
+```java
+ObjectOutputStream outToClient = new ObjectOutputStream(socket.getOutputStream());
+outToClient.flush(); // Important to flush to send the serialization stream header
+```
+
+Then, create `ObjectInputStream`:
+
+```java
+ObjectInputStream inFromClient = new ObjectInputStream(socket.getInputStream());
+```
+
+**Client-Side**
+Similarly, create `ObjectOutputStream` first:
+
+```java
+ObjectOutputStream outToServer = new ObjectOutputStream(socket.getOutputStream());
+outToServer.flush(); // Flush to send the serialization stream header
+```
+Then, create `ObjectInputStream`:
+
+```java
+ObjectInputStream inFromServer = new ObjectInputStream(socket.getInputStream());
+```
+
 Create an inner loop in the Server, that continues to receive the message from the Client, and returns the message in uppercase back to the Client. This loop should stop when the Client sends the message `"STOP"`.
 
 <blockquote>
