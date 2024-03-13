@@ -462,5 +462,11 @@ Right now, a Client can easily send messages disguised as another user.
 
 To prevent this, we will add authentication to our 
 
+## 9.5 Sending files
+
+## 9.6 Concurrency still applies
+
 -->
+
+
 
