@@ -2,7 +2,7 @@
 
 ## 9.1 Excluding from broadcast
 
-Start by implementing the Simple Chat System from the presentation (or download it [here]("/09%20Sockets%202/Examples/Simple%20Chat%20System/")).
+Start by implementing the Simple Chat System from the presentation (or download it [here](/09%20Sockets%202/Examples/Simple%20Chat%20System/)).
 
 Run it and ensure everything is working as expected.
 
