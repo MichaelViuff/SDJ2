@@ -444,6 +444,14 @@ We need to add a GUI, so our system is easier to work with.
 
 This can be done in several different ways. One approach would be to use the MVVM Design Pattern introduced earlier.
 
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+No solution for now. Keep up the good work ;)
+
+</details>
+</blockquote>
 <!--
 
 ## 9.4 Authentication
