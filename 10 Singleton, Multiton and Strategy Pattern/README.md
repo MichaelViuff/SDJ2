@@ -6,7 +6,7 @@
 ### Objective
 Create a Robot that will take part in a game with other robots. The robot can be configured with different behavior strategies for acting in the game. We will keep it simple with three simple strategies.
 
-![Robot Behaviour](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Compression%20Exercise%20UML%20Class%20Diagram.png)
+![Robot Behaviour](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Robot%20Behaviour%20Exercise%20UML%20Class%20Diagram.png)
 
 #### Tasks
 1. **Create the `Behaviour` Interface:**
@@ -24,6 +24,8 @@ Create a Robot that will take part in a game with other robots. The robot can be
 
 ## 10.2 Compression Strategy
 
+![Compression](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Compression%20Exercise%20UML%20Class%20Diagram.png)
+
 ### Objective
 Create a class `Compressor` that can compress a list of files and print out the names of the compressed files.
 
@@ -35,6 +37,8 @@ Create a class `Compressor` that can compress a list of files and print out the 
    - Loop through the files, 'compress' each using the configured compression method, and print out the list of names of compressed files.
 
 ## 10.3 Sorting a TreeSet
+
+![Comparator](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Comparator%20Exercise%20UML%20Class%20Diagram.png)
 
 ### Objective
 Configure a `java.util.TreeSet` class with a comparator object to make the TreeSet sorted.
