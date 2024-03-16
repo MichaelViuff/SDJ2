@@ -5,7 +5,7 @@
 
 ## 10.x Logging Feature
 
-![Logging](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Logging%20Exercise%20UML%20Class%20Diagram.png)
+<img src="10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Logging%20Exercise%20UML%20Class%20Diagram.png" alt="Logging" width="100"/>
 
 ### Objective
 Implement a `Log` class to log all actions and demonstrate the Singleton design pattern.
