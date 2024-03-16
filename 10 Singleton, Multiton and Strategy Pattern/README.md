@@ -33,7 +33,7 @@ Convert multiple classes in an MVVM project to singletons to avoid passing them 
 
 ## 10.x Project Glossary
 
-<img src="/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Project%20Glossary%20Exercise%20UML%20Class%20Diagram.png" alt="Project Glossary" width="400"/>
+<img src="/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Project%20Glossary%20Exercise%20UML%20Class%20Diagram.png" alt="Project Glossary" width="558"/>
 
 ### Objective
 Implement a project glossary system using Singleton and Multiton patterns.
