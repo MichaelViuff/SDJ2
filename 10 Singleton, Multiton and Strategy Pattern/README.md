@@ -6,7 +6,7 @@
 ### Objective
 Create a Robot that will take part in a game with other robots. The robot can be configured with different behavior strategies for acting in the game. We will keep it simple with three simple strategies.
 
-![Robot Behaviour](/10%20Singleton,%20Multiton%20and%20Strategy%2C%20Pattern/Images/Compression%20Exercise%20UML%20Class%20Diagram.png)
+![Robot Behaviour](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Compression%20Exercise%20UML%20Class%20Diagram.png)
 
 #### Tasks
 1. **Create the `Behaviour` Interface:**
