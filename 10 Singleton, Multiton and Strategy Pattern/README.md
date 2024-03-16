@@ -5,7 +5,7 @@
 
 ## 10.x Logging Feature
 
-<img src="10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Logging%20Exercise%20UML%20Class%20Diagram.png" alt="Logging" width="100"/>
+![Logging](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Logging%20Exercise%20UML%20Class%20Diagram.png)
 
 ### Objective
 Implement a `Log` class to log all actions and demonstrate the Singleton design pattern.
@@ -33,7 +33,7 @@ Convert multiple classes in an MVVM project to singletons to avoid passing them 
 
 ## 10.x Project Glossary
 
-![Logging](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Project%20Glossary%20Exercise%20UML%20Class%20Diagram.png | width=100)
+<img src="/Images/Project%20Glossary%20Exercise%20UML%20Class%20Diagram.png" alt="Project Glossary" width="100"/>
 
 ### Objective
 Implement a project glossary system using Singleton and Multiton patterns.
