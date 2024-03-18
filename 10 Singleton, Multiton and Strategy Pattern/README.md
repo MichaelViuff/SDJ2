@@ -158,8 +158,8 @@ If both classes shared the same instance, they would not create separate files.
 We can achieve this, by turning the `Log` class into a Singleton, and update the constructor of `CDLibrary` and `LoginSystem` to get the Singleton instance.
 
 <blockquote>
-  <details>
-    <summary>Hints</summary>
+<details>
+<summary>Hints</summary>
 There are 3 steps necessary to turn `Log` into a Singleton:
 
 1. Declare a private static instance of the Log class within the class itself.
@@ -182,14 +182,12 @@ public static Log getInstance()
    return instance;
 }
 ```
-
 Afterwards, update the constructor in `CDLibrary` and `LoginSystem` so they use `Log.getInstance()` instead of `new Log()`
 
-<blockquote>
-  <details>
-    <summary>Display solution...</summary>
-```java
+<details>
+<summary>Display solution...</summary>
 
+```java
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -199,10 +197,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Log
 {
     private static Log instance = new Log(); // Singleton instance
+    private static final Lock lock = new ReentrantLock();
 
     private Queue<LogLine> logQueue;
     private File logFile;
@@ -216,6 +217,16 @@ public class Log
 
     public static Log getInstance()
     {
+        if (instance == null)
+        {
+            synchronized (lock)
+            {
+                if (instance == null)
+                {
+                    instance = new Log;
+                }
+            }
+        }
         return instance;
     }
 
@@ -285,41 +296,94 @@ public class Log
     }
 }
 ```
-  </details>
+
+```java
+public class CDLibrary
+{
+
+    /*
+    This class only contains dummy methods to simulate a library system.
+    */
+
+    private Log logger;
+
+    public CDLibrary()
+    {
+        this.logger = Log.getInstance();
+    }
+
+    public void onPressedRemoveCD()
+    {
+        logger.add("removing a cd has been pressed");
+    }
+
+    public void inputTitleToBeRemoved()
+    {
+        logger.add("title for cd to remove has been entered");
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        removeCD();
+    }
+
+    private void removeCD()
+    {
+        logger.add("cd found and has been removed in the model");
+    }
+
+}
+```
+
+```java
+public class LoginSystem
+{
+
+    /*
+    This class only contains dummy methods to simulate a library system.
+    */
+
+    private Log logger;
+
+    public LoginSystem()
+    {
+        this.logger = Log.getInstance();
+    }
+
+    //Dummy method to simulate logging in
+    public void login(String username, String password)
+    {
+        logger.add("user logged in with username: " + username + " and password: " + password);
+    }
+
+}
+```
+</details>
+</details>
 </blockquote>
 
-  </details>
-</blockquote>
+## 10.4 Factories as Singletons
 
-![Logging](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Logging%20Exercise%20UML%20Class%20Diagram.png)
+In previous [MVVM](/05%20MVVM%201/README.md) exercises, we have used Factories to construct our Model, ViewModel and Views. 
 
-### Objective
-Implement a `Log` class to log all actions and demonstrate the Singleton design pattern.
+Instead of passing these factories around, they could be turned into Singletons instead.
 
-#### Tasks
-1. **Singleton Logging:**
-   - Change the `Log` class to a Singleton.
-   - Update `CDLibrary` and `LoginSystem` classes to use the Singleton instance of the `Log` class.
-   - Run the main method to ensure only one text file is created.
+In one of your exercises, rewrite your factories to turn them into Singletons.
 
-2. **Thread Safety:**
-   - Make the Singleton implementation thread-safe.
+## 10.5 Project Glossary
 
-3. **Using the Logger:**
-   - Create threads that use methods of `CDLibrary` and `LoginSystem` which will use the Logger.
+The system presented in the UML class diagram (and in the source code) represent an IT project with a project glossary. 
 
-## 10.x Factories as Singletons
+A `Project` has a name and a glossary where the glossary contains a list of items with a word or phrase and the corresponding definition, e.g.
 
-### Objective
-Convert multiple classes in an MVVM project to singletons to avoid passing them around to different controllers and factories.
+**Phrase:** *"User"*<br>
+**Definition:** *"End user in form of a doctor or a nurse."*
 
-#### Tasks
-1. **Singleton Factories:**
-   - Convert `ViewHandler`, `ViewModelFactory`, `ModelFactory`, and possibly `ClientFactory` into singletons.
-
-## 10.x Project Glossary
-
-<img src="/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Project%20Glossary%20Exercise%20UML%20Class%20Diagram.png" alt="Project Glossary" width="558"/>
+<img src="/10 Singleton, Multiton and Strategy Pattern/Images/Project Glossary Exercise UML Class Diagram.png" alt="Project Glossary" width="558"/>
 
 ### Objective
 Implement a project glossary system using Singleton and Multiton patterns.
