@@ -151,16 +151,16 @@ In the [Logging example](/10%20Singleton,%20Multiton%20and%20Strategy%20Pattern/
 
 The output is logged to console and to a file (this is the role of the `Log` class, ignore the implementation details).
 
-For now, the `Log` instance is created in the constructor of `CDLibrary` and `LoginSystem`, and it uses the current time to create a text file. This causes 2 separate files to be created, one for `CDLibrary` logging and one for `LoginSystem` logging. 
+For now, the <code>Log</code> instance is created in the constructor of <code>CDLibrary</code> and <code>LoginSystem</code>, and it uses the current time to create a text file. This causes 2 separate files to be created, one for <code>CDLibrary</code> logging and one for <code>LoginSystem</code> logging. 
 
 If both classes shared the same instance, they would not create separate files.
 
-We can achieve this, by turning the `Log` class into a Singleton, and update the constructor of `CDLibrary` and `LoginSystem` to get the Singleton instance.
+We can achieve this, by turning the <code>Log</code> class into a Singleton, and update the constructor of <code>CDLibrary</code> and <code>LoginSystem</code> to get the Singleton instance.
 
 <blockquote>
 <details>
 <summary>Hints</summary>
-There are 3 steps necessary to turn `Log` into a Singleton:
+There are 3 steps necessary to turn <code>Log</code> into a Singleton:
 
 1. Declare a private static instance of the Log class within the class itself.
 ```java
@@ -182,7 +182,7 @@ public static Log getInstance()
    return instance;
 }
 ```
-Afterwards, update the constructor in `CDLibrary` and `LoginSystem` so they use `Log.getInstance()` instead of `new Log()`
+Afterwards, update the constructor in <code>CDLibrary</code> and <code>LoginSystem</code> so they use <code>Log.getInstance()</code> instead of <code>new Log()</code>
 
 <details>
 <summary>Display solution...</summary>
@@ -439,11 +439,11 @@ public class Test
 <blockquote>
   <details>
     <summary>Hints</summary>
-Turning the `ProjectGlossary` into a Singleton is straightforward.
+Turning the <code>ProjectGlossary</code> into a Singleton is trivial at this point.
 
-From there, we just need to create a `Map` of instances, and return instances from this map with the `getInstance(String key)` method.
+From there, we just need to create a <code>Map</code> of instances, and return instances from this map with the <code>getInstance(String key)</code> method.
 
-Our constructor for `Project` will also need to be updated, since it needs to specify which language we want to use for our `ProjectGlossary`.
+Our constructor for <code>Project</code> will also need to be updated, since it needs to specify which language we want to use for our <code>ProjectGlossary</code>.
 
 <details>
     <summary>Display solution...</summary>
@@ -593,10 +593,8 @@ public class Project
     }
 }
 ```
-
 </details>
-
-  </details>
+</details>
 </blockquote>
 
 # Strategy Pattern
