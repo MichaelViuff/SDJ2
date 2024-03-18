@@ -376,43 +376,228 @@ In one of your exercises, rewrite your factories to turn them into Singletons.
 
 ## 10.5 Project Glossary
 
-The system presented in the UML class diagram (and in the source code) represent an IT project with a project glossary. 
+The system presented in the UML class diagram (and in the [source code](/10%20Singleton,%20Multiton%20and%20Strategy%20Pattern/Examples/Project%20Glossary/)) represent an IT project with a project glossary. 
+
+<img src="/10 Singleton, Multiton and Strategy Pattern/Images/Project Glossary Exercise UML Class Diagram.png" alt="Project Glossary" width="558"/>
 
 A `Project` has a name and a glossary where the glossary contains a list of items with a word or phrase and the corresponding definition, e.g.
 
 **Phrase:** *"User"*<br>
 **Definition:** *"End user in form of a doctor or a nurse."*
 
-<img src="/10 Singleton, Multiton and Strategy Pattern/Images/Project Glossary Exercise UML Class Diagram.png" alt="Project Glossary" width="558"/>
+Example:
 
-### Objective
-Implement a project glossary system using Singleton and Multiton patterns.
+```java
 
-### 10.x Singleton Glossary
+//In a main method
+Project project1 = new Project("Project 1");
+project1.addGlossaryItem("Client", "The client part of a client/server application.");
+project1.addGlossaryItem("User", "End user in form of a doctor or a nurse.");
+project1.addGlossaryItem("Account", "A location on the server application storing username, password and phone number.");
+System.out.println("Project 1: Definition for Client: " + project1.getDefinition("Client"));
+System.out.println(project1);
 
-#### Tasks
-1. **Implement Singleton Glossary:**
-   - Convert `ProjectGlossary` into a Singleton.
-   - Consider changes to the class diagram.
+/* OUTPUT:
+Project 1: Definition for Client: The client part of a client/server application.
+Project: Project 1
+- Client: "The client part of a client/server application."
+- User: "End user in form of a doctor or a nurse."
+- Account: "A location on the server application storing username, password and phone number."
+*/
+```
 
-### 10.x Multiton Glossary
+Convert the `ProjectGlossary` class into a Multiton with a String key representing the language, e.g. “uk” for a project using an English project glossary and “dk” for a project using a Danish one. 
 
-#### Tasks
-1. **Implement Multiton Glossary:**
-   - Convert `ProjectGlossary` into a Multiton with a language key.
-   - Implement double-checked locking of the `getInstance` method.
+It should be able to work with the following test:
 
-## 10.x Singleton Fake Database (Optional)
+```java
+public class Test
+{
+    public static void main(String[] args)
+    {
+        //English
+        Project project_uk = new Project("Project UK", "uk");
 
-### Objective
-Create a dummy database for a car renting company using the Singleton pattern.
+        project_uk.addGlossaryItem("Client", "The client part of a client/server application.");
+        project_uk.addGlossaryItem("User", "End user in form of a doctor or a nurse.");
+        project_uk.addGlossaryItem("Account", "A location on the server application storing username, password and phone number.");
 
-#### Tasks
-1. **Implement Singleton Database:**
-   - Create `Customer` and `Car` classes.
-   - Implement a `Database` class with collections to hold `Customer` and `Car` objects.
-   - Make the `Database` class into a singleton and thread-safe.
+        System.out.println(project_uk);
 
+        // Danish:
+        Project project_dk = new Project("Project DK", "dk");
+
+        project_dk.addGlossaryItem("Client", "Det program der som en del af en Client/Server applikation bliver installeret på computere til læger og sygeplejesker.");
+        project_dk.addGlossaryItem("Bruger", "Bruger af systemet - her en læge eller sygeplejeske.");
+        project_dk.addGlossaryItem("Konto", "Et sted på en server med oplysninger om brugernavn, kodeord og telefonnummer.");
+
+        System.out.println(project_dk);
+    }
+}
+```
+
+<blockquote>
+  <details>
+    <summary>Hints</summary>
+Turning the `ProjectGlossary` into a Singleton is straightforward.
+
+From there, we just need to create a `Map` of instances, and return instances from this map with the `getInstance(String key)` method.
+
+Our constructor for `Project` will also need to be updated, since it needs to specify which language we want to use for our `ProjectGlossary`.
+
+<details>
+    <summary>Display solution...</summary>
+
+```java
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ProjectGlossary
+{
+    private static Map<String, ProjectGlossary> instances = new HashMap<>();
+    private static final Lock lock = new ReentrantLock();
+
+    private List<GlossaryItem> items;
+
+    private ProjectGlossary()
+    {
+        this.items = new ArrayList<>();
+    }
+
+    public static ProjectGlossary getInstance(String key)
+    {
+        if (!instances.containsKey(key))
+        {
+            synchronized (lock)
+            {
+                if (!instances.containsKey(key))
+                {
+                    instances.put(key, new ProjectGlossary());
+                }
+            }
+        }
+        return instances.get(key);
+    }
+
+    public int size()
+    {
+        return items.size();
+    }
+
+    public GlossaryItem[] getAll()
+    {
+        GlossaryItem[] array = new GlossaryItem[items.size()];
+        return items.toArray(array);
+    }
+
+    public String getDefinition(String phrase)
+    {
+        for (GlossaryItem item : items)
+        {
+            if (item.getPhrase().equalsIgnoreCase(phrase))
+            {
+                return item.getDefinition();
+            }
+        }
+        return null;
+    }
+
+    public void addItem(String phrase, String definition)
+    {
+        if (getDefinition(phrase) != null)
+        {
+            throw new IllegalStateException(
+                    "Glossary phrase already exist: " + phrase);
+        }
+        items.add(new GlossaryItem(phrase, definition));
+    }
+
+    public void removeItem(String phrase)
+    {
+        items.remove(new GlossaryItem(phrase, getDefinition(phrase)));
+    }
+
+    public String toString()
+    {
+        String s = "";
+        if (items.size() == 0)
+        {
+            s += "[Empty]";
+        }
+        for (int i = 0; i < items.size(); i++)
+        {
+            s += "- " + items.get(i);
+            if (i < items.size() - 1)
+            {
+                s += "\n";
+            }
+        }
+        return s;
+    }
+}
+```
+
+```java
+public class Project
+{
+    private String name;
+    private ProjectGlossary glossary;
+
+    public Project(String name, String locale)
+    {
+        this.name = name;
+        this.glossary = ProjectGlossary.getInstance(locale);
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public ProjectGlossary getGlossary()
+    {
+        return glossary;
+    }
+
+    public String getDefinition(String phrase)
+    {
+        return glossary.getDefinition(phrase);
+    }
+
+    public void addGlossaryItem(String phrase, String definition)
+    {
+        glossary.addItem(phrase, definition);
+    }
+
+    public void removeGlossaryItem(String phrase)
+    {
+        glossary.removeItem(phrase);
+    }
+
+    @Override public String toString()
+    {
+        String s = "Project: " + name;
+        if (glossary.size() > 0)
+        {
+            s += "\n" + glossary;
+        }
+        else
+        {
+            s += " [No glossary]";
+        }
+        return s;
+    }
+}
+```
+
+</details>
+
+  </details>
+</blockquote>
 
 # Strategy Pattern
 
