@@ -3,7 +3,161 @@
 
 # Singleton and Multiton Pattern
 
-## 10.x Logging Feature
+## 10.1 Database Connector as Singleton
+
+Assume we had a class that handled connection to a database.
+
+This class would be shared across many other classes, and we would want to ensure that all classes use the same instance.
+
+Such a scenario is an ideal situation for the Singleton Design Pattern.
+
+Our `DatabaseConnector` class could look like this:
+
+```java
+public class DatabaseConnector 
+{
+
+    private DatabaseConnector(String IP)
+    {
+        //Initializing the database connection would happen here.
+    }
+
+    public void connect()
+    {
+        System.out.println("Database connection established");
+    }
+}
+```
+
+Change the class, so it becomes a Singleton. Remember to ensure proper synchronization.
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class DatabaseConnector
+{
+
+    private static DatabaseConnector instance;
+    private static final Lock lock = new ReentrantLock();
+
+    private DatabaseConnector()
+    {
+        //Initializing the database connection would happen here.
+    }
+
+    public static DatabaseConnector getInstance()
+    {
+        if (instance == null)
+        {
+            synchronized (lock)
+            {
+                if (instance == null)
+                {
+                    instance = new DatabaseConnector(); //Not a valid IP, just for demonstration purposes.
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void connect()
+    {
+        System.out.println("Database connection established");
+    }
+}
+```
+
+</details>
+</blockquote>
+
+## 10.2 Database Connector as Multiton
+
+Assume that we had multiple different databases that we wanted to ensure a single instance of each.
+
+This would be a typical use case for the Multiton pattern.
+
+Each connector should be referenced by a name, and a previous instance should be returned if it exists.
+
+```java
+public class MultitonTest
+{
+    public static void main(String[] args)
+    {
+        DatabaseConnector mysqlConnector = DatabaseConnector.getInstance("MySQL");
+        DatabaseConnector postgresConnector = DatabaseConnector.getInstance("PostgreSQL");
+        DatabaseConnector anotherMysqlConnector = DatabaseConnector.getInstance("MySQL");
+
+        System.out.println(mysqlConnector == postgresConnector); // Should print false
+        System.out.println(mysqlConnector == anotherMysqlConnector); // Should print true
+    }
+}
+```
+
+Change the `DatabaseConnector` class so it becomes a Multiton. 
+
+<blockquote>
+<details>
+<summary>Display solution...</summary>
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class DatabaseConnector
+{
+    private static Map<String, DatabaseConnector> instances = new HashMap<>();
+    private static final Lock lock = new ReentrantLock();
+
+    private DatabaseConnector()
+    {
+        //Initializing the database connection would happen here.
+    }
+
+    public static DatabaseConnector getInstance(String key)
+    {
+        if (!instances.containsKey(key))
+        {
+            synchronized (lock)
+            {
+                if (!instances.containsKey(key))
+                {
+                    instances.put(key, new DatabaseConnector());
+                }
+            }
+        }
+        return instances.get(key);
+    }
+
+    public void connect()
+    {
+        System.out.println("Database connection established");
+    }
+}
+```
+
+</details>
+</blockquote>
+
+## 10.3 Logging with a Singleton
+
+In the [Logging example], two classes, `CDLibrary` and `LoginSystem`, are using a `Log` class to log everything that happens.
+
+The output is logged to console and to a file (this is the role of the `Log` class, ignore the implementation details).
+
+For now, the `Log` instance is created in the constructor of `CDLibrary` and `LoginSystem`, and it uses the current time to create a text file. This causes 2 separate files to be created, one for `CDLibrary` logging and one for `LoginSystem` logging. 
+
+If both classes shared the same instance, they would not create separate files.
+
+We can achieve this, by turning the `Log` class into a Singleton, and update the constructor of `CDLibrary` and `LoginSystem` to get the Singleton instance.
+
+
 
 ![Logging](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Logging%20Exercise%20UML%20Class%20Diagram.png)
 
