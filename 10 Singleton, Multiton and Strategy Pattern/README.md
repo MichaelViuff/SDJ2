@@ -1002,6 +1002,9 @@ public class AgeComparator implements Comparator<Person>
 }
 ```
 
+  </details>
+</blockquote>
+
 ## 10.9 Sorting a List
 
 Create a `MyIntegerList` class that can store `Integer` objects in an `ArrayList`.
