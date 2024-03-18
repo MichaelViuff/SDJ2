@@ -147,7 +147,7 @@ public class DatabaseConnector
 
 ## 10.3 Logging with a Singleton
 
-In the [Logging example], two classes, `CDLibrary` and `LoginSystem`, are using a `Log` class to log everything that happens.
+In the [Logging example]("10 Singleton, Multiton and Strategy Pattern\Examples\Logging"), two classes, `CDLibrary` and `LoginSystem`, are using a `Log` class to log everything that happens.
 
 The output is logged to console and to a file (this is the role of the `Log` class, ignore the implementation details).
 
@@ -157,7 +157,14 @@ If both classes shared the same instance, they would not create separate files.
 
 We can achieve this, by turning the `Log` class into a Singleton, and update the constructor of `CDLibrary` and `LoginSystem` to get the Singleton instance.
 
-
+<blockquote>
+  <details>
+    <summary>Display solution...</summary>
+    ```java
+    
+    ```
+  </details>
+</blockquote>
 
 ![Logging](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Logging%20Exercise%20UML%20Class%20Diagram.png)
 
