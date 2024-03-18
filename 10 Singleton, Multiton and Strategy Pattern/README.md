@@ -599,66 +599,619 @@ public class Project
 
 # Strategy Pattern
 
-## 10.x Robot Behavior
+## 10.6 Robot Behavior
 
-### Objective
-Create a Robot that will take part in a game with other robots. The robot can be configured with different behavior strategies for acting in the game. We will keep it simple with three simple strategies.
+In this exercise we will simulate a `Robot` that will take part in a game with other robots.
+
+The robot can be configured with different behaviour strategies for acting in the game. We will keep it simple with just three strategies.
+
+Our strategies will not actually do anything useful at this point, only show that the chosen strategy is used.
 
 ![Robot Behaviour](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Robot%20Behaviour%20Exercise%20UML%20Class%20Diagram.png)
 
-#### Tasks
-1. **Create the `Behaviour` Interface:**
-   - With one method.
+Create the `Behaviour` interface with one method.
 
-2. **Implement Strategies:**
-   - `AggressiveBehaviour` implementing `Behaviour`. `moveCommand()` should return `1` and print to `System.out` that it is aggressive.
-   - Implement two other concrete strategies returning `0` and `-1`.
+<blockquote>
+  <details>
+    <summary>Display solution...</summary>
 
-3. **Create the `Robot` Class:**
-   - In its `move` method, call the `behaviourStrategy.moveCommand` and print out the result.
+```java
+import javafx.geometry.Point2D;
 
-4. **Main Method:**
-   - Create a new `GameBoard`, a new `Robot`, set a behavior on the robot, and calls `move` on the robot.
+public interface Behaviour
+{
+    int moveCommand(GameBoard board, Point2D robotLocation);
+}
+```
+  </details>
+</blockquote>
 
-## 10.x Compression Strategy
+First, crate the class `AggressiveBehaviour` implementing `Behaviour`. The `moveCommand()` should return "1" and print to `System.out` that it is aggressive.
+
+Then, create the other two concrete strategies. Return "0" and "-1" in their `moveCommand()`.
+
+<blockquote>
+  <details>
+    <summary>Display solution...</summary>
+
+```java
+import javafx.geometry.Point2D;
+
+public class AggressiveBehaviour implements Behaviour
+{
+   @Override
+   public int moveCommand(GameBoard board, Point2D robotLocation)
+   {
+      System.out.println("Aggressive Behaviour: if find another robot attack it");
+      return 1;
+   }
+}
+```
+
+```java
+import javafx.geometry.Point2D;
+
+public class NeutralBehaviour implements Behaviour
+{
+   @Override
+   public int moveCommand(GameBoard board, Point2D robotLocation)
+   {
+      System.out.println("Neutral Behaviour: if find another robot ignore it");
+      return 0;
+   }
+}
+```
+
+```java
+import javafx.geometry.Point2D;
+
+public class DefensiveBehaviour implements Behaviour
+{
+
+   @Override
+   public int moveCommand(GameBoard board, Point2D robotLocation)
+   {
+      System.out.println("Defensive Behaviour: if find another robot run from it");
+      return -1;
+   }
+}
+```
+
+  </details>
+</blockquote>
+
+Create the `Robot` class.
+
+The `Robot` class should call the `behaviourStrategy.moveCommand()` in the `move()` method, and print out the result. 
+
+The location can just be instantiated to any arbitrary location, for instance `new Point2D(2,3)`, we are not goint to change it.
+
+<blockquote>
+  <details>
+    <summary>Display solution...</summary>
+
+```java
+import javafx.geometry.Point2D;
+
+public class Robot
+{
+    private String name;
+    private GameBoard board;
+    private Behaviour behaviourStrategy;
+
+    public Robot(String name, GameBoard board)
+    {
+        this.name = name;
+        this.board = board;
+    }
+
+    public Behaviour getBehaviourStrategy()
+    {
+        return behaviourStrategy;
+    }
+
+    public void setBehaviourStrategy(Behaviour behaviourStrategy)
+    {
+        this.behaviourStrategy = behaviourStrategy;
+    }
+
+    public void move()
+    {
+        behaviourStrategy.moveCommand(board, new Point2D(0, 0));
+    }
+}
+```
+
+```java
+public class GameBoard
+{
+    //Doesn't do anything for now
+}
+```
+
+  </details>
+</blockquote>
+
+Ensure that everything works by running this test and looking at the output
+
+```java
+public class Test
+{
+    public static void main(String[] args)
+    {
+        GameBoard board = new GameBoard();
+        Robot robot = new Robot("Botty", board);
+
+        robot.setBehaviourStrategy(new NeutralBehaviour());
+        robot.move();
+
+        robot.setBehaviourStrategy(new AggressiveBehaviour());
+        robot.move();
+
+        robot.setBehaviourStrategy(new DefensiveBehaviour());
+        robot.move();
+    }
+}
+```
+
+## 10.7 Compression Strategy
+
+In this exercise you will create a class, `Compressor`, that can compress* a list of files and print out the names of the compressed files (*we will not implement actual compression).
+
+Compression can be done in several different ways, so it is moved to a strategy object.
 
 ![Compression](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Compression%20Exercise%20UML%20Class%20Diagram.png)
 
-### Objective
-Create a class `Compressor` that can compress a list of files and print out the names of the compressed files.
+Each concrete strategy should print that it is "compressing" the file and return the name of the compressed file, like filename + “-zip”.
 
-#### Tasks
-1. **Implement Compression Strategies:**
-   - Each concrete strategy should print that it is compressing the file and return the name of the compressed file like `filename + "-zip"`.
+The `Compressor` should loop through the files in the list, "compress" each using the `compress()``, and print out the list names of compressed files.
 
-2. **Implement the `Compressor` Class:**
-   - Loop through the files, 'compress' each using the configured compression method, and print out the list of names of compressed files.
+Test everything with this test
 
-## 10.x Sorting a TreeSet
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Test
+{
+    public static void main(String[] args)
+    {
+        Compressor compressor = new Compressor();
+        compressor.setMethod(new SevenCCompression());
+
+        List<String> files = new ArrayList<>();
+        files.add("file1");
+        files.add("file2");
+        files.add("file3");
+
+        //Using 7C compression
+        compressor.compress(files);
+
+        //Using ZIP compression
+        compressor.setMethod(new ZipCompression());
+        compressor.compress(files);
+    }
+
+    /* OUTPUT:
+    Compressing file1 using 7C compression
+    File file1 compressed, result: file1.7c
+    Compressing file2 using 7C compression
+    File file2 compressed, result: file2.7c
+    Compressing file3 using 7C compression
+    File file3 compressed, result: file3.7c
+    Compressing file1 using ZIP compression
+    File file1 compressed, result: file1.zip
+    Compressing file2 using ZIP compression
+    File file2 compressed, result: file2.zip
+    Compressing file3 using ZIP compression
+    File file3 compressed, result: file3.zip
+     */
+}
+```
+
+<blockquote>
+  <details>
+    <summary>Display solution...</summary>
+
+```java
+public interface CompressionMethod
+{
+   String compress(String filename);
+}
+```
+
+```java
+import java.util.List;
+
+public class Compressor
+{
+    private CompressionMethod method;
+
+    public void setMethod(CompressionMethod method)
+    {
+        this.method = method;
+    }
+
+    public void compress(List<String> files)
+    {
+        for (String file : files)
+        {
+            System.out.println("File " + file + " compressed, result: " + method.compress(file));
+        }
+    }
+}
+```
+
+```java
+public class ZipCompression implements CompressionMethod
+{
+    @Override
+    public String compress(String filename)
+    {
+        System.out.println("Compressing " + filename + " using ZIP compression");
+        return filename + ".zip";
+    }
+}
+```
+
+```java
+public class SevenCCompression implements CompressionMethod
+{
+    @Override
+    public String compress(String filename)
+    {
+        System.out.println("Compressing " + filename + " using 7C compression");
+        return filename + ".7c";
+    }
+}
+```
+
+  </details>
+</blockquote>
+
+
+## 10.8 Sorting a TreeSet
+
+Similiar to how we sorted an ArrayList in the presentation. we will look at how to sort a `java.util.TreeSet` class.
+
+We can use a `Comparator` object to sort the `TreeSet`.
+
 
 ![Comparator](/10%20Singleton%2C%20Multiton%20and%20Strategy%20Pattern/Images/Comparator%20Exercise%20UML%20Class%20Diagram.png)
 
-### Objective
-Configure a `java.util.TreeSet` class with a comparator object to make the TreeSet sorted.
+The `LastnameComparator` should use `compareTo()` on the lastnames, `AgeComparator` should subtract age. (Check the documentation on the `compare()` method in `Comparator`)
 
-#### Tasks
-1. **Implement Comparators:**
-   - `LastnameComparator` should use `compareTo` on the last names.
-   - `AgeComparator` should subtract ages.
-   - Check the documentation on the compare method.
+The comparator should be given to the `TreeSet` in its constructor.
 
-2. **Test:**
-   - Create three persons, one `TreeSet` configured with a `LastnameComparator`, and a `TreeSet` with an `AgeComparator`. Add the persons to both TreeSets and print them out.
+Ensure that you are sorting correctly with this test
 
-## 10.x Sorting a List
+```java
+import java.util.TreeSet;
 
-### Objective
-Create a `MyIntegerList` class that can store integers and sort them using different strategies.
+public class Test
+{
+    public static void main(String[] args)
+    {
+        //A Treeset is a sorted set, so it will sort the elements based on the comparator. If two objects are equal, it will not add the second object.
+        Person person1 = new Person("John", "Doe", 29);
+        Person person2 = new Person("James", "Carlsen", 30);
+        Person person3 = new Person("John", "Smith", 22);
+        Person person4 = new Person("James", "Smyth", 23);
 
-#### Tasks
-1. **Implement `SortingStrategy` Interface:**
-   - Must have a single method `sort(Collection of integers)` that returns a collection of sorted integers.
+        TreeSet<Person> treeSet_lastnameSorting = new TreeSet<>(new LastnameComparator());
+        treeSet_lastnameSorting.add(person1);
+        treeSet_lastnameSorting.add(person2);
+        treeSet_lastnameSorting.add(person3);
+        treeSet_lastnameSorting.add(person4);
 
-2. **Implement `MyIntegerList` Class:**
-   - Should have a `SortingStrategy` reference that can be set.
-   - Implement different sorting strategies and test them on your `MyIntegerList` class.
+        System.out.println(treeSet_lastnameSorting);
+        //OUTPUT:
+        //[James Carlsen 30, John Doe 30, John Smith 22, James Smyth 23]
+
+        TreeSet<Person> treeSet_ageSorting = new TreeSet<>(new AgeComparator());
+        treeSet_ageSorting.add(person1);
+        treeSet_ageSorting.add(person2);
+        treeSet_ageSorting.add(person3);
+        treeSet_ageSorting.add(person4);
+
+        System.out.println(treeSet_ageSorting);
+        //OUTPUT:
+        //[John Smith 22, James Smyth 23, John Doe 29, James Carlsen 30]
+    }
+}
+```
+
+<blockquote>
+  <details>
+    <summary>Display solution...</summary>
+
+```java
+public class Person
+{
+    private String firstname;
+    private String lastname;
+    private int age;
+
+    public Person(String firstname, String lastname, int age)
+    {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.age = age;
+    }
+
+    public String getFirstname()
+    {
+        return firstname;
+    }
+
+    public String getLastname()
+    {
+        return lastname;
+    }
+
+    public void setFirstname(String firstname)
+    {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname)
+    {
+        this.lastname = lastname;
+    }
+
+    public int getAge()
+    {
+        return age;
+    }
+
+    public void setAge(int age)
+    {
+        this.age = age;
+    }
+
+    public String toString()
+    {
+        return firstname + " " + lastname + " " + age;
+    }
+}
+```
+
+```java
+import java.util.Comparator;
+
+public class LastnameComparator implements Comparator<Person>
+{
+    @Override
+    public int compare(Person o1, Person o2)
+    {
+        return o1.getLastname().compareTo(o2.getLastname());
+    }
+}
+```
+
+```java
+import java.util.Comparator;
+
+public class AgeComparator implements Comparator<Person>
+{
+    @Override
+    public int compare(Person o1, Person o2)
+    {
+        return o1.getAge() - o2.getAge();
+    }
+}
+```
+
+## 10.9 Sorting a List
+
+Create a `MyIntegerList` class that can store `Integer` objects in an `ArrayList`.
+
+Create a `SortingStrategy` interface.  It must have a single method `ArrayList<Integer> sort(ArrayList<Integer> integers)` that returns an `ArrayList<Integer>` of sorted integers.
+
+Use the Strategy Pattern, so that the `MyIntegerList` class has a `SortingStrategy` reference that can be set. 
+
+Create a `sort()` method in your `MyIntegerList` that calls the `sort()` method on its `SortingStrategy` object.
+
+Implement different sorting strategies and test them with this test.
+
+```java
+public class Test
+{
+    public static void main(String[] args)
+    {
+        MyIntegerList list = new MyIntegerList();
+        list.add(5);
+        list.add(3);
+        list.add(7);
+        list.add(1);
+        list.add(9);
+        list.add(2);
+        list.add(6);
+        list.add(4);
+        list.add(8);
+        list.add(0);
+
+        list.setSortingStrategy(new QuickSort());
+        list.sort();
+        System.out.println(list); //OUTPUT: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        list.randomize();
+
+        list.setSortingStrategy(new BubbleSort());
+        list.sort();
+        System.out.println(list); //OUTPUT: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        list.randomize();
+
+        list.setSortingStrategy(new InsertionSort());
+        list.sort();
+        System.out.println(list); //OUTPUT: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        list.randomize();
+
+        //... and so on. Feel free to add more sorting strategies
+    }
+}
+```
+
+<blockquote>
+  <details>
+    <summary>Display solution...</summary>
+
+```java
+import java.util.ArrayList;
+
+public interface SortingStrategy
+{
+    ArrayList<Integer> sort(ArrayList<Integer> integers);
+}
+
+```
+
+```java
+import java.util.ArrayList;
+
+public class MyIntegerList
+{
+    private ArrayList<Integer> list;
+    private SortingStrategy sortingStrategy;
+
+    public MyIntegerList()
+    {
+        list = new ArrayList<>();
+        sortingStrategy = null; //No initial sorting strategy, will fail if not set
+    }
+
+    public void add(int integer)
+    {
+        list.add(integer);
+    }
+
+    public void setSortingStrategy(SortingStrategy sortingStrategy)
+    {
+        this.sortingStrategy = sortingStrategy;
+    }
+
+    public void sort()
+    {
+        list = sortingStrategy.sort(list);
+    }
+
+    public void randomize()
+    {
+        ArrayList<Integer> newList = new ArrayList<>();
+        while (list.size() > 0)
+        {
+            int index = (int) (Math.random() * list.size());
+            newList.add(list.remove(index));
+        }
+        list = newList;
+    }
+
+    @Override
+    public String toString()
+    {
+        return list.toString();
+    }
+}
+```
+
+```java
+/*
+    Generated by GitHub Copilot, validity of the sorting algorithm is not guaranteed.
+ */
+import java.util.ArrayList;
+
+public class BubbleSort implements SortingStrategy
+{
+    @Override
+    public ArrayList<Integer> sort(ArrayList<Integer> integers)
+    {
+        for (int i = 0; i < integers.size(); i++)
+        {
+            for (int j = 0; j < integers.size() - 1; j++)
+            {
+                if (integers.get(j) > integers.get(j + 1))
+                {
+                    int temp = integers.get(j);
+                    integers.set(j, integers.get(j + 1));
+                    integers.set(j + 1, temp);
+                }
+            }
+        }
+        return integers;
+    }
+}
+```
+
+```java
+/*
+    Generated by GitHub Copilot, validity of the sorting algorithm is not guaranteed.
+ */
+import java.util.ArrayList;
+
+public class QuickSort implements SortingStrategy
+{
+    @Override
+    public ArrayList<Integer> sort(ArrayList<Integer> integers)
+    {
+        quickSort(integers, 0, integers.size() - 1);
+        return integers;
+    }
+
+    private void quickSort(ArrayList<Integer> integers, int i, int i1)
+    {
+        if (i < i1)
+        {
+            int pivotIndex = partition(integers, i, i1);
+            quickSort(integers, i, pivotIndex - 1);
+            quickSort(integers, pivotIndex + 1, i1);
+        }
+    }
+
+    private int partition(ArrayList<Integer> integers, int i, int i1)
+    {
+        int pivot = integers.get(i1);
+        int low = i - 1;
+        for (int j = i; j < i1; j++)
+        {
+            if (integers.get(j) < pivot)
+            {
+                low++;
+                int temp = integers.get(low);
+                integers.set(low, integers.get(j));
+                integers.set(j, temp);
+            }
+        }
+        int temp = integers.get(low + 1);
+        integers.set(low + 1, integers.get(i1));
+        integers.set(i1, temp);
+        return low + 1;
+    }
+}
+```
+
+```java
+/*
+    Generated by GitHub Copilot, validity of the sorting algorithm is not guaranteed.
+ */
+import java.util.ArrayList;
+
+public class InsertionSort implements SortingStrategy
+{
+    @Override
+    public ArrayList<Integer> sort(ArrayList<Integer> integers)
+    {
+        for (int i = 1; i < integers.size(); i++)
+        {
+            int currentElement = integers.get(i);
+            int k;
+            for (k = i - 1; k >= 0 && integers.get(k) > currentElement; k--)
+            {
+                integers.set(k + 1, integers.get(k));
+            }
+            integers.set(k + 1, currentElement);
+        }
+        return integers;
+    }
+}
+```
+  </details>
+</blockquote>
