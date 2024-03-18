@@ -147,7 +147,7 @@ public class DatabaseConnector
 
 ## 10.3 Logging with a Singleton
 
-In the [Logging example](10 Singleton, Multiton and Strategy Pattern\Examples\Logging), two classes, `CDLibrary` and `LoginSystem`, are using a `Log` class to log everything that happens.
+In the [Logging example]("/10 Singleton, Multiton and Strategy Pattern/Examples/Logging"), two classes, `CDLibrary` and `LoginSystem`, are using a `Log` class to log everything that happens.
 
 The output is logged to console and to a file (this is the role of the `Log` class, ignore the implementation details).
 
