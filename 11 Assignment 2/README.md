@@ -10,10 +10,10 @@ Possible programs include:
 Implement the program.
 
 ## Requirements
-The application must use Sockets connecting client and server with the server being multithreaded. The client must be able to 
-1. send messages 
-2. receive messages broadcasted to all clients and 
-3. request an information from the server not to be broadcasted to other clients e.g. number of connected chatters, list of connected chatters, or similar. 
+The application must use Sockets connecting client and server with the server being multithreaded. The client must be able to: 
+- send messages 
+- receive messages broadcasted to all clients and 
+- request an information from the server not to be broadcasted to other clients e.g. number of connected chatters, list of connected chatters, or similar. 
 
 You must use MVVM with preferably at least two windows. Some ideas:
 - Actual chat window
