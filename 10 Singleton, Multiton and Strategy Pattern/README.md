@@ -17,7 +17,7 @@ Our `DatabaseConnector` class could look like this:
 public class DatabaseConnector 
 {
 
-    private DatabaseConnector(String IP)
+    private DatabaseConnector()
     {
         //Initializing the database connection would happen here.
     }
