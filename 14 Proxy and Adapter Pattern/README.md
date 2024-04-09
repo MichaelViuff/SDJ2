@@ -6,7 +6,7 @@
 
 The purpose of this exercise is to create a class that caches a result and returns the cached result when available.
 
-![Cache Proxy UML](Images/Cache%20Proxy%20UML.png)
+<img src="Images/Cache%20Proxy%20UML.png" width="100%">
 
 We will make a simple setup for this exercise.
 Create a class Person with appropriate attributes.
@@ -52,7 +52,7 @@ When the level is set to ‘verbose’, everything will be put in the log. If yo
 Use the Proxy design pattern to change your Log solution, so that the ‘proxy log’ class handles filtering.
 This means, you should have a setup similar to the below:
 
-![Logger UML](Images/Logger%20UML.png)
+<img src="Images/Logger%20UML.png" width="75%">
 
 ## 10.3 Sea Bear Exhibit
 
@@ -85,7 +85,7 @@ Implement the proxy design pattern shown below. Use the uploaded interface, Stri
 Class ThreadsafeQueue is a monitor class (all methods are synchronized). The idea is that the ThreadsafeQueue provides thread safety to the otherwise not threadsafe BoundedArrayQueue.
 The ThreadSafeBoundedQueue will have the same methods, from the interface, and call relevant methods on the BoundedArrayQueue. But the methods will use synchronization.
 
-![Thread Safe Queue UML](Images/Thread%20Safe%20Queue%20UML.png)
+<img src="Images/Thread%20Safe%20Queue%20UML.png" width="75%">
 
 # Adapter Pattern
 
@@ -96,7 +96,7 @@ You can use Java’s ArrayList. No need to implement your own.
 The interface has been uploaded.
 The Queue specification has been uploaded.
 
-![Queue Adapter UML](Images/Queue%20Adapter%20UML.png)
+<img src="Images/Queue%20Adapter%20UML.png" width="75%">
 
 Consider: Which class is the Target, Adapter, and Adaptee?
 Make unit tests for your Queue. It might be easier to modify your test cases from previous (exercise 16.3) to test your new StringQueue. It should just be changing the field variable and the setup method.
@@ -108,7 +108,7 @@ In the upcoming assignment, we’re going to create what is called a Blocking Qu
 The purpose of this exercise is to create a data storage, using the adapter design pattern. Your system, which in this case could just be main method, will just use the PersonStorage interface.
 You’re going to create functionality to store information about Persons. See diagram below:
 
-![Person Storage UML](Images/Person%20Storage%20UML.png)
+<img src="Images/Person%20Storage%20UML.png" width="75%">
 
 You are allowed to add methods as needed. E.g. the Person object might need some get-methods and a constructor.
 
