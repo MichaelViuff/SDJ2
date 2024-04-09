@@ -52,7 +52,7 @@ When the level is set to ‘verbose’, everything will be put in the log. If yo
 Use the Proxy design pattern to change your Log solution, so that the ‘proxy log’ class handles filtering.
 This means, you should have a setup similar to the below:
 
-<img src="Images/Logger%20UML.png" width="50%">
+<img src="Images/Logger%20UML.png" width="300px">
 
 ## 10.3 Sea Bear Exhibit
 
@@ -85,7 +85,7 @@ Implement the proxy design pattern shown below. Use the uploaded interface, Stri
 Class ThreadsafeQueue is a monitor class (all methods are synchronized). The idea is that the ThreadsafeQueue provides thread safety to the otherwise not threadsafe BoundedArrayQueue.
 The ThreadSafeBoundedQueue will have the same methods, from the interface, and call relevant methods on the BoundedArrayQueue. But the methods will use synchronization.
 
-<img src="Images/Thread%20Safe%20Queue%20UML.png" width="50%">
+<img src="Images/Thread%20Safe%20Queue%20UML.png" width="300px">
 
 # Adapter Pattern
 
