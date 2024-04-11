@@ -1,4 +1,4 @@
-# 14 Exercises: Proxy and Adaper Pattern
+# 14 Exercises: Proxy and Adapter Pattern
 
 # Proxy Pattern
 
