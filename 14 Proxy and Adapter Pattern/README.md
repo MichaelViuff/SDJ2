@@ -502,48 +502,22 @@ public class ThreadSafeBoundedArrayQueue implements StringQueue
 
 ## 10.5 Queue containing Strings based on a List
 
-The purpose for this exercise is to implement the adapter design pattern shown below. It is a Queue which can only contain Strings. We use the adapter design pattern to base our Queue on the functionality of an ArrayList.
-You can use Java’s `ArrayList`. No need to implement your own.
-The interface has been uploaded.
-The Queue specification has been uploaded.
+In the previous exercise we were given the `StringQueue` interface, and an implementation of it. Let's assume that we did not have an implementation of the interface yet.
 
-<img src="Images/Queue%20Adapter%20UML.png" width="300px">
+Java's own `ArrayList` class can be used to create a `StringQueue`, but we won't be able to modify the `ArrayList` class and make it implement our `StringQueue` interface.
 
-Consider: Which class is the Target, Adapter, and Adaptee?
-Make unit tests for your Queue. It might be easier to modify your test cases from previous (exercise 16.3) to test your new `StringQueue`. It should just be changing the field variable and the setup method.
+Luckily, we can create an Adapter between the two!
 
-In the upcoming assignment, we’re going to create what is called a Blocking Queue, basing the functionality on that of an ArrayList. There are strong similarities to this exercise.
+<img src="Images/Queue%20Adapter%20UML.png" width="400px">
 
-## 10.6 File Writer
+Consider which class is the *Target*, *Adapter*, and *Adaptee* in this scenario?
 
-The purpose of this exercise is to create a data storage, using the adapter design pattern. Your system, which in this case could just be main method, will just use the `PersonStorage` interface.
-You’re going to create functionality to store information about Persons. See diagram below:
+Create the `Queue` class, so that it implements the `StringQueue` interface, but delegates most of the work to the `ArrayList` class.
 
-<img src="Images/Person%20Storage%20UML.png" width="300px">
+<blockquote>
+  <details>
+    <summary>Display solution...</summary>
 
-You are allowed to add methods as needed. E.g. the `Person` object might need some get-methods and a constructor.
-
-Think of it as creating an Adapter around your system of storage.
-
-`DBPersonStorage` is just one possible implementation of the interface (that we might create later).
-
-In this exercise you should create an adapter implementing `PersonStorage` to either an arraylist or a file.
-
-You may start out with a class, `InMemoryPersonStorage`, and just store `Person`’s in an ArrayList.
-Or you may create a `FilePersonStorage`. This is more difficult.
-
-The `FilePersonStorage` should either create a new file, or use the existing.
-When adding a `Person`, unwrap the information and add a new line to the File.
-When retrieving a `Person`, go through the file, line by line, and find the line containing the correct social security number. Retrieve the information from this line, put it into a new `Person` object, and return it.
-
-Test your system:
-Create a simple class to read input from the console, where you can add and retrieve a person.
-
-## 10.7 Database storage
-
-This exercise assumes you know about JDBC and connecting Java and a Database.
-
-Modify your previous exercise to use a database instead.
-
-Test that your system still works, by adding and retrieving person objects.
+  </details>
+</blockquote>
 ```
