@@ -1,4 +1,4 @@
-# 13 Assignment 4 - Kingdom simulation
+# 18 Assignment 4 - Kingdom simulation
 
 ## The system:
 In this assignment you’re going to simulate a kingdom. The ultimate goal is to get `Gems` so the `King` can throw parties.
