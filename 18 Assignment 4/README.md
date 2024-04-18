@@ -16,7 +16,7 @@ The main topics for this assignment are:
 
  - [Proxy and Adapter Pattern](https://viaucdk-my.sharepoint.com/:p:/g/personal/mivi_viauc_dk/EUGB7qts_9RLn2C35XmHCEYB4oIE6OLV06L99PMfDaZNWA?e=kD7tif)
  - [Producer-Consumer Problem](https://viaucdk-my.sharepoint.com/:p:/g/personal/mivi_viauc_dk/EYjtVdp6yvNBjG1xTpuYdS0BEardZkqsXL3OPVWzBhnk1Q?e=lNnXuP)
- - [Readers-Writers Problem](https://viaucdk-my.sharepoint.com/:p:/g/personal/mivi_viauc_dk/EYjtVdp6yvNBjG1xTpuYdS0BEardZkqsXL3OPVWzBhnk1Q?e=lNnXuP)
+ - [Readers-Writers Problem](https://viaucdk-my.sharepoint.com/:p:/g/personal/mivi_viauc_dk/ERtQsKGzQr1EubQ9rLCy0yEBLULR7fL1GonwsHO8JqrWTg?e=qsbK4V)
  - [Unit Testing](https://viaucdk-my.sharepoint.com/:p:/g/personal/mivi_viauc_dk/EQvTfI3cDddArBHNfkkzzfoBdKGmAkUY459xwshG9Wck5Q?e=n0bFCR)
 
 
