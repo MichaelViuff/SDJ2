@@ -692,4 +692,4 @@ counterThread2.start();
 
 Two threads will now both increment the count variable 1.000.000 times. We would expect the printed result to be 2.000.000. Is that always so? Does the number sometimes differ from 2.000.000?
 
-This exercise is to peek your curiosity. We’ll discuss this in the next session. It has something to do with time slicing, and multiple threads interfering with each other.
+This exercise is to pique your curiosity. We’ll discuss this in the next session. It has something to do with time slicing, and multiple threads interfering with each other.
