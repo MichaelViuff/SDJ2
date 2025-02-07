@@ -31,7 +31,12 @@ import java.util.List;
 
 public class ListContainer
 {
-    private List<Integer> list = new ArrayList<Integer>();
+    private List<Integer> list;
+
+    private ListContainer()
+    {
+      list = new ArrayList<Integer>();
+    }
 
     public synchronized void add(int i)
     {
