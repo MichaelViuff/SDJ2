@@ -35,7 +35,7 @@ public class ListContainer
 
     private ListContainer()
     {
-      list = new ArrayList<Integer>();
+        list = new ArrayList<Integer>();
     }
 
     public synchronized void add(int i)
